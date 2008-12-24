@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<div id="project_list">
+    <div class="featured">
+        {% for project in featured %}
+        <div class="project">
+            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" />
+        </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        {% for project in active %}
+        {% if not project.featured %}
+        <div class="project">
+            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" />
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+{#{% for project in featured %}
+{% if loop.first %}
+<div class="project featured">
+    <ul class="top">
+        <li><span class="key">Image:</span><br /><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" /></li>
+        <li><span class="key">Name:</span> <a href="/projects/update/{{ project._id }}">{{ project.name}}</a></li>
+        <li><span class="key">Active:</span> {{ project.active }}</li>
+        <li><span class="key">Type:</span> {{ project.type }}</li>
+        <li><span class="key">Tags:</span> <small>{% for tag in project.tags %}{{ tag }}{% if not loop.last %},{% endif %}&nbsp;{% endfor %}</small></li>
+        <li><span class="key">Text:</span> {{ project.text }}</li>
+        <li>
+            <span class="key">Attachments:</span>
+            <ul class="sub">
+                {% for attachment in project._attachments %}
+                <li><a href="http://localhost:5984/kinaj/{{ project.id }}/{{ attachment }}">{{ attachment }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</div>
+{% endif %}
+{% endfor %}
+{% for project in active %}
+{% if not project.featured %}
+<div class="project">
+    <ul class="top">
+        <li><span class="key">Image:</span><br /><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" /></li>
+        <li><span class="key">Name:</span> <a href="/projects/update/{{ project._id }}">{{ project.name}}</a> <a href="/projects/delete/{{ project._id }}">X</a></li>
+        <li><span class="key">Active:</span> {{ project.active }}</li>
+        <li><span class="key">Type:</span> {{ project.type }}</li>
+        <li><span class="key">Tags:</span> <small>{% for tag in project.tags %}{{ tag }}{% if not loop.last %},{% endif %}&nbsp;{% endfor %}</small></li>
+        <li><span class="key">Text:</span> {{ project.text }}</li>
+        <li>
+            <span class="key">Attachments:</span>
+            <ul class="sub">
+                {% for attachment in project._attachments %}
+                <li><a href="http://localhost:5984/kinaj/{{ project.id }}/{{ attachment }}">{{ attachment }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</div>
+{% endif %}
+{% endfor %}
+#} 
+ 
+{% endblock %}

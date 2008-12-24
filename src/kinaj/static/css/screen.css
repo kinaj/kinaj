@@ -1,0 +1,33 @@
+@charset "UTF-8";
+@media screen {
+    body {background: #6A7F8D; color: #fff; font-size: 10px; font-family: 'Helvetica Neue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; padding: 0 auto;}
+    
+    img {font-size: 10px;}
+    
+    a {color: #333;}
+    
+    div#page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
+    
+    div#page div#header {height: 25em;}
+    
+    div#page div#content {margin: 0 auto; background: #7a8b99; padding: 5em 0em;}
+    div#page div#content form {font-size: 1.5em;}
+    div#page div#content form label {margin: 2em 0em 0.5em 0em; display: block;}
+    div#page div#content form input {display: block; font-size: 1.2em;}
+    div#page div#content form input.formsubmit {margin: 2em 0em 0em 0em;}
+    div#page div#content form textarea {display: block; font-size: 1.2em;}
+    div#page div#content ul.top {font-size: 1.8em;}
+    div#page div#content ul.top li {margin: 0em 0em 1em 0em;}
+    div#page div#content ul.sub {margin: 0em 0em 0em 2em;}
+    div#page div#content ul.sub li {margin: 0em 0em 0.5em 0em;}
+    div#page div#content div.project {display: inline-block;}
+    div#page div#content div#project_list {width: 40em; margin: 0 auto;}
+    div#page div#content div#project_list div.featured {float: left; margin: 0em 1em 0em 0em;}
+    
+    p.loading {color: #fff; background: #ff6600; text-align: center; padding: 1em 0em;}
+    p.error {color: #fff; background: #a33; text-align: center; padding: 1em 0em;}
+    p.success {color: #fff; background: #3a3; text-align: center; padding: 1em 0em;}
+    p.complete {color: #fff; background: #333; text-align: center; padding: 1em 0em;}
+    
+    .key {color: #a33;}
+}

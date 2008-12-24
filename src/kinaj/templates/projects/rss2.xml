@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+   <channel>
+      <title>Projects | kinaj</title>
+      <link>http://127.0.0.1:5000</link>
+      <description>Finest Icons</description>
+      <language>en-gb</language>
+      <pubDate></pubDate>
+      <generator>Werkzeug</generator>
+      {%- for doc in active %}
+      <item>
+          <title>{{ doc.name }}</title>
+          <link>http://127.0.0.1:5000/projects/retrieve/{{ doc._id}}</link>
+          <description>{{ doc.text }}</description>
+          <pubDate>{{ doc.mtime }}</pubDate>
+          <guid>http://127.0.0.1:5000/projects/retrieve/{{ doc._id}}</guid>
+      </item>
+      {%- endfor %}
+   </channel>
+</rss>

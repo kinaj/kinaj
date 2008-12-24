@@ -1,0 +1,22 @@
+syntax: glob
+*xls
+*.db
+*.orig
+*.rej
+*~
+*.o
+*.pyc
+*.pyo
+*.pydevproject
+*.project
+*.settings
+tests/*.err
+*/nbproject/*
+sqlite.db
+.DS_Store
+build
+*_local*
+*.svn
+cruft*
+*pdf
+*tgz

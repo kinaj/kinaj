@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>{{ doc.name }}</h1>
+<p>{{ doc.text }}</p>
+<ul>
+    {% for tag in doc.tags %}
+    <li>{{ tag }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
