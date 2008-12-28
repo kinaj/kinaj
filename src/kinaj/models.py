@@ -5,7 +5,8 @@ from couchdb.schema import Document, ListField, TextField, BooleanField, DateTim
 
 
 class Project(Document):
-    image_name = TextField()
+    preview_small = TextField()
+    preview_big = TextField()
     name = TextField()
     type = TextField(default='project')
     tags = ListField(TextField())

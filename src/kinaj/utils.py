@@ -1,8 +1,8 @@
 import re
 from datetime import datetime
 
-from jinja import Environment
-from jinja import FileSystemLoader
+from jinja2 import Environment
+from jinja2 import FileSystemLoader
 from os import path
 from werkzeug import Local
 from werkzeug import LocalManager
@@ -23,7 +23,7 @@ application = local('application')
 
 url_map = Map([Rule('/static/<file>', endpoint='static', build_only=True)])
 
-jinja_env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
+jinja2_env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
 
 
 def expose(rule, **kw):
@@ -35,14 +35,14 @@ def expose(rule, **kw):
 
 def url_for(endpoint, _external=False, **values):
     return local.url_adapter.build(endpoint, values, force_external=_external)
-jinja_env.globals['url_for'] = url_for
+jinja2_env.globals['url_for'] = url_for
 
 def render_html(template, **context):
-    return Response(jinja_env.get_template(template).render(**context),
+    return Response(jinja2_env.get_template(template).render(**context),
                     mimetype='text/html')
 
 def render_xml(template, **context):
-    return Response(jinja_env.get_template(template).render(**context),
+    return Response(jinja2_env.get_template(template).render(**context),
                     mimetype='application/xml')
     
 def datetimeTorfc822(datetime):

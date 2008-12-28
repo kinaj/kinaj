@@ -6,7 +6,7 @@
     <div class="featured">
         {% for project in featured %}
         <div class="project">
-            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" />
+            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_big }}" title="{{ project.preview_big }}" alt="{{ project.preview_big }}" />
         </div>
         {% endfor %}
     </div>
@@ -15,7 +15,7 @@
         {% for project in active %}
         {% if not project.featured %}
         <div class="project">
-            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" />
+            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.preview_small }}" alt="{{ project.preview_small }}" />
         </div>
         {% endif %}
         {% endfor %}
@@ -23,11 +23,11 @@
 </div>
 
 
-{#{% for project in featured %}
+{% for project in featured %}
 {% if loop.first %}
 <div class="project featured">
     <ul class="top">
-        <li><span class="key">Image:</span><br /><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" /></li>
+        <li><span class="key">Image:</span><br /><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.preview_small }}" alt="{{ project.preview_small }}" /></li>
         <li><span class="key">Name:</span> <a href="/projects/update/{{ project._id }}">{{ project.name}}</a></li>
         <li><span class="key">Active:</span> {{ project.active }}</li>
         <li><span class="key">Type:</span> {{ project.type }}</li>
@@ -49,7 +49,7 @@
 {% if not project.featured %}
 <div class="project">
     <ul class="top">
-        <li><span class="key">Image:</span><br /><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.image_name }}" title="{{ project.image_name }}" alt="{{ project.image_name }}" /></li>
+        <li><span class="key">Image:</span><br /><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.preview_small }}" alt="{{ project.preview_small }}" /></li>
         <li><span class="key">Name:</span> <a href="/projects/update/{{ project._id }}">{{ project.name}}</a> <a href="/projects/delete/{{ project._id }}">X</a></li>
         <li><span class="key">Active:</span> {{ project.active }}</li>
         <li><span class="key">Type:</span> {{ project.type }}</li>
@@ -67,6 +67,4 @@
 </div>
 {% endif %}
 {% endfor %}
-#} 
- 
 {% endblock %}

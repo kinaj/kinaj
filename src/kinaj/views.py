@@ -56,7 +56,8 @@ def create(request):
     
     if request.method == 'POST':
         if not request.is_xhr:
-            image_name = request.form.get('image_name')
+            preview_small = request.form.get('preview_small')
+            preview_big = request.form.get('preview_big')
             name = request.form.get('name')
             text = request.form.get('text')
             tags = request.form.get('tags')
@@ -64,7 +65,7 @@ def create(request):
             active = bool(request.form.get('active'))
             featured = bool(request.form.get('featured'))
 
-            project = Project(image_name=image_name,name=name,text=text
+            project = Project(preview_small=preview_small,preview_big=preview_big,name=name,text=text
                                 ,tags=tags,active=active,featured=featured)
             uid = project.create()
 
@@ -105,7 +106,8 @@ def update(request,uid):
             docid = request.form.get('id')
             rev = request.form.get('rev')
             name = request.form.get('name')
-            image_name = request.form.get('image_name')
+            preview_small = request.form.get('preview_small')
+            preview_big = request.form.get('preview_big')
             tags = request.form.get('tags')
             text = request.form.get('text')
             active = bool(request.form.get('active'))
@@ -124,7 +126,8 @@ def update(request,uid):
             d['_rev'] = rev
             d['type'] = doctype
             d['name'] = name
-            d['image_name'] = image_name
+            d['preview_small'] = preview_small
+            d['preview_big'] = preview_big
             d['tags'] = tags
             d['text'] = text
             d['active'] = active
@@ -188,5 +191,5 @@ def rss(request):
 
 
 def not_found(request):
-    """docstring for editor"""
+    """docstring for not_found"""
     return render_html('not_found.html')
