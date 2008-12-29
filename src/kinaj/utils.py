@@ -44,6 +44,11 @@ def render_html(template, **context):
 def render_xml(template, **context):
     return Response(jinja2_env.get_template(template).render(**context),
                     mimetype='application/xml')
+                    
+def render_atom(template, **context):
+    """docstring for render_atom"""
+    return Response(jinja2_env.get_template(template).render(**context),
+                    mimetype='application/atom+xml')
     
 def datetimeTorfc822(datetime):
     return rfc822.formatdate(rfc822.mktime_tz(rfc822.parsedate_tz(datetime.strftime( "%a, %d %b %Y %H:%M:%S"))))

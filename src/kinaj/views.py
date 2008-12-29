@@ -3,7 +3,7 @@ from werkzeug.contrib.kickstart import Response
 from couchdb.schema import Document, DateTimeField
 from kinaj.models import Project
 from kinaj.utils import expose
-from kinaj.utils import render_html, render_xml
+from kinaj.utils import render_html, render_xml, render_atom
 from kinaj.utils import url_for, datetimeTorfc822
 from werkzeug import Response
 from werkzeug import redirect
@@ -189,6 +189,23 @@ def rss(request):
 
     return render_xml('projects/rss2.xml', active=reversed(activeResults))
 
+@expose('/projects/feed/atom')
+def atom(request):
+    """doc"""
+    
+    def wrap(doc):
+        """docstring for wrap"""
+        data = doc.value
+        data['_id'] = doc.id
+        mtime = DateTimeField(datetime.now())
+        mtime = mtime._to_python(data['mtime'])
+        data['mtime'] = datetimeTorfc822(mtime)
+        return Project.wrap(data)
+        
+    activeDocResults = Project.allActive()
+    activeResults = [wrap(doc) for doc in activeDocResults]
+    
+    return render_atom('projects/atom.xml', active=reversed(activeResults))
 
 def not_found(request):
     """docstring for not_found"""
