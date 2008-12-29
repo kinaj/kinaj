@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-
-
 <div id="project_list">
     <div class="featured">
         {% for project in featured %}
@@ -23,7 +21,7 @@
 </div>
 
 
-{% for project in featured %}
+{#{% for project in featured %}
 {% if loop.first %}
 <div class="project featured">
     <ul class="top">
@@ -66,5 +64,5 @@
     </ul>
 </div>
 {% endif %}
-{% endfor %}
+{% endfor %}#}
 {% endblock %}

@@ -52,6 +52,21 @@ def index(request):
             raise NotImplementedError('nothing here')
 
 
+@expose('/projects')
+def list(request):
+    """docstring for list"""
+    def wrap(doc):
+        """docstring for wrap"""
+        data = doc.value
+        data['_id'] = doc.id
+        return Project.wrap(data)
+        
+    if not request.is_xhr:
+        activeDocResults = Project.allActive()
+        activeResults = [wrap(doc) for doc in activeDocResults]
+        
+        return render_html('/projects/list.html', active=reversed(activeResults))
+
 @expose('/projects/create')
 def create(request):
     """docstring for new"""
@@ -104,6 +119,8 @@ def update(request,uid):
         
     if request.method == 'POST':
         if not request.is_xhr:
+            current = Project.retrieve(uid)[1]
+            
             doctype = 'project'
             docid = request.form.get('id')
             rev = request.form.get('rev')
@@ -114,7 +131,8 @@ def update(request,uid):
             text = request.form.get('text')
             active = bool(request.form.get('active'))
             featured = bool(request.form.get('featured'))
-            ctime = Project.retrieve(uid)[1]['ctime']
+            ctime = current['ctime']
+            _attachments = current['_attachments']
             
             dd = DateTimeField()
             mtime = datetime.now()
@@ -136,6 +154,7 @@ def update(request,uid):
             d['featured'] = featured
             d['ctime'] = ctime
             d['mtime'] = mtime
+            d['_attachments'] = _attachments
 
             Project.update(d)
 
