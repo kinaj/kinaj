@@ -8,6 +8,8 @@ from kinaj.utils import url_for, datetimeTorfc822
 from werkzeug import Response
 from werkzeug import redirect
 
+from rfc3302 import rfc3339
+
 
 @expose('/')
 def index(request):
@@ -182,12 +184,14 @@ def rss(request):
         mtime = DateTimeField(datetime.now())
         mtime = mtime._to_python(data['mtime'])
         data['mtime'] = datetimeTorfc822(mtime)
-        return Project.wrap(data)
+        return data
 
     activeDocResults = Project.allActive()
     activeResults = [wrap(doc) for doc in activeDocResults]
 
-    return render_xml('projects/rss2.xml', active=reversed(activeResults))
+    now = datetimeTorfc822(datetime.now())
+
+    return render_xml('projects/rss2.xml', active=reversed(activeResults),now=now)
 
 @expose('/projects/feed/atom')
 def atom(request):
@@ -197,15 +201,14 @@ def atom(request):
         """docstring for wrap"""
         data = doc.value
         data['_id'] = doc.id
-        mtime = DateTimeField(datetime.now())
-        mtime = mtime._to_python(data['mtime'])
-        data['mtime'] = datetimeTorfc822(mtime)
-        return Project.wrap(data)
+        return data
         
     activeDocResults = Project.allActive()
     activeResults = [wrap(doc) for doc in activeDocResults]
     
-    return render_atom('projects/atom.xml', active=reversed(activeResults))
+    now = rfc3339(datetime.now(),utc=False,use_system_timezone=True)
+    
+    return render_atom('projects/atom.xml', active=reversed(activeResults),now=now)
 
 def not_found(request):
     """docstring for not_found"""

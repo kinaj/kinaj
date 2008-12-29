@@ -43,7 +43,7 @@ def render_html(template, **context):
 
 def render_xml(template, **context):
     return Response(jinja2_env.get_template(template).render(**context),
-                    mimetype='application/xml')
+                    mimetype='application/rss+xml')
                     
 def render_atom(template, **context):
     """docstring for render_atom"""

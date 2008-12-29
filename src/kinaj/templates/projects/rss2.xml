@@ -1,19 +1,22 @@
 <?xml version="1.0"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
    <channel>
-      <title>Projects | kinaj</title>
+      <title>Projects | kinaj.com</title>
       <link>http://127.0.0.1:5000</link>
-      <description>Finest Icons</description>
+      <description>AMAZING PIXELZ LOL</description>
       <language>en-gb</language>
-      <pubDate></pubDate>
+      <pubDate>{{ now }}</pubDate>
       <generator>Werkzeug</generator>
+      <atom:link href="http://127.0.0.1:5000/projects/feed/rss" rel="self" type="application/rss+xml" />
       {%- for doc in active %}
       <item>
           <title>{{ doc.name }}</title>
+          <author>janik@kinaj.com (Janik Baumgartner)</author>
           <link>http://127.0.0.1:5000/projects/retrieve/{{ doc._id}}</link>
           <description>{{ doc.text }}</description>
           <pubDate>{{ doc.mtime }}</pubDate>
           <guid>http://127.0.0.1:5000/projects/retrieve/{{ doc._id}}</guid>
+          <source url="http://127.0.0.1:5000/projects/feed/rss">Projects | kinaj.com</source>
       </item>
       {%- endfor %}
    </channel>
