@@ -118,25 +118,27 @@ def retrieve(request,slug):
     
     elif request.method == 'GET':
         docResults = Project.retrieve(slug)
-        project = [wrap(doc) for doc in docResults][0]
         
         if not request.is_xhr:
+            project = [wrap(doc) for doc in docResults][0]
             return render_html('projects/retrieve.html', project=project)
             
         else:
-            foo = simplejson.JSONEncoder()
-            resp = foo.encode({
-                '_id':project.id,
-                '_rev':project.rev,
-                'name':project.name,
-                'text':project.text,
-                'slug':project.slug,
-                'tags':project.tags,
-                'preview_big':project.preview_big,
-                'preview_small':project.preview_small,
-            })
+            project = docResults.rows[0].value
             
-            print resp
+            foo = simplejson.JSONEncoder()
+            
+            resp = foo.encode({
+                '_id':project['_id'],
+                '_rev':project['_rev'],
+                '_attachments':project['_attachments'],
+                'name':project['name'],
+                'text':project['text'],
+                'slug':project['slug'],
+                'tags':project['tags'],
+                'preview_big':project['preview_big'],
+                'preview_small':project['preview_small'],
+            })
             
             return Response(resp,mimetype='application/json')
 
