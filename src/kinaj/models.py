@@ -8,6 +8,7 @@ class Project(Document):
     preview_small = TextField()
     preview_big = TextField()
     name = TextField()
+    slug = TextField()
     type = TextField(default='project')
     tags = ListField(TextField())
     text = TextField()
@@ -31,8 +32,18 @@ class Project(Document):
         return self.db.view('projects/allFeatured')
     
     @classmethod    
-    def retrieve(self,uid):
-        return self.db.resource.get(uid)
+    def retrieve(self,slug):
+        # return self.db.resource.get(uid)
+        
+        map_fun = '''function(doc) {
+            if (doc.type === "project" && doc.active && doc.slug === "'''+ slug +'''") {
+                emit(doc.mtime, doc);
+            }
+        }''' 
+          
+        print map_fun  
+        
+        return self.db.query(map_fun)
     
     @classmethod    
     def update(self,doc):

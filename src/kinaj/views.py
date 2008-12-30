@@ -52,7 +52,7 @@ def index(request):
             raise NotImplementedError('nothing here')
 
 
-@expose('/projects')
+@expose('/projects/')
 def list(request):
     """docstring for list"""
     def wrap(doc):
@@ -67,7 +67,7 @@ def list(request):
         
         return render_html('/projects/list.html', active=reversed(activeResults))
 
-@expose('/projects/create')
+@expose('/projects/create/')
 def create(request):
     """docstring for new"""
     
@@ -76,12 +76,15 @@ def create(request):
             preview_small = request.form.get('preview_small')
             preview_big = request.form.get('preview_big')
             name = request.form.get('name')
+            slug = request.form.get('slug')
             text = request.form.get('text')
             tags = request.form.get('tags')
             tags = tags.split(' ')
             active = bool(request.form.get('active'))
             featured = bool(request.form.get('featured'))
-
+            
+            print request
+            
             project = Project(preview_small=preview_small,preview_big=preview_big,name=name,text=text
                                 ,tags=tags,active=active,featured=featured)
             uid = project.create()
@@ -95,20 +98,29 @@ def create(request):
         
     elif request.method == 'GET':
         if not request.is_xhr:
-            return render_html('projects/new.html')
+            return render_html('projects/create.html')
 
         else:
             raise NotImplementedError('nothing here')
 
-@expose('/projects/retrieve/<uid>')
-def retrieve(request,uid):
+@expose('/projects/retrieve/<slug>/')
+def retrieve(request,slug):
+    def wrap(doc):
+        """docstring for wrap"""
+        data = doc.value
+        data['_id'] = doc.id
+        return Project.wrap(data)
+        
     """return a single project"""
-    doc = Project.retrieve(uid)[1]
+    docResults = Project.retrieve(slug)
+    results = [wrap(doc) for doc in docResults]
 
-    return render_html('projects/retrieve.html', doc=doc)
+    print results
+
+    return render_html('projects/retrieve.html', results=results)
 
 
-@expose('/projects/update/<uid>')
+@expose('/projects/update/<uid>/')
 def update(request,uid):
     """docstring for update"""
     def wrap(doc):
@@ -119,12 +131,13 @@ def update(request,uid):
         
     if request.method == 'POST':
         if not request.is_xhr:
-            current = Project.retrieve(uid)[1]
+            current = Project.db.resource.get(uid)[1]
             
             doctype = 'project'
             docid = request.form.get('id')
             rev = request.form.get('rev')
             name = request.form.get('name')
+            slug = request.form.get('slug')
             preview_small = request.form.get('preview_small')
             preview_big = request.form.get('preview_big')
             tags = request.form.get('tags')
@@ -146,6 +159,7 @@ def update(request,uid):
             d['_rev'] = rev
             d['type'] = doctype
             d['name'] = name
+            d['slug'] = slug
             d['preview_small'] = preview_small
             d['preview_big'] = preview_big
             d['tags'] = tags
@@ -168,7 +182,7 @@ def update(request,uid):
         
     elif request.method == 'GET':
         if not request.is_xhr:
-            doc = Project.retrieve(uid)[1]
+            doc = Project.db.resource.get(uid)[1]
             doc["tags"] = " ".join(doc["tags"])
 
             return render_html('projects/update.html',doc=doc)
@@ -176,7 +190,7 @@ def update(request,uid):
         else:
             raise NotImplementedError('nothing here')
 
-@expose('/projects/delete/<uid>')
+@expose('/projects/delete/<uid>/')
 def delete(request,uid):
     """docstring for delete"""
     if not request.is_xhr:
@@ -192,7 +206,7 @@ def delete(request,uid):
         else:
             raise NotImplementedError('nothing here')
     
-@expose('/projects/feed/rss')
+@expose('/projects/feed/rss/')
 def rss(request):
     """Documentation"""
 
@@ -212,7 +226,7 @@ def rss(request):
 
     return render_xml('projects/rss2.xml', active=reversed(activeResults),now=now)
 
-@expose('/projects/feed/atom')
+@expose('/projects/feed/atom/')
 def atom(request):
     """doc"""
     

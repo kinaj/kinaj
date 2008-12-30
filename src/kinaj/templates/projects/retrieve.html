@@ -1,10 +1,27 @@
-{% extends "layout.html" %}
-{% block content %}
-<h1>{{ doc.name }}</h1>
-<p>{{ doc.text }}</p>
-<ul>
-    {% for tag in doc.tags %}
-    <li>{{ tag }}</li>
-    {% endfor %}
-</ul>
-{% endblock %}
+{%- extends "layout.html" %}
+{%- block content %}
+{%- for project in results %}
+<div id="single_project">
+    <div id="{{ project.slug }}" class="project">
+        <div class="preview">
+            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" />
+        </div>
+        <div class="info">
+            <a href="/" title="back">back</a>
+            <h2>{{ project.name }}</h2>
+            <p>{{ project.text }}</p>
+            <ul class="tags">
+                {%- for tag in project.tags %}
+                <li>{{ tag }}</li>
+                {%- endfor %}
+            </ul>
+            <ul class="attachments">
+                {%- for attachment in project._attachments %}
+                <li><a href="http://localhost:5984/kinaj/{{ project._id }}/{{ attachment }}" title="{{ attachment }}">{{ attachment }}</a></li>
+                {%- endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{%- endfor %}
+{%- endblock %}

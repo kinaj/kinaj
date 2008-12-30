@@ -2,7 +2,7 @@
 {%- block content %}
 <h1>List of projects</h1>
 {%- for project in active %}
-<h2><a href="/projects/retrieve/{{ project.id }}" title="{{ project.name }}">{{ project.name }}</a></h2>
+<h2><a href="/projects/retrieve/{{ project.slug  }}" title="{{ project.name }}">{{ project.name }}</a></h2>
 {%- else %}
 <h2>No project created yet.</h2>
 {%- endfor %}
