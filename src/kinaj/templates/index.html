@@ -3,16 +3,16 @@
 <div id="project_list">
     <div id="featured">
         {%- for project in featured %}
-        <div class="project">
-            <a href="/projects/retrieve/{{ project.slug }}"><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
+        <div class="project" id="{{ project.id }}">
+            <a href="/projects/retrieve/{{ project.slug }}/"><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
         </div>
         {%- endfor %}
     </div>
     <div id="list">
         {%- for project in active %}
         {%- if not project.featured %}
-        <div class="project" id="{{ project.slug }}">
-            <a href="/projects/retrieve/{{ project.slug }}" title="{{ project.name }}"><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
+        <div class="project" id="{{ project.id }}">
+            <a href="/projects/retrieve/{{ project.slug }}/" title="{{ project.name }}"><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
         </div>
         {%- endif %}
         {%- endfor %}

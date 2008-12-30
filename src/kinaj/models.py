@@ -39,9 +39,7 @@ class Project(Document):
             if (doc.type === "project" && doc.active && doc.slug === "'''+ slug +'''") {
                 emit(doc.mtime, doc);
             }
-        }''' 
-          
-        print map_fun  
+        }'''
         
         return self.db.query(map_fun)
     

@@ -1,3 +1,4 @@
+import simplejson
 from datetime import datetime
 from werkzeug.contrib.kickstart import Response
 from couchdb.schema import Document, DateTimeField
@@ -83,8 +84,6 @@ def create(request):
             active = bool(request.form.get('active'))
             featured = bool(request.form.get('featured'))
             
-            print request
-            
             project = Project(preview_small=preview_small,preview_big=preview_big,name=name,text=text
                                 ,tags=tags,active=active,featured=featured)
             uid = project.create()
@@ -105,19 +104,41 @@ def create(request):
 
 @expose('/projects/retrieve/<slug>/')
 def retrieve(request,slug):
+    """returns a single project"""
+    
     def wrap(doc):
         """docstring for wrap"""
         data = doc.value
         data['_id'] = doc.id
         return Project.wrap(data)
         
-    """return a single project"""
-    docResults = Project.retrieve(slug)
-    results = [wrap(doc) for doc in docResults]
-
-    print results
-
-    return render_html('projects/retrieve.html', results=results)
+        
+    if request.method == 'POST':
+        raise NotImplementedError('nothing here')
+    
+    elif request.method == 'GET':
+        docResults = Project.retrieve(slug)
+        project = [wrap(doc) for doc in docResults][0]
+        
+        if not request.is_xhr:
+            return render_html('projects/retrieve.html', project=project)
+            
+        else:
+            foo = simplejson.JSONEncoder()
+            resp = foo.encode({
+                '_id':project.id,
+                '_rev':project.rev,
+                'name':project.name,
+                'text':project.text,
+                'slug':project.slug,
+                'tags':project.tags,
+                'preview_big':project.preview_big,
+                'preview_small':project.preview_small,
+            })
+            
+            print resp
+            
+            return Response(resp,mimetype='application/json')
 
 
 @expose('/projects/update/<uid>/')

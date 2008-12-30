@@ -1,6 +1,5 @@
 {%- extends "layout.html" %}
 {%- block content %}
-{%- for project in results %}
 <div id="single_project">
     <div id="{{ project.slug }}" class="project">
         <div class="preview">
@@ -23,5 +22,4 @@
         </div>
     </div>
 </div>
-{%- endfor %}
 {%- endblock %}
