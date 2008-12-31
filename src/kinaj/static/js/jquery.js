@@ -2496,7 +2496,7 @@ jQuery.event = {
 		}
 	},
 
-	trigger: function( e, data, elem, donative, extra, dohandlers) {
+	trigger: function( e, data, elem, donative, extra) {
 		// Event object or event type
 		var type = e.type || e;
 		
@@ -2540,16 +2540,14 @@ jQuery.event = {
 
 			var val, ret, fn = jQuery.isFunction( elem[ type ] );
 
-			if ( dohandlers !== false ) {
-				// Trigger the event, it is assumed that "handle" is a function
-				var handle = jQuery.data(elem, "handle");
-				if ( handle )
-					val = handle.apply( elem, data );
+			// Trigger the event, it is assumed that "handle" is a function
+			var handle = jQuery.data(elem, "handle");
+			if ( handle )
+				val = handle.apply( elem, data );
 
-				// Handle triggering native .onfoo handlers (and on links since we don't call .click() for links)
-				if ( (!fn || (jQuery.nodeName(elem, 'a') && type == "click")) && elem["on"+type] && elem["on"+type].apply( elem, data ) === false )
-					val = false;
-			}
+			// Handle triggering native .onfoo handlers (and on links since we don't call .click() for links)
+			if ( (!fn || (jQuery.nodeName(elem, 'a') && type == "click")) && elem["on"+type] && elem["on"+type].apply( elem, data ) === false )
+				val = false;
 
 			if ( donative !== false && val !== false ) {
 				var parent = elem.parentNode || elem.ownerDocument;
@@ -2884,14 +2882,17 @@ jQuery.fn.extend({
 });
 
 function liveHandler( event ){
-	var check = RegExp("(^|\\.)" + event.type + "(\\.|$)");
+	var check = RegExp("(^|\\.)" + event.type + "(\\.|$)"),
+		stop = true;
+
 	jQuery.each(jQuery.data(this, "events").live || [], function(i, fn){
 		if ( check.test(fn.type) ) {
 			var elem = jQuery(event.target).closest(fn.data)[0];
-			if ( elem )
-				jQuery.event.trigger( event.type, fn.data, elem, false, fn, false );
+			if ( elem && fn.call(elem, event, fn.data) === false )
+				stop = false;
 		}
 	});
+	return stop;
 }
 
 function liveConvert(type, selector){

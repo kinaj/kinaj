@@ -1,41 +1,32 @@
 $(function (){
     if ($('div#project_list').length) {
-    
-        var project_list = $('div#project_list');
-        var projects = $('div.project', project_list);
-        var projects_links = $('a', projects);
-        
-        $(projects_links).bind('click', function(event) {
-            var $$ = this;
+        $('div.project').live("click", function(event) {
+            var link = $('a',this)[0];
             var project;
-            
-            if (jQuery.data($$,"project") === undefined) {
+            if (jQuery.data(link,"project") === undefined) {                
                 $.ajax({
-                   url: this.href,
-                   method: 'get',
-                   dataType: 'json',
-                   error: function(resp) {
+                    url: link.href,
+                    method: 'get',
+                    dataType: 'json',
+                    error: function() {
                         alert('Something went wrong!');
-                   },
-                   success: function(resp) {
-                       project = resp;
-
-                       jQuery.data($$,"project",project);
+                    },
+                    success: function(resp) {
+                        project = resp;
+                        jQuery.data(link,"project",project);
                        
-                       changeToSingle(project);
-                   }
+                        changeToSingle(project);
+                    }
                 });
             } else {
-                project = jQuery.data($$,"project");
+                project = jQuery.data(link,"project");
                 
                 changeToSingle(project);
-            };
+            };          
             
-            return false; 
-        });
-        
+            return false;
+        }).css('cursor','pointer');
     };
-    
 });
 
 function changeToSingle(project) {
