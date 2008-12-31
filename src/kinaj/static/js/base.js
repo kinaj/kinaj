@@ -41,8 +41,6 @@ $(function (){
 function changeToSingle(project) {
     var featured = $('div#project_list div#featured');
     
-    $('a', featured).hide();
-    
     var temp_a = document.createElement('a');
     temp_a.href = '#';
     temp_a.className = 'temp';
@@ -59,15 +57,15 @@ function changeToSingle(project) {
     temp_img.alt = project.name;
     
     $(temp_a).append(temp_img);
-    
-    $('div.project', featured).append(temp_a);
+
+    $(temp_a).css('opacity','0');
     
     var list =  $('div#project_list div#list');
     
-    $('div', list).css('display', 'none');
-    
     var info = document.createElement('div');
     info.className = 'info';
+    
+    $(info).css({opacity: 0});
     
     var back = document.createElement('a');
     back.href = '#';
@@ -76,10 +74,10 @@ function changeToSingle(project) {
     
     $(back).bind('click', function(event) {
         $('div#project_list div#list div.info').remove();
-        $('div#project_list div#list div.project').show();
+        $('div#project_list div#list div.project').show().animate({opacity: 1}, 500);
         
         $('div#project_list div#featured div.project a.temp').remove();
-        $('div#project_list div#featured div.project a').show();
+        $('div#project_list div#featured div.project a').show().animate({opacity: 1}, 500);
         
         return false;
     });
@@ -120,5 +118,13 @@ function changeToSingle(project) {
     $(info).append(tags);
     $(info).append(attachments);
     
+    if (!(temp_img.src === $('div.project a img', featured)[0].src)) {
+        $('div.project a', featured).animate({opacity: 0}, 500).hide();
+        $('div.project', featured).append(temp_a);
+        $('div#project_list div#featured div.project a.temp').animate({opacity: 1}, 500);
+    };
+    
+    $('div', list).animate({opacity: 0}, 500).css('display','none');
     $(list).append(info);
+    $('div#project_list div#list div.info').animate({opacity: 1}, 500);
 }
