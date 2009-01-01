@@ -28,6 +28,10 @@ class Project(Document):
         return self.db.view('projects/allActive')
     
     @classmethod    
+    def allActiveNotFeatured(self):
+        return self.db.view('projects/allActiveNotFeatured')
+    
+    @classmethod    
     def allFeatured(self):
         return self.db.view('projects/allFeatured')
     

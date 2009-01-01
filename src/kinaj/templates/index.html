@@ -10,7 +10,16 @@
     </div>
     <div id="list">
         {%- for project in active %}
-        {%- if not project.featured %}
+        {%- if loop.index0 <= 3 %}
+        <div class="project" id="{{ project.id }}">
+            <a href="/projects/retrieve/{{ project.slug }}/" title="{{ project.name }}"><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
+        </div>
+        {%- endif %}
+        {%- endfor %}
+    </div>
+    <div id="mainlist">
+        {%- for project in main %}
+        {%- if loop.index0 >= 4 %}
         <div class="project" id="{{ project.id }}">
             <a href="/projects/retrieve/{{ project.slug }}/" title="{{ project.name }}"><img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_small }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
         </div>

@@ -1,32 +1,103 @@
 $(function (){
-    if ($('div#project_list').length) {
-        $('div.project').live("click", function(event) {
-            var link = $('a',this)[0];
-            var project;
-            if (jQuery.data(link,"project") === undefined) {                
-                $.ajax({
-                    url: link.href,
-                    method: 'get',
-                    dataType: 'json',
-                    error: function() {
-                        alert('Something went wrong!');
-                    },
-                    success: function(resp) {
-                        project = resp;
-                        jQuery.data(link,"project",project);
-                       
-                        changeToSingle(project);
-                    }
-                });
-            } else {
-                project = jQuery.data(link,"project");
-                
-                changeToSingle(project);
-            };          
+    var index_container = $('div#project_list');
+    
+    if (index_container.length) {
+        l = $('div#list div.project', index_container).length;
+        ll = $('div#mainlist div.project', index_container).length;
+        foo = Math.round((l + ll)/2);
+        
+        
+        $('div#list').css('width', (foo * 13) + 'em');
+        
+        $('div#mainlist div.project', index_container).insertAfter('div#list div.project:last');
+        $('div#mainlist', index_container).remove();
+        
+        if ((l + ll) > 4) {
+            var list = $('div#list', index_container);
             
-            return false;
-        }).css('cursor','pointer');
+            $(list).css('position','relative');
+            
+            var leftLink = document.createElement('a');
+            leftLink.href = '#';
+            leftLink.title = 'left';
+            leftLink.id = 'left';
+            leftLink.innerHTML = 'left';
+            
+            $(leftLink)
+                .bind('click', function(event) {
+                    var counter = $.data(this, 'counter');
+                    console.log(foo -2);
+                    if (counter < (foo - 2)) {
+                        counter++;
+                        
+                        $.data(this,'counter',counter);
+                        
+                        
+                        $(list).animate({left: '-=13em'}, 350, 'swing');
+                    };
+                    
+                    return false; 
+                })
+                .css({position: 'relative', top: '10em',color: '#555'});
+                
+            $.data(leftLink,'counter', 0);
+            
+            var rightLink = document.createElement('a');
+            rightLink.href = '#';
+            rightLink.title = 'right';
+            rightLink.id = 'right';
+            rightLink.innerHTML = 'right';
+            
+            $(rightLink)
+                .bind('click', function(event) {
+                    var left = $('a#left').get(0);
+                    var counter = $.data(left, 'counter');
+                    if (counter > 0) {
+                        counter--;
+                        
+                        $.data(left,'counter',counter);
+                        
+                        
+                        $(list).animate({left: '+=13em'}, 350, 'swing');
+                    };
+                    
+                    return false; 
+                })
+                .css({position: 'relative', right: '0', color: '#555'});
+                
+            $(leftLink).insertBefore(index_container);
+            $(rightLink).insertAfter(index_container);
+        };
     };
+
+    // if ($('div#project_list').length) {
+    //     $('div.project').live("click", function(event) {
+    //         var link = $('a',this)[0];
+    //         var project;
+    //         if (jQuery.data(link,"project") === undefined) {                
+    //             $.ajax({
+    //                 url: link.href,
+    //                 method: 'get',
+    //                 dataType: 'json',
+    //                 error: function() {
+    //                     alert('Something went wrong!');
+    //                 },
+    //                 success: function(resp) {
+    //                     project = resp;
+    //                     jQuery.data(link,"project",project);
+    //                    
+    //                     changeToSingle(project);
+    //                 }
+    //             });
+    //         } else {
+    //             project = jQuery.data(link,"project");
+    //             
+    //             changeToSingle(project);
+    //         };          
+    //         
+    //         return false;
+    //     }).css('cursor','pointer');
+    // };
 });
 
 function changeToSingle(project) {

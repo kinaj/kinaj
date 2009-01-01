@@ -6,8 +6,8 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  *
- * $Date: 2008-12-30 03:31:26 +0100 (Di, 30 Dez 2008) $
- * $Rev: 6010 $
+ * $Date: 2008-12-31 20:21:24 +0100 (Mi, 31 Dez 2008) $
+ * $Rev: 6018 $
  */
 
 // Map over jQuery in case of overwrite
@@ -25,7 +25,7 @@ var jQuery = window.jQuery = window.$ = function( selector, context ) {
 var quickExpr = /^[^<]*(<(.|\s)+>)[^>]*$|^#([\w-]+)$/,
 
 // Is it a simple selector
-	isSimple = /^.[^:#\[\.]*$/,
+	isSimple = /^.[^:#\[\.,]*$/,
 
 // Will speed up references to undefined, and allows munging its name.
 	undefined;
@@ -2496,17 +2496,32 @@ jQuery.event = {
 		}
 	},
 
-	trigger: function( e, data, elem, donative, extra) {
+	trigger: function( event, data, elem, extra) {
 		// Event object or event type
-		var type = e.type || e;
-		
+		var type = event.type || event;
+
+		event = typeof event === "object" ?
+			// jQuery.Event object
+			event[expando] ? event :
+			// Object literal
+			jQuery.extend( jQuery.Event(type), event ) :
+			// Just the event type (string)
+			jQuery.Event(type);
+
+		if ( type.indexOf("!") >= 0 ) {
+			event.type = type = type.slice(0, -1);
+			event.exclusive = true;
+		}
+			
 		// Handle a global trigger
 		if ( !elem ) {
+			// Don't bubble custom events when global (to avoid too much overhead)
+			event.stopPropagation();
 			// Only trigger if we've ever bound an event for it
 			if ( this.global[type] )
 				jQuery.each( jQuery.cache, function(){
 					if ( this.events && this.events[type] )
-						jQuery.event.trigger( e, data, this.handle.elem, false );
+						jQuery.event.trigger( event, data, this.handle.elem );
 				});
 
 		// Handle triggering a single element
@@ -2518,42 +2533,29 @@ jQuery.event = {
 
 			// Clone the incoming data, if any
 			data = jQuery.makeArray(data);
-			
-			if ( type.indexOf("!") >= 0 ) {
-				type = type.slice(0, -1);
-				var exclusive = true;
-			}
-			
-			e = typeof e === "object" ?
-				// jQuery.Event object
-				e[expando] ? e :
-				// Object literal
-				jQuery.extend( jQuery.Event(type), e ) :
-				// Just the event type (string)
-				jQuery.Event(type);
-				
-			e.target = e.target || elem;
-			e.currentTarget = elem;
-			e.exclusive = exclusive;
-			
-			data.unshift( e );
 
-			var val, ret, fn = jQuery.isFunction( elem[ type ] );
+			// AT_TARGET phase (not bubbling)
+			if( !event.target ){
+				// Clean up in case it is reused
+				event.result = undefined;
+				event.target = elem;
+			}
+
+			// Fix for custom events
+			event.currentTarget = elem;
+
+			data.unshift( event );
+
+			var fn = jQuery.isFunction( elem[ type ] );
 
 			// Trigger the event, it is assumed that "handle" is a function
 			var handle = jQuery.data(elem, "handle");
 			if ( handle )
-				val = handle.apply( elem, data );
+				handle.apply( elem, data );
 
 			// Handle triggering native .onfoo handlers (and on links since we don't call .click() for links)
 			if ( (!fn || (jQuery.nodeName(elem, 'a') && type == "click")) && elem["on"+type] && elem["on"+type].apply( elem, data ) === false )
-				val = false;
-
-			if ( donative !== false && val !== false ) {
-				var parent = elem.parentNode || elem.ownerDocument;
-				if ( parent )
-					jQuery.event.trigger(e, data, parent, donative);
-			}
+				event.result = false;
 
 			// Extra functions don't get the custom event object
 			data.shift();
@@ -2561,14 +2563,14 @@ jQuery.event = {
 			// Handle triggering of extra function
 			if ( extra && jQuery.isFunction( extra ) ) {
 				// call the extra function and tack the current return value on the end for possible inspection
-				ret = extra.apply( elem, val == null ? data : data.concat( val ) );
+				var ret = extra.apply( elem, event.result == null ? data : data.concat( event.result ) );
 				// if anything is returned, give it precedence and have it overwrite the previous value
 				if ( ret !== undefined )
-					val = ret;
+					event.result = ret;
 			}
 
 			// Trigger the native events (except for clicks on links)
-			if ( fn && donative !== false && val !== false && !(jQuery.nodeName(elem, 'a') && type == "click") ) {
+			if ( event.target === elem && fn && !event.isDefaultPrevented() && !(jQuery.nodeName(elem, 'a') && type == "click") ) {
 				this.triggered = true;
 				try {
 					elem[ type ]();
@@ -2576,15 +2578,22 @@ jQuery.event = {
 				} catch (e) {}
 			}
 
+			if ( !event.isPropagationStopped() ) {
+				var parent = elem.parentNode || elem.ownerDocument;
+				if ( parent )
+					jQuery.event.trigger(event, data, parent);
+			}
+
+			// Clean up, in case the event object is reused
+			event.target = null;
+
 			this.triggered = false;
 		}
-
-		return val;
 	},
 
 	handle: function(event) {
 		// returned undefined or false
-		var val, ret, all, handlers;
+		var all, handlers;
 
 		event = arguments[0] = jQuery.event.fix( event || window.event );
 
@@ -2609,23 +2618,21 @@ jQuery.event = {
 				event.handler = handler;
 				event.data = handler.data;
 
-				ret = handler.apply( this, arguments );
+				var ret = handler.apply(this, arguments);
 
-				if ( val !== false )
-					val = ret;
-
-				if ( ret === false ) {
-					event.preventDefault();
-					event.stopPropagation();
+				if( ret !== undefined ){
+					event.result = ret;
+					if ( ret === false ) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
 				}
 
-				if( event._sip )
+				if( event.isImmediatePropagationStopped() )
 					break;
 
 			}
 		}
-
-		return val;
 	},
 
 	props: "altKey attrChange attrName bubbles button cancelable charCode clientX clientY ctrlKey currentTarget data detail eventPhase fromElement handler keyCode metaKey newValue originalTarget pageX pageY prevValue relatedNode relatedTarget screenX screenY shiftKey srcElement target toElement view wheelDelta which".split(" "),
@@ -2725,21 +2732,31 @@ jQuery.Event = function( src ){
 	if( src && src.type ){
 		this.originalEvent = src;
 		this.type = src.type;
-		
-		// Fix timeStamp
-		this.timeStamp = src.timeStamp || now();
+		this.timeStamp = src.timeStamp;
 	// Event type
 	}else
 		this.type = src;
 
+	if( !this.timeStamp )
+		this.timeStamp = now();
+	
 	// Mark it as fixed
 	this[expando] = true;
 };
 
+function returnFalse(){
+	return false;
+}
+function returnTrue(){
+	return true;
+}
+
+// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
+// http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
 jQuery.Event.prototype = {
-	// add preventDefault and stopPropagation since
-	// they will not work on the clone
 	preventDefault: function() {
+		this.isDefaultPrevented = returnTrue;
+
 		var e = this.originalEvent;
 		if( !e )
 			return;
@@ -2750,6 +2767,8 @@ jQuery.Event.prototype = {
 		e.returnValue = false;
 	},
 	stopPropagation: function() {
+		this.isPropagationStopped = returnTrue;
+
 		var e = this.originalEvent;
 		if( !e )
 			return;
@@ -2760,9 +2779,12 @@ jQuery.Event.prototype = {
 		e.cancelBubble = true;
 	},
 	stopImmediatePropagation:function(){
-		this._sip = true;
+		this.isImmediatePropagationStopped = returnTrue;
 		this.stopPropagation();
-	}
+	},
+	isDefaultPrevented: returnFalse,
+	isPropagationStopped: returnFalse,
+	isImmediatePropagationStopped: returnFalse
 };
 // Checks if an event happened on an element within another element
 // Used in jQuery.event.special.mouseenter and mouseleave handlers
@@ -2821,12 +2843,18 @@ jQuery.fn.extend({
 
 	trigger: function( type, data, fn ) {
 		return this.each(function(){
-			jQuery.event.trigger( type, data, this, true, fn );
+			jQuery.event.trigger( type, data, this, fn );
 		});
 	},
 
 	triggerHandler: function( type, data, fn ) {
-		return this[0] && jQuery.event.trigger( type, data, this[0], false, fn );
+		if( this[0] ){
+			var event = jQuery.Event(type);
+			event.preventDefault();
+			event.stopPropagation();
+			jQuery.event.trigger( event, data, this[0], fn );
+			return event.result;
+		}		
 	},
 
 	toggle: function( fn ) {
@@ -2865,7 +2893,7 @@ jQuery.fn.extend({
 		// Otherwise, remember the function for later
 		else
 			// Add the function to the wait list
-			jQuery.readyList.push( function() { return fn.call(this, jQuery); } );
+			jQuery.readyList.push( fn );
 
 		return this;
 	},
@@ -2913,7 +2941,7 @@ jQuery.extend({
 			if ( jQuery.readyList ) {
 				// Execute all of them
 				jQuery.each( jQuery.readyList, function(){
-					this.call( document );
+					this.call( document, jQuery );
 				});
 
 				// Reset the list of functions

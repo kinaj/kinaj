@@ -26,11 +26,14 @@ def index(request):
         featuredDocResults = Project.allFeatured()
         featuredResults = [wrap(doc) for doc in featuredDocResults]
 
-        activeDocResults = Project.allActive()
+        activeDocResults = Project.allActiveNotFeatured()
         activeResults = [wrap(doc) for doc in activeDocResults]
 
+        mainDocResults = Project.allActiveNotFeatured()
+        mainResults = [wrap(doc) for doc in activeDocResults]
+
         return render_html('index.html', active=reversed(activeResults),
-                                featured=featuredResults)
+                                featured=featuredResults,main=reversed(mainResults))
                                 
     else:
         if request.method == 'GET':
