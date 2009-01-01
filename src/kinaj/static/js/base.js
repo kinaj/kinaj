@@ -69,7 +69,7 @@ $(function (){
                     
                     return false; 
                 })
-                .css({position: 'relative', top: '13.5em', left: '-2em', color: '#555', zIndex: 1000, opacity: '0'});
+                .css({position: 'relative', top: '13.5em', left: '-2em', zIndex: 1000, opacity: '0'});
                 
             $.data(leftLink,'counter', 0);
             
@@ -108,7 +108,7 @@ $(function (){
                     
                     return false; 
                 })
-                .css({position: 'relative', left: '50em', top: '13.5em', textAlign: 'right', color: '#555', zIndex: 1000});
+                .css({position: 'relative', left: '50em', top: '13.5em', zIndex: 1000});
                 
             $(index_container).prepend(rightLink);
             $(index_container).prepend(leftLink);
