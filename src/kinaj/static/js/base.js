@@ -15,58 +15,103 @@ $(function (){
         if ((l + ll) > 4) {
             var list = $('div#list', index_container);
             
-            $(list).css('position','relative');
+            $('div.project:first',list).addClass('visible').next().addClass('visible');
+            $('div.project:eq(' + (foo) +')',list).addClass('visible').next().addClass('visible');
             
-            var leftLink = document.createElement('a');
-            leftLink.href = '#';
-            leftLink.title = 'left';
-            leftLink.id = 'left';
-            leftLink.innerHTML = 'left';
+            $('div:not(.visible)', list).css({opacity: 0});
+            
+            var leftLink = $('<a href="#" title="left" id="left"><img src="/static/img/arrow_left.png" title="left" alt="left" /></a>')
+            
+            // var leftLink = document.createElement('a');
+            // leftLink.href = '#';
+            // leftLink.title = 'left';
+            // leftLink.id = 'left';
+            // leftLink.innerHTML = 'left';
             
             $(leftLink)
                 .bind('click', function(event) {
-                    var counter = $.data(this, 'counter');
-                    console.log(foo -2);
-                    if (counter < (foo - 2)) {
-                        counter++;
+                    var counter = $.data(leftLink, 'counter');
+                    console.log(counter)
+                    if (counter > 0) {
+                        var d = $('div.visible',list).get(1);
+                        var dn = $(d).prev().prev();
+                        var dd = $('div.visible',list).get(3);
+                        var ddn = $(dd).prev().prev();
                         
-                        $.data(this,'counter',counter);
+                        if (dd === undefined) {
+                            dd = $('div.visible',list).get(2);
+                            ddn = $(dd).prev();
+                            $(ddn).animate({opacity: 1}, 200).addClass('visible');
+                        } else {
+                            $(dd).removeClass('visible').animate({opacity: 0}, 200);
+                            $(ddn).animate({opacity: 1}, 200).addClass('visible');
+                        };
+                        
+                        $(d).removeClass('visible').animate({opacity: 0}, 200);
+                        $(dn).animate({opacity: 1}, 200).addClass('visible');
+
                         
                         
-                        $(list).animate({left: '-=13em'}, 350, 'swing');
+                        $(list).animate({left: '+=12.4em'}, 350, 'swing');
+                        
+                        counter--;
+                        
+                        $.data(leftLink,'counter',counter);
+                    };
+                    
+                    if (counter >= (foo - 2)) {
+                        $('a#right', index_container).css('opacity','0');
+                    } else if ((counter > 0) && (counter < (foo - 2))) {
+                        $('a#right', index_container).css('opacity','1');
+                    } else if (counter === 0) {
+                        $(this).css('opacity','0');
                     };
                     
                     return false; 
                 })
-                .css({position: 'relative', top: '10em',color: '#555'});
+                .css({position: 'relative', top: '13.5em', left: '-2em', color: '#555', zIndex: 1000, opacity: '0'});
                 
             $.data(leftLink,'counter', 0);
             
-            var rightLink = document.createElement('a');
-            rightLink.href = '#';
-            rightLink.title = 'right';
-            rightLink.id = 'right';
-            rightLink.innerHTML = 'right';
+            var rightLink = $('<a href="#" title="right" id="right"><img src="/static/img/arrow_right.png" title="right" alt="right" /></a>')
             
             $(rightLink)
                 .bind('click', function(event) {
-                    var left = $('a#left').get(0);
-                    var counter = $.data(left, 'counter');
-                    if (counter > 0) {
-                        counter--;
+                    var counter = $.data(leftLink, 'counter');
+                    
+                    if (counter < (foo - 2)) {
+                        var d = $('div.visible',list).get(0);
+                        var dn = $(d).next().next();
+                        var dd = $('div.visible',list).get(2);
+                        var ddn = $(dd).next().next();
                         
-                        $.data(left,'counter',counter);
+                        $(d).removeClass('visible').animate({opacity: 0}, 200);
+                        $(dn).animate({opacity: 1}, 200).addClass('visible');
+
+                        $(dd).removeClass('visible').animate({opacity: 0}, 200);
+                        $(ddn).animate({opacity: 1}, 200).addClass('visible');
                         
+                        $(list).animate({left: '-=12.4em'}, 350, 'swing');
                         
-                        $(list).animate({left: '+=13em'}, 350, 'swing');
+                        counter++;
+                        
+                        $.data(leftLink,'counter',counter);
+                    };
+                    
+                    if (counter === 0) {
+                        $('a#left', index_container).css('opacity','0');
+                    } else if ((counter > 0) && (counter < (foo - 2))) {
+                        $('a#left', index_container).css('opacity','1');
+                    } else if (counter >= (foo - 2)) {
+                        $(this).css('opacity','0');
                     };
                     
                     return false; 
                 })
-                .css({position: 'relative', right: '0', color: '#555'});
+                .css({position: 'relative', left: '50em', top: '13.5em', textAlign: 'right', color: '#555', zIndex: 1000});
                 
-            $(leftLink).insertBefore(index_container);
-            $(rightLink).insertAfter(index_container);
+            $(index_container).prepend(rightLink);
+            $(index_container).prepend(leftLink);
         };
     };
 
