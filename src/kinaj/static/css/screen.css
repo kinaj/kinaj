@@ -10,7 +10,7 @@
     
     div#page div#header {height: 22em; background: #7a8b99 url(../img/header_gradient.png) top left repeat-x;}
     
-    div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; min-height: 25.5em; padding: 4.25em 0em;}
+    div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; min-height: 32em; padding: 4.25em 0em;}
     div#page div#content form {font-size: 1.5em;}
     div#page div#content form label {margin: 2em 0em 0.5em 0em; display: block;}
     div#page div#content form input {display: block; font-size: 1.2em;}
@@ -20,9 +20,9 @@
     div#page div#content ul.top li {margin: 0em 0em 1em 0em;}
     div#page div#content ul.sub {margin: 0em 0em 0em 2em;}
     div#page div#content ul.sub li {margin: 0em 0em 0.5em 0em;}
-    div#page div#content div.project {display: inline-block;}
+    div#page div#content div.project {display: block;}
     
-    div#page div#content div#project_list {margin: 0 auto; width: 55em; padding: 0em 2em 4em 2em; overflow: hidden;}
+    div#page div#content div#project_list {position: relative; margin: 0 auto; width: 55em; min-height: 29em; padding: 0em 2em 4em 2em; overflow: hidden;}
     div#page div#content div#project_list div#featured {position: relative; z-index: 100; float: left; margin: 0em 0.35em 0em 0em; display: block;}
     div#page div#content div#project_list div#featured div.project {width: 19.5em; height: 19.5em; background: transparent url(../img/frame_big.png) top left no-repeat; padding: 3em;}
     div#page div#content div#project_list div#list {position: relative; z-index: 1; display: block; padding: 0.75em 0em 0em 0em; border-left: 25.5em solid transparent; width: 26em;}
@@ -30,6 +30,17 @@
     div#page div#content div#project_list div#list div.project img {width: 9.1em; height: 9.1em;}
     div#page div#content div#project_list div#mainlist {clear: both; padding: 0em 0em 0em 0.55em;}
     div#page div#content div#project_list div#mainlist div.project {width: 9.1em; height: 9.1em; background: transparent url(../img/frame_small.png) top left no-repeat; padding: 1.45em; margin: 0em 0.35em 0.35em 0em;}
+    div#page div#content div#project_list div#preview {position: relative; z-index: 100; float: left; width: 27.5em; height: 25.5em; overflow: hidden;}
+    div#page div#content div#project_list div#preview div.project {position: absolute; top: 0; left: 2em; width: 19.5em; height: 19.5em; background: transparent url(../img/frame_big.png) top left no-repeat; padding: 3em;}
+    div#page div#content div#project_list div#info {position: relative; z-index: 1; display: block; padding: 0.75em 0em 0em 0em; border-left: 27.5em solid transparent; padding: 0em 0em 0em 5em; top: 0;}
+    div#page div#content div#project_list div#info h2 {font-size: 2.2em; margin: 1em 0em; color: #7a8b99;}
+    div#page div#content div#project_list div#info p {color: #525e69; font-size: 1.4em;}
+    div#page div#content div#project_list div#info ul.tags {margin: 2em 0em;}
+    div#page div#content div#project_list div#info ul.tags li {display: inline; color: #525e69; margin: 0em 1em 0em 0em; font-size: 1.2em;}
+    div#page div#content div#project_list div#info ul.attachments {margin: 2em 0em;}
+    div#page div#content div#project_list div#info ul.attachments li {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
+    div#page div#content div#project_list div#info ul.attachments li a {color: #525e69;}
+    div#page div#content div#project_list a.back {position: relative; left: -1.5em; top: 13.5em;}
     
     div#page div#content div#single_project {width: 60em; margin: 0 auto;}
     div#page div#content div#single_project a.back {float: left; margin: 11em 0em 0em 0em;}
