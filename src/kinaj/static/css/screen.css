@@ -52,4 +52,8 @@
     div#page div#content div.info ul.tags li {font-size: 1.4em; display: inline-block; margin: 0em 0.5em 0em 0em;}
     div#page div#content div.info ul.attachments {}
     div#page div#content div.info ul.attachments li {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
+    
+    div#page div#footer {margin: 0 auto; width: 92em;}
+    div#page div#footer form fieldset {display: inline-block; width: 30em; height: 30em; overflow: hidden;}
+    div#page div#footer form fieldset legend {font-size: 1.5em;}
 }

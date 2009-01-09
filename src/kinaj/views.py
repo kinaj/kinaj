@@ -1,126 +1,86 @@
+# -*- coding: utf-8 -*-
 import simplejson
-from datetime import datetime
-from werkzeug.contrib.kickstart import Response
-from couchdb.schema import Document, DateTimeField
-from kinaj.models import Project
-from kinaj.utils import expose
-from kinaj.utils import render_html, render_xml, render_atom
-from kinaj.utils import url_for, datetimeTorfc822
-from werkzeug import Response
-from werkzeug import redirect
 
-from rfc3302 import rfc3339
+from datetime import datetime
+
+from couchdb.schema import Document, DateTimeField
+
+from kinaj.models import Project
+from kinaj.utils import expose, render_html, render_xml, render_atom, url_for
+from kinaj.utils import wrap
+
+from werkzeug import Response, redirect
 
 
 @expose('/')
 def index(request):
-    """docstring for index"""
-    
-    def wrap(doc):
-        """docstring for wrap"""
-        data = doc.value
-        data['_id'] = doc.id
-        return Project.wrap(data)
-    
+
     if not request.is_xhr:
-        featuredDocResults = Project.allFeatured()
-        featuredResults = [wrap(doc) for doc in featuredDocResults]
-
-        activeDocResults = Project.allActiveNotFeatured()
-        activeResults = [wrap(doc) for doc in activeDocResults]
-
-        mainDocResults = Project.allActiveNotFeatured()
-        mainResults = [wrap(doc) for doc in activeDocResults]
-
-        return render_html('index.html', active=reversed(activeResults),
-                                featured=featuredResults,main=reversed(mainResults))
+        featured = [wrap(doc) for doc in Project.allFeatured()][0]
+        activeResults = [wrap(doc) for doc in Project.allActiveNotFeatured()]
+        
+        template_values = {
+            'featured': featured,
+            'active': reversed(activeResults)
+        }
+        
+        return render_html('index.html', template_values)
                                 
     else:
-        if request.method == 'GET':
-            activeDocResults = Project.allActive()
-            activeResults = [wrap(doc) for doc in activeDocResults]
-            
-            l = []
-            
-            try:
-                i = 0
-                l.append(activeResults[i]._to_json(activeResults[i]))
-                
-                i = i + 1
-            except i == len(activeResults), e:
-                raise e
-            
-            return Response(l, mimetype='application/json')
-            
-        else:
-            raise NotImplementedError('nothing here')
+        raise NotImplementedError('nothing here')
 
 
 @expose('/projects/')
 def list(request):
-    """docstring for list"""
-    def wrap(doc):
-        """docstring for wrap"""
-        data = doc.value
-        data['_id'] = doc.id
-        return Project.wrap(data)
-        
+
     if not request.is_xhr:
-        activeDocResults = Project.allActive()
-        activeResults = [wrap(doc) for doc in activeDocResults]
+        activeResults = [wrap(doc) for doc in Project.allActive()]
         
-        return render_html('/projects/list.html', active=reversed(activeResults))
+        template_values = {
+            'active':reversed(activeResults)
+        }
+        
+        return render_html('/projects/list.html', template_values)
+    else:
+        raise NotImplementedError('nothing here')
+
 
 @expose('/projects/create/')
 def create(request):
-    """docstring for new"""
-    
-    if request.method == 'POST':
-        if not request.is_xhr:
-            preview_small = request.form.get('preview_small')
-            preview_big = request.form.get('preview_big')
-            name = request.form.get('name')
-            slug = request.form.get('slug')
-            text = request.form.get('text')
-            tags = request.form.get('tags')
-            tags = tags.split(' ')
-            active = bool(request.form.get('active'))
-            featured = bool(request.form.get('featured'))
-            
-            project = Project(preview_small=preview_small,preview_big=preview_big,name=name,text=text
-                                ,tags=tags,active=active,featured=featured)
-            uid = project.create()
+    if not request.is_xhr:
+        if request.method == 'POST':
+            p = {
+                'preview_small': request.form.get('preview_small'),
+                'preview_big': request.form.get('preview_big'),
+                'name': request.form.get('name'),
+                'slug': request.form.get('slug'),
+                'text': request.form.get('text'),
+                'tags': request.form.get('tags'),
+                'active': bool(request.form.get('active')),
+                'featured': bool(request.form.get('featured')),
+            }
 
-            return redirect('/projects/update/' + uid)
-        
-        else:
-            resp = '''ok'''
-            
-            return Response(resp,mimetype='text/plain')
-        
-    elif request.method == 'GET':
-        if not request.is_xhr:
-            return render_html('projects/create.html')
+            p['tags'] = p['tags'].split(' ')
 
-        else:
-            raise NotImplementedError('nothing here')
+            resp = Project.create(p)
+
+            return redirect('/projects/update/%s' % resp['_id'])
+        
+        elif request.method == 'GET':
+            
+            return render_html('projects/create.html', {})
+        
+    else:
+        raise NotImplementedError('nothing here')
 
 @expose('/projects/retrieve/<slug>/')
 def retrieve(request,slug):
-    """returns a single project"""
-    
-    def wrap(doc):
-        """docstring for wrap"""
-        data = doc.value
-        data['_id'] = doc.id
-        return Project.wrap(data)
-        
-        
     if request.method == 'POST':
         raise NotImplementedError('nothing here')
     
     elif request.method == 'GET':
-        docResults = Project.retrieve(slug)
+        doc = Project.retrieve(slug)
+        print doc
         
         if not request.is_xhr:
             project = [wrap(doc) for doc in docResults][0]
@@ -148,53 +108,22 @@ def retrieve(request,slug):
 
 @expose('/projects/update/<uid>/')
 def update(request,uid):
-    """docstring for update"""
-    def wrap(doc):
-        """docstring for wrap"""
-        data = doc.value
-        data['_id'] = doc.id
-        return Project.wrap(data)
-        
     if request.method == 'POST':
         if not request.is_xhr:
-            current = Project.db.resource.get(uid)[1]
+            d = Project.db.get(uid)
             
-            doctype = 'project'
-            docid = request.form.get('id')
-            rev = request.form.get('rev')
-            name = request.form.get('name')
-            slug = request.form.get('slug')
-            preview_small = request.form.get('preview_small')
-            preview_big = request.form.get('preview_big')
-            tags = request.form.get('tags')
-            text = request.form.get('text')
-            active = bool(request.form.get('active'))
-            featured = bool(request.form.get('featured'))
-            ctime = current['ctime']
-            _attachments = current['_attachments']
-            
-            dd = DateTimeField()
-            mtime = datetime.now()
-            mtime = dd._to_json(mtime)
-            
-            tags = tags.split(' ')
+            d['name'] = request.form.get('name')
+            d['slug'] = request.form.get('slug')
+            d['preview_small'] = request.form.get('preview_small')
+            d['preview_big'] = request.form.get('preview_big')
+            d['tags'] = request.form.get('tags')
+            d['text'] = request.form.get('text')
+            d['active'] = bool(request.form.get('active'))
+            d['featured'] = bool(request.form.get('featured'))
 
-            d = Document(id=docid,rev=rev)
+            d['tags'] = d['tags'].split(' ')
 
-            d['_id'] = docid
-            d['_rev'] = rev
-            d['type'] = doctype
-            d['name'] = name
-            d['slug'] = slug
-            d['preview_small'] = preview_small
-            d['preview_big'] = preview_big
-            d['tags'] = tags
-            d['text'] = text
-            d['active'] = active
-            d['featured'] = featured
-            d['ctime'] = ctime
-            d['mtime'] = mtime
-            d['_attachments'] = _attachments
+            print d
 
             Project.update(d)
 
@@ -208,17 +137,21 @@ def update(request,uid):
         
     elif request.method == 'GET':
         if not request.is_xhr:
-            doc = Project.db.resource.get(uid)[1]
+            doc = Project.db.get(uid)
             doc["tags"] = " ".join(doc["tags"])
 
-            return render_html('projects/update.html',doc=doc)
+            template_values = {
+                'doc':doc 
+            }
+
+            return render_html('projects/update.html',template_values)
         
         else:
             raise NotImplementedError('nothing here')
 
+
 @expose('/projects/delete/<uid>/')
 def delete(request,uid):
-    """docstring for delete"""
     if not request.is_xhr:
         Project.delete(uid)
         return redirect(url_for('index'))
@@ -231,20 +164,10 @@ def delete(request,uid):
         
         else:
             raise NotImplementedError('nothing here')
+
     
 @expose('/projects/feed/rss/')
 def rss(request):
-    """Documentation"""
-
-    def wrap(doc):
-        """docstring for wrap"""
-        data = doc.value
-        data['_id'] = doc.id
-        mtime = DateTimeField(datetime.now())
-        mtime = mtime._to_python(data['mtime'])
-        data['mtime'] = datetimeTorfc822(mtime)
-        return data
-
     activeDocResults = Project.allActive()
     activeResults = [wrap(doc) for doc in activeDocResults]
 
@@ -252,23 +175,14 @@ def rss(request):
 
     return render_xml('projects/rss2.xml', active=reversed(activeResults),now=now)
 
+
 @expose('/projects/feed/atom/')
 def atom(request):
-    """doc"""
-    
-    def wrap(doc):
-        """docstring for wrap"""
-        data = doc.value
-        data['_id'] = doc.id
-        return data
-        
     activeDocResults = Project.allActive()
     activeResults = [wrap(doc) for doc in activeDocResults]
     
-    now = rfc3339(datetime.now(),utc=False,use_system_timezone=True)
-    
     return render_atom('projects/atom.xml', active=reversed(activeResults),now=now)
+    
 
 def not_found(request):
-    """docstring for not_found"""
     return render_html('not_found.html')

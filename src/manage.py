@@ -3,7 +3,7 @@ from werkzeug import script
 
 def make_app():
     from kinaj.application import Kinaj
-    return Kinaj('http://localhost:5984')
+    return Kinaj()
 
 def make_shell():
     from kinaj import models, utils

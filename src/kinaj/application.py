@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from werkzeug import Request, SharedDataMiddleware, ClosingIterator
 from werkzeug.exceptions import HTTPException, NotFound
 
-from couchdb.client import Server
+from simplecouchdb import Server
+from simplecouchdb.resource import ResourceConflict
 
 from kinaj import views
 from kinaj.models import Project
@@ -10,28 +12,23 @@ from kinaj.utils import STATIC_PATH, local, local_manager, url_map
 
 class Kinaj(object):
 
-    def __init__(self, db_uri):
-        """
-
-        """
+    def __init__(self):
         local.application = self
-
-        server = Server(db_uri)
-        try:
-            db = server.create('kinaj')
-        except:
-            db = server['kinaj']
         
         self.dispatch = SharedDataMiddleware(self.dispatch, {
             '/static': STATIC_PATH
         })
         
+        server = Server()
+        try:
+            db = server.create_db('kinaj')
+        except ResourceConflict:
+            db = server['kinaj']
+        
         Project.db = db
 
-    def dispatch(self, environ, start_response):
-        """
 
-        """
+    def dispatch(self, environ, start_response):
         local.application = self
         request = Request(environ)
         local.url_adapter = adapter = url_map.bind_to_environ(environ)
