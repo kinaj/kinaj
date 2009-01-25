@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-# from couchdb.schema import Document, ListField, TextField, BooleanField, DateTimeField
-
 from simplecouchdb import schema
 
 
@@ -10,7 +8,6 @@ class Project(schema.Document):
     preview_small = schema.StringProperty(name='preview_small')
     preview_big = schema.StringProperty(name='preview_big')
     name = schema.StringProperty(name='name')
-    slug = schema.StringProperty(name='slug')
     type = schema.StringProperty(name='type',default='project')
     tags = schema.ListProperty(name='tags')
     text = schema.StringProperty(name='text')
@@ -43,17 +40,8 @@ class Project(schema.Document):
         return self.db.save(doc)
     
     @classmethod    
-    def retrieve(self,slug):
-        # return self.db.resource.get(uid)
-        
-        map_fun = '''function(doc) {
-            if (doc.type === "project" && doc.active && doc.slug === "%s") {
-                emit(doc.mtime, doc);
-            }
-        }''' % slug
-        
-        print self.db.get('_view/projects/retrieve/?slug=%s' % slug)
-        # return self.db.view(map_fun)
+    def retrieve(self,uid):
+        return self.db.get(uid)
     
     @classmethod    
     def update(self,doc):

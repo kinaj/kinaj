@@ -1,7 +1,7 @@
 {%- extends "layout.html" %}
 {%- block content %}
 <div id="single_project">
-    <div id="{{ project.slug }}" class="project">
+    <div id="{{ project.id }}" class="project">
         <a href="/" title="back" class="back"><img src="/static/img/back.png" alt="back" title="back" /></a>
         <div class="preview">
             <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" />

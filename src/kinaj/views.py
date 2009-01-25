@@ -53,7 +53,6 @@ def create(request):
                 'preview_small': request.form.get('preview_small'),
                 'preview_big': request.form.get('preview_big'),
                 'name': request.form.get('name'),
-                'slug': request.form.get('slug'),
                 'text': request.form.get('text'),
                 'tags': request.form.get('tags'),
                 'active': bool(request.form.get('active')),
@@ -73,31 +72,30 @@ def create(request):
     else:
         raise NotImplementedError('nothing here')
 
-@expose('/projects/retrieve/<slug>/')
-def retrieve(request,slug):
+@expose('/projects/retrieve/<uid>/')
+def retrieve(request,uid):
     if request.method == 'POST':
         raise NotImplementedError('nothing here')
     
     elif request.method == 'GET':
-        doc = Project.retrieve(slug)
-        print doc
+        project = Project.retrieve(uid)
         
         if not request.is_xhr:
-            project = [wrap(doc) for doc in docResults][0]
-            return render_html('projects/retrieve.html', project=project)
+            template_values = {
+                "project": project,
+            }
+            
+            return render_html('projects/retrieve.html',template_values)
             
         else:
-            project = docResults.rows[0].value
-            
             foo = simplejson.JSONEncoder()
-            
+    
             resp = foo.encode({
                 '_id':project['_id'],
                 '_rev':project['_rev'],
                 '_attachments':project['_attachments'],
                 'name':project['name'],
                 'text':project['text'],
-                'slug':project['slug'],
                 'tags':project['tags'],
                 'preview_big':project['preview_big'],
                 'preview_small':project['preview_small'],
@@ -113,7 +111,6 @@ def update(request,uid):
             d = Project.db.get(uid)
             
             d['name'] = request.form.get('name')
-            d['slug'] = request.form.get('slug')
             d['preview_small'] = request.form.get('preview_small')
             d['preview_big'] = request.form.get('preview_big')
             d['tags'] = request.form.get('tags')
@@ -185,4 +182,4 @@ def atom(request):
     
 
 def not_found(request):
-    return render_html('not_found.html')
+    return render_html('not_found.html',{})
