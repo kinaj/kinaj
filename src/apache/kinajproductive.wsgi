@@ -1,3 +1,3 @@
-from kinaj import Kinaj
+from kinaj.application import Kinaj
 
 application = Kinaj()
