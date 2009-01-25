@@ -3,8 +3,6 @@ import simplejson
 
 from datetime import datetime
 
-from couchdb.schema import Document, DateTimeField
-
 from kinaj.models import Project
 from kinaj.utils import expose, render_html, render_xml, render_atom, url_for
 from kinaj.utils import wrap
