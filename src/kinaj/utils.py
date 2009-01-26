@@ -49,3 +49,9 @@ def render_atom(template, **context):
     """docstring for render_atom"""
     return Response(jinja2_env.get_template(template).render(**context),
                     mimetype='application/atom+xml')
+                    
+def make_id(text,delim="-"):
+    """docstring for make_id"""
+    t = text.lower()
+    normal_id = delim.join(t.split())
+    return normal_id

@@ -6,7 +6,7 @@ from simplecouchdb import Server
 from simplecouchdb.resource import ResourceConflict
 
 from kinaj import views
-from kinaj.models import Project
+from kinaj.models import Project, User
 from kinaj.utils import STATIC_PATH, local, local_manager, url_map
 
 
@@ -21,11 +21,18 @@ class Kinaj(object):
         
         server = Server()
         try:
-            db = server.create_db('kinaj')
+            project_db = server.create_db('kinaj-projects')
         except ResourceConflict:
-            db = server['kinaj']
+            project_db = server['kinaj-projects']
         
-        Project.db = db
+        Project.db = project_db
+
+        try:
+            user_db = server.create_db('kinaj-user')
+        except ResourceConflict:
+            user_db = server['kinaj-user']
+            
+        User.db = user_db
 
 
     def dispatch(self, environ, start_response):

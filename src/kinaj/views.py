@@ -5,7 +5,7 @@ from datetime import datetime
 
 from kinaj.models import Project
 from kinaj.utils import expose, render_html, render_xml, render_atom, url_for
-from kinaj.utils import wrap
+from kinaj.utils import wrap, make_id
 
 from werkzeug import Response, redirect
 
@@ -47,21 +47,19 @@ def list(request):
 def create(request):
     if not request.is_xhr:
         if request.method == 'POST':
-            p = {
-                'preview_small': request.form.get('preview_small'),
-                'preview_big': request.form.get('preview_big'),
-                'name': request.form.get('name'),
-                'text': request.form.get('text'),
-                'tags': request.form.get('tags'),
-                'active': bool(request.form.get('active')),
-                'featured': bool(request.form.get('featured')),
-            }
-
-            p['tags'] = p['tags'].split(' ')
-
+            p = Project()
+            p['id'] = make_id(request.form.get('name'))
+            p['preview_small'] = request.form.get('preview_small')
+            p['preview_big'] = request.form.get('preview_big')
+            p['name'] = request.form.get('name')
+            p['text'] = request.form.get('text')
+            p['tags'] = request.form.get('tags').split(' ')
+            p['active'] = bool(request.form.get('active'))
+            p['featured'] = bool(request.form.get('featured'))
+            
             resp = Project.create(p)
 
-            return redirect('/projects/update/%s' % resp['_id'])
+            return redirect('/projects/update/%s' % p['id'])
         
         elif request.method == 'GET':
             
@@ -118,8 +116,6 @@ def update(request,uid):
 
             d['tags'] = d['tags'].split(' ')
 
-            print d
-
             Project.update(d)
 
             return redirect(url_for('update', uid=uid))
@@ -165,8 +161,6 @@ def delete(request,uid):
 def rss(request):
     activeDocResults = Project.allActive()
     activeResults = [wrap(doc) for doc in activeDocResults]
-
-    now = datetimeTorfc822(datetime.now())
 
     return render_xml('projects/rss2.xml', active=reversed(activeResults),now=now)
 

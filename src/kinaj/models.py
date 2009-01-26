@@ -37,7 +37,7 @@ class Project(schema.Document):
     @classmethod
     def create(self, doc):
         """docstring for create"""
-        return self.db.save(doc)
+        return doc.save(self.db)
     
     @classmethod    
     def retrieve(self,uid):
@@ -45,7 +45,7 @@ class Project(schema.Document):
     
     @classmethod    
     def update(self,doc):
-        return self.db.save(doc)
+        return self.db.post(doc)
     
     @classmethod    
     def delete(self,uid):
@@ -55,3 +55,9 @@ class Project(schema.Document):
     
     def __repr__(self):
         return '<PROJECT %s>' % self.name
+        
+        
+class User(schema.Document):
+    """docstring for User"""
+    db = None
+        
