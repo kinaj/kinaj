@@ -69,7 +69,7 @@ def create(request):
         raise NotImplementedError('nothing here')
 
 @expose('/projects/retrieve/<uid>/')
-def retrieve(request,uid):
+def retrieve(request, uid):
     if request.method == 'POST':
         raise NotImplementedError('nothing here')
     
@@ -84,20 +84,9 @@ def retrieve(request,uid):
             return render_html('projects/retrieve.html',template_values)
             
         else:
-            foo = simplejson.JSONEncoder()
-    
-            resp = foo.encode({
-                '_id':project['_id'],
-                '_rev':project['_rev'],
-                '_attachments':project['_attachments'],
-                'name':project['name'],
-                'text':project['text'],
-                'tags':project['tags'],
-                'preview_big':project['preview_big'],
-                'preview_small':project['preview_small'],
-            })
+            resp = simplejson.dumps(project)
             
-            return Response(resp,mimetype='application/json')
+            return Response(resp, mimetype='application/json')
 
 
 @expose('/projects/update/<uid>/')

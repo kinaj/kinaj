@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from werkzeug import Request, SharedDataMiddleware, ClosingIterator
+from werkzeug import Request, ClosingIterator
 from werkzeug.exceptions import HTTPException, NotFound
 
 from simplecouchdb import Server
@@ -15,24 +15,9 @@ class Kinaj(object):
     def __init__(self):
         local.application = self
         
-        self.dispatch = SharedDataMiddleware(self.dispatch, {
-            '/static': STATIC_PATH
-        })
-        
         server = Server()
-        try:
-            project_db = server.create_db('kinaj-projects')
-        except ResourceConflict:
-            project_db = server['kinaj-projects']
-        
-        Project.db = project_db
-
-        try:
-            user_db = server.create_db('kinaj-user')
-        except ResourceConflict:
-            user_db = server['kinaj-user']
-            
-        User.db = user_db
+        Project.db = server['kinaj-projects']            
+        User.db = server['kinaj-user']
 
 
     def dispatch(self, environ, start_response):

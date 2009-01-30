@@ -4,7 +4,7 @@
     <div id="{{ project.id }}" class="project">
         <a href="/" title="back" class="back"><img src="/static/img/back.png" alt="back" title="back" /></a>
         <div class="preview">
-            <img src="http://localhost:5984/kinaj/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" />
+            <img src="/static/projects/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" />
         </div>
         <div class="info">
             <h2>{{ project.name }}</h2>
@@ -16,7 +16,7 @@
             </ul>
             <ul class="attachments">
                 {%- for attachment in project._attachments %}
-                <li><a href="http://localhost:5984/kinaj/{{ project._id }}/{{ attachment }}" title="{{ attachment }}">{{ attachment }}</a></li>
+                <li><a href="/static/projects/F{{ project._id }}/{{ attachment }}" title="{{ attachment }}">{{ attachment }}</a></li>
                 {%- endfor %}
             </ul>
         </div>

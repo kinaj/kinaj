@@ -215,7 +215,7 @@ function changeToSingle(project, index_container, id) {
                             project = resp;
                             jQuery.data(link,'project',project);
 
-                            $('img', link).get(0).src = 'http://localhost:5984/kinaj/' + project._id + '/' + project.preview_big;
+                            $('img', link).get(0).src = '/static/projects/' + project._id + '/' + project.preview_big;
 
                             if (div == $('div#preview div.project:first', index_container).get(0)) {
                                 $('div#info', index_container)
@@ -230,7 +230,7 @@ function changeToSingle(project, index_container, id) {
                                 };
 
                                 for (var attachment in project._attachments) {
-                                    $('div#info ul.attachments', index_container).append('<li><a href="http://localhost:5984/kinaj/' + project._id + '/' + attachment + '">' + attachment + '</a></li>')
+                                    $('div#info ul.attachments', index_container).append('<li><a href="/static/projects/' + project._id + '/' + attachment + '">' + attachment + '</a></li>')
                                 };
                                 
                                 $('div#info', index_container).animate({opacity: 1}, 500);
