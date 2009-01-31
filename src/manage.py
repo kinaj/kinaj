@@ -1,11 +1,14 @@
 #!/usr/bin/env python
+import os
 from werkzeug import script, SharedDataMiddleware
 
 from kinaj.utils import STATIC_PATH
 
 def make_app():
     from kinaj.application import Kinaj
-    return SharedDataMiddleware(Kinaj(), {'/static': STATIC_PATH})
+    print '%s/img/favicon.ico' % STATIC_PATH
+    return SharedDataMiddleware(Kinaj(), {'/static': STATIC_PATH,
+                                          '/favicon.ico': '%s/img/favicon.ico' % STATIC_PATH})
     
     
 def make_shell():

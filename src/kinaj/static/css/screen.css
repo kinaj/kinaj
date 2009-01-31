@@ -1,6 +1,6 @@
 @charset "UTF-8";
 @media screen {
-    body {background: #7a8b99; color: #fff; font-size: 10px; font-family: 'Trebuchet MS', 'Helvetica Neue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; padding: 0 auto;}
+    body {background: #4f585e; color: #fff; font-size: 10px; font-family: 'Trebuchet MS', 'Helvetica Neue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; padding: 0 auto;}
     
     img {font-size: 10px;}
     
@@ -8,7 +8,7 @@
     
     div#page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
     
-    div#page div#header {height: 22em; background: #7a8b99 url(../img/header_gradient.png) top left repeat-x;}
+    div#page div#header {height: 22em;}
     
     div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; min-height: 32em; padding: 4.25em 0em;}
     div#page div#content form {font-size: 1.5em;}
