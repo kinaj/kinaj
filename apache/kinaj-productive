@@ -1,6 +1,17 @@
 NameVirtualHost 85.214.138.166:80
 
 <VirtualHost 85.214.138.166:80>
+  ServerName  kinaj.com
+  ServerAlias kinaj.com
+  ServerAdmin alx@metaen.de
+
+  LogLevel info
+
+  DocumentRoot /home/kinaj/projects/kinaj/src/maintain/
+
+</VirtualHost>
+
+<VirtualHost 85.214.138.166:80>
   ServerName  dev.kinaj.com
   ServerAlias dev.kinaj.com
   ServerAdmin alx@metaen.de

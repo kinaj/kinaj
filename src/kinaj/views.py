@@ -59,11 +59,11 @@ def create(request):
             
             resp = Project.create(p)
 
-            return redirect('/projects/update/%s' % p['id'])
+            return redirect('update', docid=p['id'])
         
         elif request.method == 'GET':
             
-            return render_html('projects/create.html', {})
+            return render_html('projects/create.html')
         
     else:
         raise NotImplementedError('nothing here')
@@ -171,4 +171,4 @@ def attachment(request, path):
         raise NotImplementedError('Should be ACCESS DENIED')
 
 def not_found(request):
-    return render_html('not_found.html',{})
+    return render_html('not_found.html')

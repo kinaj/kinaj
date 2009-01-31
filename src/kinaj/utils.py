@@ -38,7 +38,7 @@ def url_for(endpoint, _external=False, **values):
 
 jinja2_env.globals['url_for'] = url_for
 
-def render_html(template, context):
+def render_html(template, context={}):
     return Response(jinja2_env.get_template(template).render(context),
                     mimetype='text/html')
 

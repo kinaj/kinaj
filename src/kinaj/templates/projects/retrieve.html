@@ -16,7 +16,7 @@
             </ul>
             <ul class="attachments">
                 {%- for attachment in project._attachments %}
-                <li><a href="/static/projects/F{{ project._id }}/{{ attachment }}" title="{{ attachment }}">{{ attachment }}</a></li>
+                <li><a href="/static/projects/{{ project._id }}/{{ attachment }}" title="{{ attachment }}">{{ attachment }}</a></li>
                 {%- endfor %}
             </ul>
         </div>
