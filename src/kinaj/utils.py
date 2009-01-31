@@ -42,13 +42,13 @@ def render_html(template, context={}):
     return Response(jinja2_env.get_template(template).render(context),
                     mimetype='text/html')
 
-def render_xml(template, **context):
-    return Response(jinja2_env.get_template(template).render(**context),
+def render_xml(template, context={}):
+    return Response(jinja2_env.get_template(template).render(context),
                     mimetype='application/rss+xml')
                     
-def render_atom(template, **context):
+def render_atom(template, context={}):
     """docstring for render_atom"""
-    return Response(jinja2_env.get_template(template).render(**context),
+    return Response(jinja2_env.get_template(template).render(context),
                     mimetype='application/atom+xml')
                     
 def make_id(text,delim="-"):

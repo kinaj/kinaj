@@ -6,8 +6,8 @@
         <title>Finest Icons | kinaj</title>
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
         <link charset="utf-8" type="text/css" rel="stylesheet" media="all" href="/static/css/load.css" />
-        <link rel="alternate" type="application/rss+xml" title="RSS: projects | kinaj" href="http://127.0.0.1:5000/projects/feed/rss" />
-        <link rel="alternate" type="application/atom+xml" title="ATOM: projects | kinaj" href="http://127.0.0.1:5000/projects/feed/atom" />
+        <link rel="alternate" type="application/rss+xml" title="RSS: projects | kinaj" href="{{ url_for('rss') }}" />
+        <link rel="alternate" type="application/atom+xml" title="ATOM: projects | kinaj" href="{{ url_for('atom') }}" />
     </head>
     <body>
         <div id="page">

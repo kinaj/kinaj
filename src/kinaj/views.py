@@ -14,15 +14,15 @@ from werkzeug import Response, redirect
 def index(request):
 
     if not request.is_xhr:
-        featured = [wrap(doc) for doc in Project.allFeatured()][0]
-        activeResults = [wrap(doc) for doc in Project.allActiveNotFeatured()]
+        featured = [wrap(project) for project in Project.allFeatured()][0]
+        activeResults = [wrap(project) for project in Project.allActiveNotFeatured()]
         
-        template_values = {
+        context = {
             'featured': featured,
             'active': reversed(activeResults)
         }
         
-        return render_html('index.html', template_values)
+        return render_html('index.html', context)
                                 
     else:
         raise NotImplementedError('nothing here')
@@ -32,13 +32,13 @@ def index(request):
 def list(request):
 
     if not request.is_xhr:
-        activeResults = [wrap(doc) for doc in Project.allActive()]
+        activeResults = [wrap(project) for project in Project.allActive()]
         
-        template_values = {
+        context = {
             'active':reversed(activeResults)
         }
         
-        return render_html('/projects/list.html', template_values)
+        return render_html('/projects/list.html', context)
     else:
         raise NotImplementedError('nothing here')
 
@@ -59,7 +59,7 @@ def create(request):
             
             resp = Project.create(p)
 
-            return redirect('update', docid=p['id'])
+            return redirect(url_for('update', docid=p['id']))
         
         elif request.method == 'GET':
             
@@ -77,11 +77,11 @@ def retrieve(request, docid):
         project = Project.retrieve(docid)
         
         if not request.is_xhr:
-            template_values = {
+            context = {
                 "project": project,
             }
             
-            return render_html('projects/retrieve.html',template_values)
+            return render_html('projects/retrieve.html',context)
             
         else:
             resp = simplejson.dumps(project)
@@ -117,14 +117,14 @@ def update(request,uid):
         
     elif request.method == 'GET':
         if not request.is_xhr:
-            doc = Project.db.get(uid)
-            doc["tags"] = " ".join(doc["tags"])
+            projects = Project.db.get(uid)
+            projects["tags"] = " ".join(projects["tags"])
 
-            template_values = {
-                'doc':doc 
+            context = {
+                'project':project 
             }
 
-            return render_html('projects/update.html',template_values)
+            return render_html('projects/update.html',context)
         
         else:
             raise NotImplementedError('nothing here')
@@ -149,17 +149,25 @@ def delete(request,uid):
 @expose('/projects/feed/rss/')
 def rss(request):
     activeDocResults = Project.allActive()
-    activeResults = [wrap(doc) for doc in activeDocResults]
-
-    return render_xml('projects/rss2.xml', active=reversed(activeResults),now=now)
+    activeResults = [wrap(project) for project in activeDocResults]
+    
+    context = {
+        'active': reversed(activeResults)
+    }
+    
+    return render_xml('projects/rss2.xml', context)
 
 
 @expose('/projects/feed/atom/')
 def atom(request):
     activeDocResults = Project.allActive()
-    activeResults = [wrap(doc) for doc in activeDocResults]
+    activeResults = [wrap(project) for project in activeDocResults]
     
-    return render_atom('projects/atom.xml', active=reversed(activeResults),now=now)
+    context = {
+        'active': reversed(activeResults)
+    }
+    
+    return render_atom('projects/atom.xml', context)
     
     
 @expose('/static/projects/<path:path>')

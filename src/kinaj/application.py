@@ -14,10 +14,8 @@ class Kinaj(object):
     
     def __init__(self, debug=False):
         local.application = self
-        
-        server = Server()
-        Project.db = server['kinaj-projects']            
-        User.db = server['kinaj-user']
+        Project.db = Server()['kinaj-projects']
+        User.db = Server()['kinaj-users']
         
         
     def dispatch(self, environ, start_response):

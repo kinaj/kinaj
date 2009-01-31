@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
    <channel>
       <title>Projects | kinaj.com</title>
-      <link>http://127.0.0.1:5000</link>
+      <link>http://kinaj.com</link>
       <description>AMAZING PIXELZ LOL</description>
       <language>en-gb</language>
       <pubDate>{{ now }}</pubDate>
       <generator>Werkzeug</generator>
-      <atom:link href="http://127.0.0.1:5000/projects/feed/rss" rel="self" type="application/rss+xml" />
-      {%- for doc in active %}
+      <atom:link href="http://kinaj.com{{ url_for('rss') }}" rel="self" type="application/rss+xml" />
+      {%- for project in active %}
       <item>
-          <title>{{ doc.name }}</title>
+          <title>{{ project.name }}</title>
           <author>janik@kinaj.com (Janik Baumgartner)</author>
-          <link>http://127.0.0.1:5000/projects/retrieve/{{ doc._id}}</link>
-          <description>{{ doc.text }}</description>
-          <pubDate>{{ doc.mtime }}</pubDate>
-          <guid>http://127.0.0.1:5000/projects/retrieve/{{ doc._id}}</guid>
-          <source url="http://127.0.0.1:5000/projects/feed/rss">Projects | kinaj.com</source>
+          <link>http://kinaj.com{{ url_for('retrieve', docid=project._id) }}</link>
+          <description>{{ project.text }}</description>
+          <pubDate>{{ project.mtime }}</pubDate>
+          <guid>ttp://kinaj.com{{ url_for('retrieve', docid=project._id) }}</guid>
+          <source url="http://kinaj.com{{ url_for('rss') }}">Projects | kinaj.com</source>
       </item>
       {%- endfor %}
    </channel>

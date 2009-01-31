@@ -11,7 +11,6 @@ $(function (){
         ll = $('div#mainlist div.project', index_container).length;
         foo = Math.round((l + ll)/2);
         
-        
         $('div#list').css('width', (foo * 13) + 'em');
         
         $('div#mainlist div.project', index_container).insertAfter('div#list div.project:last');

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>kinaj.com</title> 
-    <link href="http://127.0.0.1:5000/" />
-    <link rel="self" href="http://127.0.0.1:5000/projects/feed/atom/" />
-    <id>http://127.0.0.1:5000/</id>
-    <updated>{{ now }}</updated>
+    <link href="http://kinaj.com/" />
+    <link rel="self" href="http://kinaj.com{{ url_for('atom') }}" />
+    <id>http://kinaj.com</id>
+    <updated></updated>
     <author> 
         <name>Janik Baumgartner</name>
     </author> 
     {%- for project in active %}
     <entry>
         <title>{{ project.name }}</title>
-        <link href="http://127.0.0.1:5000/projects/{{ project._id }}"/>
-        <id>http://127.0.0.1:5000/projects/{{ project._id }}</id>
+        <link href="http://kinaj.com{{ url_for('retrieve', docid=project._id) }}"/>
+        <id>http://kinaj.com{{ url_for('retrieve', docid=project._id) }}</id>
         <updated>{{ project.mtime }}</updated>
         <summary>{{ project.text|striptags }}</summary>
     </entry>
