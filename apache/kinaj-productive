@@ -9,6 +9,7 @@ NameVirtualHost 85.214.138.166:80
 
   DocumentRoot /home/kinaj/projects/kinaj/src/maintain/
 
+  Alias /favicon.ico /home/kinaj/projects/kinaj/src/maintain/static/img/favicon.ico
 </VirtualHost>
 
 <VirtualHost 85.214.138.166:80>
