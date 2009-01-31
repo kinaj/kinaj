@@ -22,6 +22,7 @@ NameVirtualHost 85.214.138.166:80
 
   DocumentRoot /home/kinaj/projects/kinaj/src/maintain/
 
+  Alias /favicon.ico /home/kinaj/projects/kinaj/src/kinaj/static/img/favicon.ico
   Alias /static /home/kinaj/projects/kinaj/src/kinaj/static/
 
   <Location /static/projects/>

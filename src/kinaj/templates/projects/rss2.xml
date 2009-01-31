@@ -15,7 +15,7 @@
           <link>http://kinaj.com{{ url_for('retrieve', docid=project._id) }}</link>
           <description>{{ project.text }}</description>
           <pubDate>{{ project.mtime }}</pubDate>
-          <guid>ttp://kinaj.com{{ url_for('retrieve', docid=project._id) }}</guid>
+          <gdocid>ttp://kinaj.com{{ url_for('retrieve', docid=project._id) }}</gdocid>
           <source url="http://kinaj.com{{ url_for('rss') }}">Projects | kinaj.com</source>
       </item>
       {%- endfor %}

@@ -1227,7 +1227,7 @@ jQuery.each({
 function num(elem, prop) {
 	return elem[0] && parseInt( jQuery.curCSS(elem[0], prop, true), 10 ) || 0;
 }
-var expando = "jQuery" + now(), uuid = 0, windowData = {};
+var expando = "jQuery" + now(), udocid = 0, windowData = {};
 
 jQuery.extend({
 	cache: {},
@@ -1241,7 +1241,7 @@ jQuery.extend({
 
 		// Compute a unique ID for the element
 		if ( !id )
-			id = elem[ expando ] = ++uuid;
+			id = elem[ expando ] = ++udocid;
 
 		// Only generate the data cache if we're
 		// trying to access or manipulate it
@@ -2350,8 +2350,8 @@ jQuery.event = {
 			elem = window;
 
 		// Make sure that the function being executed has a unique ID
-		if ( !handler.guid )
-			handler.guid = this.guid++;
+		if ( !handler.gdocid )
+			handler.gdocid = this.gdocid++;
 
 		// if data is passed, bind to handler
 		if ( data !== undefined ) {
@@ -2413,7 +2413,7 @@ jQuery.event = {
 			}
 
 			// Add the function to the element's handler list
-			handlers[handler.guid] = handler;
+			handlers[handler.gdocid] = handler;
 
 			// Keep track of which events have been used, for global triggering
 			jQuery.event.global[type] = true;
@@ -2423,7 +2423,7 @@ jQuery.event = {
 		elem = null;
 	},
 
-	guid: 1,
+	gdocid: 1,
 	global: {},
 
 	// Detach an event or set of events from an element
@@ -2457,7 +2457,7 @@ jQuery.event = {
 					if ( events[type] ) {
 						// remove the given handler for the given type
 						if ( handler )
-							delete events[type][handler.guid];
+							delete events[type][handler.gdocid];
 
 						// remove all handlers for the given type
 						else
@@ -2687,8 +2687,8 @@ jQuery.event = {
 	},
 
 	proxy: function( fn, proxy ){
-		// Set the guid of unique handler to the same of original handler, so it can be removed
-		proxy.guid = fn.guid = fn.guid || proxy.guid || this.guid++;
+		// Set the gdocid of unique handler to the same of original handler, so it can be removed
+		proxy.gdocid = fn.gdocid = fn.gdocid || proxy.gdocid || this.gdocid++;
 		// So proxy can be declared as an argument
 		return proxy;
 	},

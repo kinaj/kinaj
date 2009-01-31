@@ -90,7 +90,7 @@ def retrieve(request, docid):
 
 
 @expose('/projects/update/<path:docid>/')
-def update(request,uid):
+def update(request,docid):
     if request.method == 'POST':
         if not request.is_xhr:
             d = Project.db.get(docid)
@@ -117,8 +117,8 @@ def update(request,uid):
         
     elif request.method == 'GET':
         if not request.is_xhr:
-            projects = Project.db.get(uid)
-            projects["tags"] = " ".join(projects["tags"])
+            project = Project.db.get(docid)
+            project["tags"] = " ".join(project["tags"])
 
             context = {
                 'project':project 
@@ -131,7 +131,7 @@ def update(request,uid):
 
 
 @expose('/projects/delete/<path:docid>/')
-def delete(request,uid):
+def delete(request,docid):
     if not request.is_xhr:
         Project.delete(docid)
         return redirect(url_for('index'))
