@@ -8,13 +8,13 @@ class Project(schema.Document):
     preview_small = schema.StringProperty(name='preview_small')
     preview_big = schema.StringProperty(name='preview_big')
     name = schema.StringProperty(name='name')
-    type = schema.StringProperty(name='type',default='project')
+    type = schema.StringProperty(name='type', default='project')
     tags = schema.ListProperty(name='tags')
     text = schema.StringProperty(name='text')
-    active = schema.BooleanProperty(name='active',default=False)
-    featured = schema.BooleanProperty(name='featured',default=False)
-    ctime = schema.DateTimeProperty(name='ctime',auto_now_add=True)
-    mtime = schema.DateTimeProperty(name='mtime',auto_now=True)
+    active = schema.BooleanProperty(name='active', default=False)
+    featured = schema.BooleanProperty(name='featured', default=False)
+    ctime = schema.DateTimeProperty(name='ctime', auto_now_add=True)
+    mtime = schema.DateTimeProperty(name='mtime', auto_now=True)
     
     db = None
     
@@ -40,16 +40,16 @@ class Project(schema.Document):
         return doc.save(self.db)
     
     @classmethod    
-    def retrieve(self,uid):
-        return self.db.get(uid)
+    def retrieve(self, docid):
+        return self.db.get(docid)
     
     @classmethod    
-    def update(self,doc):
+    def update(self, doc):
         return self.db.post(doc)
     
     @classmethod    
-    def delete(self,uid):
-        doc = self.db.get(uid)
+    def delete(self, docid):
+        doc = self.db.get(docid)
         
         return self.db.delete(doc)
     

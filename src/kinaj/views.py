@@ -28,7 +28,7 @@ def index(request):
         raise NotImplementedError('nothing here')
 
 
-@expose('/projects/')
+@expose('/projects/list/')
 def list(request):
 
     if not request.is_xhr:
@@ -68,13 +68,13 @@ def create(request):
     else:
         raise NotImplementedError('nothing here')
 
-@expose('/projects/retrieve/<uid>/')
-def retrieve(request, uid):
+@expose('/projects/retrieve/<path:docid>/')
+def retrieve(request, docid):
     if request.method == 'POST':
         raise NotImplementedError('nothing here')
     
     elif request.method == 'GET':
-        project = Project.retrieve(uid)
+        project = Project.retrieve(docid)
         
         if not request.is_xhr:
             template_values = {
@@ -89,11 +89,11 @@ def retrieve(request, uid):
             return Response(resp, mimetype='application/json')
 
 
-@expose('/projects/update/<uid>/')
+@expose('/projects/update/<path:docid>/')
 def update(request,uid):
     if request.method == 'POST':
         if not request.is_xhr:
-            d = Project.db.get(uid)
+            d = Project.db.get(docid)
             
             d['name'] = request.form.get('name')
             d['preview_small'] = request.form.get('preview_small')
@@ -107,7 +107,7 @@ def update(request,uid):
 
             Project.update(d)
 
-            return redirect(url_for('update', uid=uid))
+            return redirect(url_for('update', docid=docid))
         
         else:
             
@@ -130,15 +130,15 @@ def update(request,uid):
             raise NotImplementedError('nothing here')
 
 
-@expose('/projects/delete/<uid>/')
+@expose('/projects/delete/<path:docid>/')
 def delete(request,uid):
     if not request.is_xhr:
-        Project.delete(uid)
+        Project.delete(docid)
         return redirect(url_for('index'))
         
     else:
         if request.method == 'DELETE':
-            Project.delete(uid)
+            Project.delete(docid)
             
             return Response('''ok''',mimetype='text/plain')
         
@@ -161,6 +161,14 @@ def atom(request):
     
     return render_atom('projects/atom.xml', active=reversed(activeResults),now=now)
     
+    
+@expose('/static/projects/<path:path>')
+def attachment(request, path):
+    """docstring for attachments"""
+    if request.method == 'GET':
+        return redirect('http://localhost:5984/kinaj-projects/%s' % path)
+    else:
+        raise NotImplementedError('Should be ACCESS DENIED')
 
 def not_found(request):
     return render_html('not_found.html',{})

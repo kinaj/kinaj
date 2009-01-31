@@ -16,7 +16,7 @@ local = Local()
 local_manager = LocalManager([local])
 application = local('application')
 
-url_map = Map([Rule('/static/<file>', endpoint='static', build_only=True)])
+url_map = Map()
 
 jinja2_env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
 
@@ -35,6 +35,7 @@ def expose(rule, **kw):
 
 def url_for(endpoint, _external=False, **values):
     return local.url_adapter.build(endpoint, values, force_external=_external)
+
 jinja2_env.globals['url_for'] = url_for
 
 def render_html(template, context):
