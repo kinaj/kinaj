@@ -1,4 +1,4 @@
-@charset "UTF-8";
+@charset "utf-8";
 @media all {
     * html body * {overflow: visible;}
     * html iframe, * html frame {overflow: auto;}
