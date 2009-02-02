@@ -55,7 +55,7 @@
     div#page div#content div.info ul.attachments {}
     div#page div#content div.info ul.attachments li {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
     
-    div#page div#footer {text-align: center; margin: 6em 0em 0em 0em;}
+    div#page div#footer {text-align: center; margin: 6em 0em 3em 0em;}
     div#page div#footer ul {margin: 0em 0em 2em 0em;}
     div#page div#footer ul li {display: inline;}
     div#page div#footer ul li a {font-size: 1.2em; color: #cfcfcf; font-family: 'HelveticaNeue-CondensedBold', helvetica, arial, sans-serif;}

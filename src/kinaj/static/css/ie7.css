@@ -1,4 +1,5 @@
 @charset "utf-8";
 @media screen {
-    
+    div#page div#content div#project_list div#list div.project {margin: 0em 0em -0.8em 0em;}
+    div#page div#content div#project_list div#mainlist div.second {margin: 0em 0.7em 0.3em 0em;}
 }

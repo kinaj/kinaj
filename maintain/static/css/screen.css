@@ -15,7 +15,7 @@
     
     div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; padding: 6em 0em 5em 0em; text-align: center;}
     
-    div#page div#footer {text-align: center; margin: 6em 0em 0em 0em;}
+    div#page div#footer {text-align: center; margin: 6em 0em 3em 0em;}
     div#page div#footer ul {margin: 0em 0em 2em 0em;}
     div#page div#footer ul li {display: inline;}
     div#page div#footer ul li a {font-size: 1.2em; color: #cfcfcf; font-family: 'HelveticaNeue-CondensedBold', helvetica, arial, sans-serif;}
