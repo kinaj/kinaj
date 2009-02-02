@@ -1,4 +1,5 @@
 {%- extends "base.html" %}
+{%- block title %}showroom | {% endblock %}
 {%- block content %}
 <div id="project_list">
     <div id="featured">
@@ -9,7 +10,7 @@
     {%- for project in active %}
     {%- if loop.first -%}<div id="list">{%- endif %}
     {%- if loop.index0 == 4 -%}<div id="mainlist">{%- endif %}
-        <div class="project" id="{{ project._id }}">
+        <div class="project{% if (loop.index -1) is divisibleby(4) %} first{%- endif %}{% if (loop.index -2) is divisibleby(4) %} second{%- endif %}" id="{{ project._id }}">
             <a href="/projects/retrieve/{{ project._id }}/" title="/static/projects{{ project.name }}"><img src="/static/projects/{{ project._id }}/{{ project.preview_small }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>
         </div>
     {%- if loop.index0 == 3 %}</div>{%- endif %}
