@@ -1,6 +1,6 @@
 @charset "utf-8";
 @media screen {
-    body {background: #4f585e; color: #fff; font-size: 10px; font-family: 'Trebuchet MS', 'Helvetica Neue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; padding: 0 auto;}
+    body {background: #4f585e; color: #fff; font-size: 10px; font-family: 'Trebuchet MS', 'Helvetica Neue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center;}
     
     img {font-size: 10px;}
     
@@ -25,7 +25,7 @@
     div#page div#content div#project_list div.project {float: left; display: block; width: 9.1em; height: 9.1em; background: transparent url(../img/frame_small.png) top left no-repeat; padding: 1.45em;}
     div#page div#content div#project_list div#featured {position: relative; z-index: 100; float: left; margin: 0em 0.35em 0em 0em; display: block;}
     div#page div#content div#project_list div#featured div.project {width: 19.5em; height: 19.5em; background: transparent url(../img/frame_big.png) top left no-repeat; padding: 3em;}
-    div#page div#content div#project_list div#list {position: relative; z-index: 1; display: block; padding: 0.75em 0em 0em 0em; border-left: 25.5em solid transparent; width: 26em;}
+    div#page div#content div#project_list div#list {position: relative; z-index: 1; display: block; padding: 0.75em 0em 0em 0em; border-left: 25.5em solid transparent;}
     div#page div#content div#project_list div#list div.project {margin: 0em 0.24em 0.24em 0em;}
     div#page div#content div#project_list div#list div.project img {width: 9.1em; height: 9.1em;}
     div#page div#content div#project_list div#mainlist {clear: both;}
