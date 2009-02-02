@@ -12,12 +12,25 @@
     <body>
         <div id="page">
             <div id="header">
+                <a href="{{ url_for('index') }}" title="AMAZING PIXELZ | kinaj"><img src="/static/img/kinaj.png" title="AMAZING PIXELZ | kinaj" alt="AMAZING PIXELZ" /></a>
             </div>
             <div id="content">
                 {%- block content %}{%- endblock %}
                 <div class="clearfix"></div>
             </div>
             <div id="footer">
+                <ul>
+                    <li><a href="aim:goim?screenname=kinaj@mac.com" title="contact me on iChat">aim</a></li>
+                    <li>·</li>
+                    <li><a href="mailto:mail@kinaj.com" title="send me an email">email</a></li>
+                    <li>·</li>
+                    <li><a href="http://flickr.com/photos/kinaj" title="visit me on flickr">flickr</a></li>
+                    <li>·</li>
+                    <li><a href="http://last.fm/user/hom3r" title="visit me on last.fm">last.fm</a></li>
+                    <li>·</li>
+                    <li><a href="http://twitter.com/kinaj" title="follow me on twitter">twitter</a></li>
+                </ul>
+                <p class="copyright">copyright © janik baumgartner</p>
             </div>
         </div>
         <script charset="utf-8" type="text/javascript" src="/static/js/jquery.js"></script>
