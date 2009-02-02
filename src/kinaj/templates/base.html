@@ -4,10 +4,13 @@
         <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
 		    <meta http-equiv="content-language" content="en-en" />
         <title>{%- block title %}{%- endblock %}AMAZING PIXELZ | kinaj</title>
-        <!-- <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" /> -->
-        <link charset="utf-8" type="text/css" rel="stylesheet" media="all" href="/static/css/load.css" />
         <link rel="alternate" type="application/rss+xml" title="RSS: projects | kinaj" href="{{ url_for('rss') }}" />
         <link rel="alternate" type="application/atom+xml" title="ATOM: projects | kinaj" href="{{ url_for('atom') }}" />
+        <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" />
+        <link charset="utf-8" type="text/css" rel="stylesheet" media="all" href="/static/css/load.css" />
+        <!--[if IE 7]>
+          <link charset="utf-8" type="text/css" rel="stylesheet" media="screen" href="/static/css/ie7.css" />
+        <![endif]-->
     </head>
     <body>
         <div id="page">
