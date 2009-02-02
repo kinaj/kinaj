@@ -4,7 +4,8 @@
     
     img {font-size: 10px;}
     
-    a {color: #333;}
+    a {color: #333; text-decoration: none;}
+    a:hover {text-decoration: underline;}
     
     div#page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
     
