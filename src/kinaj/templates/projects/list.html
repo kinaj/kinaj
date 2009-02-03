@@ -2,15 +2,19 @@
 {%- block title %}list · {% endblock %}
 {%- block content %}
 <div id="project_list">
+{%- for project in active %}
+    {%- if loop.first %}
     <h1>List of projects</h1>
     <h2>Bowtie Themes - Icons - Widgets</h2>
     <dl>
-        {%- for project in active %}
-        <dt>· <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a></dt>
+        {%- endif %}
+        <dt>· <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a> [ <a href="{{ url_for('delete', docid=project._id) }}" title="delete {{ project.name }}">x</a> ]</dt>
         <dd>{{ project.category }}</dd>
-        {%- else %}
-        <h2>No project created yet.</h2>
-        {%- endfor %}
+        {%- if loop.last %}
     </dl>
+    {%- endif %}
+{%- else %}
+    <h1>No project created yet.</h1>
+{%- endfor %}
 </div>
 {%- endblock %}

@@ -18,7 +18,7 @@ application = local('application')
 
 url_map = Map()
 
-jinja2_env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
+jinja2_env = Environment(loader=FileSystemLoader(TEMPLATE_PATH), extensions=['jinja2.ext.loopcontrols'])
 
 
 def wrap(doc):

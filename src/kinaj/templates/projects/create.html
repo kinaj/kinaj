@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="" method="post" accept-charset="utf-8">
-    <fieldset>
-        {%- include "projects/_form.html" %}
-        <input type="submit" name="formsubmit" value="Create" class="formsubmit" />
-    </fieldset>
-</form>
+<div id="mask">
+    <form id="create" action="" method="post" accept-charset="utf-8">
+        <fieldset>
+            <legend>create document</legend>
+            {%- include "projects/_form.html" %}
+            <input type="submit" name="formsubmit" value="create" class="formsubmit" />
+        </fieldset>
+    </form>
+</div>
 {% endblock %}

@@ -8,17 +8,19 @@
     a:hover {color: #fff;}
     
     h1 {font-size: 2.4em; font-family: 'HelveticaNeue-CondensedBold';}
+    h3 {font-size: 1.4em; color: #4f585e; margin: 0em 0em 1em 0em;}
     
     div#page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
     
     div#page div#header {width: 55em; margin: 0 auto; padding: 7.5em 0em;}
     
     div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; padding: 5em 0em 5em 0em;}
-    div#page div#content form {font-size: 1.5em; width: 36.666em; margin: 0 auto;}
-    div#page div#content form label {margin: 2em 0em 0.5em 0em; display: block;}
-    div#page div#content form input {display: block; font-size: 1.2em;}
-    div#page div#content form input.formsubmit {margin: 2em 0em 0em 0em;}
-    div#page div#content form textarea {display: block; font-size: 1.2em;}
+    div#page div#content form {margin: 0em 0em 4em 0em;}
+    div#page div#content form fieldset legend {color: #4f585e;}
+    div#page div#content form fieldset label {margin: 1em 0em 0.5em 0em; display: block; clear: both;}
+    div#page div#content form fieldset input {display: block;}
+    div#page div#content form fieldset input.formsubmit {margin: 2em 0em 0em 0em;}
+    div#page div#content form fieldset textarea {display: block;}
     div#page div#content ul.top {font-size: 1.8em;}
     div#page div#content ul.top li {margin: 0em 0em 1em 0em;}
     div#page div#content ul.sub {margin: 0em 0em 0em 2em;}
@@ -47,7 +49,7 @@
     div#page div#content div#project_list div#info ul.attachments li a {color: #525e69;}
     div#page div#content div#project_list a.back {position: relative; left: -1.5em; top: 13.5em;}
     div#page div#content div#project_list h1 {width: 50%; float: left; font-size: 1.4em; color: #4f585e;}
-    div#page div#content div#project_list h2 {width: 50%; margin: 0% 0% 0% 50%;  font-size: 1.4em; color: #4f585e;}
+    div#page div#content div#project_list h2 {width: 50%; margin: 0% 0% 0% 50%; font-size: 1.4em; color: #4f585e;}
     div#page div#content div#project_list dl {clear: both; margin: 2.5em 0em 0em 0em;}
     div#page div#content div#project_list dl dt {display: block; width: 50%; clear: both; float: left; font-size: 1.2em; margin: 0em 0em 0.5em 0em;}
     div#page div#content div#project_list dl dd {display: block; width: 50%; margin: 0% 0% 0.5em 50%; font-size: 1.2em;}
@@ -55,6 +57,22 @@
     div#page div#content div#single_project {width: 60em; margin: 0 auto;}
     div#page div#content div#single_project a.back {float: left; margin: 11em 0em 0em 0em;}
     div#page div#content div#single_project div.preview {width: 21.5em; height: 19.5em; background: transparent url(../img/frame_project.png) top left no-repeat; padding: 3em 3em 3em 4.75em; float: left; margin: 0em 0.35em 0em 0em;}
+    div#page div#content div#mask {width: 55em; margin: 0 auto;}
+    div#page div#content div#mask ul {clear: both; margin: 2.5em 0em 0em 0em;}
+    div#page div#content div#mask ul li {font-size: 1.2em; margin: 0em 0em 0.5em 0em;}
+    div#page div#content div#mask form#create fieldset legend {font-size: 1.4em; padding: 0em 0em 1em 0em;}
+    div#page div#content div#mask form#create fieldset label {font-size: 1.4em;}
+    div#page div#content div#mask form#create fieldset input {font-size: 1.4em; width: 21.42em;}
+    div#page div#content div#mask form#create fieldset input.formsubmit {width: auto;}
+    div#page div#content div#mask form#upload {margin: 4em 0em;}
+    div#page div#content div#mask form#upload fieldset legend {font-size: 1.4em; padding: 0em 0em 1em 0em;}
+    div#page div#content div#mask form#upload fieldset label {font-size: 1.4em;}
+    div#page div#content div#mask form#upload fieldset input {font-size: 1.4em; width: 21.42em;}
+    div#page div#content div#mask form#upload fieldset input.formsubmit {width: auto;}
+    div#page div#content div#mask form#update fieldset legend {font-size: 1.4em; padding: 0em 0em 1em 0em;}
+    div#page div#content div#mask form#update fieldset label {font-size: 1.4em;}
+    div#page div#content div#mask form#update fieldset input {font-size: 1.4em; width: 21.42em;}
+    div#page div#content div#mask form#update fieldset input.formsubmit {width: auto;}
     div#page div#content div.info {float: right; width: 29em;}
     div#page div#content div.info h1 {margin: 0.3em 0em;}
     div#page div#content div.info span.category {font-size: 1.2em;}

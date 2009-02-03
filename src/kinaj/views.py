@@ -14,12 +14,9 @@ from werkzeug import Response, redirect
 def index(request):
 
     if not request.is_xhr:
-        featured = [wrap(project) for project in Project.allFeatured()][0]
-        activeResults = [wrap(project) for project in Project.allActiveNotFeatured()]
-        
         context = {
-            'featured': featured,
-            'active': reversed(activeResults)
+            'featured': [wrap(project) for project in Project.allFeatured()],
+            'active': reversed([wrap(project) for project in Project.allActiveNotFeatured()])
         }
         
         return render_html('index.html', context)
@@ -126,8 +123,10 @@ def update(request,docid):
             project = Project.db.get(docid)
             project["tags"] = " ".join(project["tags"])
 
+            print project
+
             context = {
-                'project':project 
+                'project': project 
             }
 
             return render_html('projects/update.html',context)
@@ -140,7 +139,7 @@ def update(request,docid):
 def delete(request,docid):
     if not request.is_xhr:
         Project.delete(docid)
-        return redirect(url_for('index'))
+        return redirect(url_for('list'))
         
     else:
         if request.method == 'DELETE':
@@ -151,6 +150,18 @@ def delete(request,docid):
         else:
             raise NotImplementedError('nothing here')
 
+
+@expose('/projects/upload/<path:docid>')
+def upload(request, docid):
+    """docstring for upload"""
+    doc = Project.db.get(docid)
+    
+    for file in request.files:
+        print file
+        print request.files[file]
+        Project.db.add_attachment(doc, request.files[file].read(), request.files[file].filename, content_type=request.files[file].content_type)
+    
+    return redirect(url_for('update', docid=docid))
     
 @expose('/projects/feed/rss/')
 def rss(request):

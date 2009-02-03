@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="" method="post" accept-charset="utf-8">
-    <fieldset>
-        {%- include "projects/_form.html" %}
-        <input type="submit" name="formsubmit" value="Update" class="formsubmit" />
-    </fieldset>
-</form>
+<div id="mask">
+    <h3>Attachments</h3>
+    <ul>
+    {%- for attachment in project._attachments %}
+        <li>· <a href="/static/projects/{{ project._id }}/{{ attachment }}">{{ attachment }}</a> [ <a href="">x</a> ]</li>
+    {%- endfor %}
+    </ul>
+    <form id="upload" action="{{ url_for('upload', docid=project._id) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Upload attachments</legend>
+            <input type="file" name="upload" />
+            <input type="submit" name="formsubmit" value="upload" class="formsubmit" />
+        </fieldset>
+    </form>
+    <form id="update" action="" method="post" accept-charset="utf-8">
+        <fieldset>
+            <legend>Update document</legend>
+            {%- include "projects/_form.html" %}
+            <input type="submit" name="formsubmit" value="update" class="formsubmit" />
+        </fieldset>
+    </form>
+</div>
 {% endblock %}

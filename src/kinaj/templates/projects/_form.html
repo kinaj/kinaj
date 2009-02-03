@@ -4,11 +4,11 @@
 <label for="text">text</label>
 <textarea name="text" rows="8" cols="40" id="text">{{ project.text }}</textarea>
 
-<label for="active">active</label>
-<input type="checkbox" name="active" value="true" id="active"{% if project.active %} checked="checked"{%- endif %}/>
+<label for="active" class="box">active</label>
+<input type="checkbox" name="active" value="true" id="active" class="box"{% if project.active %} checked="checked"{%- endif %}/>
 
-<label for="featured">featured</label>
-<input type="checkbox" name="featured" value="true" id="featured"{%- if project.featured %} checked="checked"{%- endif %} />
+<label for="featured" class="box">featured</label>
+<input type="checkbox" name="featured" value="true" id="featured" class="box"{%- if project.featured %} checked="checked"{%- endif %} />
 
 <label for="category">category</label>
 <input type="text" name="category" value="{{ project.category }}" id="category" />
@@ -17,13 +17,33 @@
 <input type="text" name="tags" value="{{ project.tags }}" id="tags" />
 
 <label for="preview_small">preview small</label>
-<input type="text" name="preview_small" value="{{ project.preview_small }}" id="preview_small" />
+<select name="preview_small" id="preview_small">
+    <option value="">---</option>
+{%- for attachment in project._attachments %}
+    <option value="{{ attachment }}"{% if project.preview_small == attachment %} selected="selected"{%- endif %}>{{ attachment }}</option>
+{%- endfor %}
+</select>
 
 <label for="preview_big">preview big</label>
-<input type="text" name="preview_big" value="{{ project.preview_big }}" id="preview_big" />
+<select name="preview_big" id="preview_big">
+    <option value="">---</option>
+{%- for attachment in project._attachments %}
+    <option value="{{ attachment }}"{% if project.preview_big == attachment %} selected="selected"{%- endif %}>{{ attachment }}</option>
+{%- endfor %}
+</select>
 
 <label for="download_mac">download mac</label>
-<input type="text" name="download_mac" value="{{ project.download_mac }}" id="download_mac" />
+<select name="download_mac" id="download_mac">
+    <option value="">---</option>
+{%- for attachment in project._attachments %}
+    <option value="{{ attachment }}"{% if project.download_mac == attachment %} selected="selected"{%- endif %}>{{ attachment }}</option>
+{%- endfor %}
+</select>
 
 <label for="download_pc">download pc</label>
-<input type="text" name="download_pc" value="{{ project.download_pc }}" id="download_pc" />
+<select name="download_pc" id="download_pc">
+    <option value="">---</option>
+{%- for attachment in project._attachments %}
+    <option value="{{ attachment }}"{% if project.download_pc == attachment %} selected="selected"{%- endif %}>{{ attachment }}</option>
+{%- endfor %}
+</select>
