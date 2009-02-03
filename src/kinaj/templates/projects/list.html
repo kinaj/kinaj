@@ -7,7 +7,7 @@
     <h1>List of projects</h1>
     <dl>
         {%- endif %}
-        <dt>· <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a> [ <a href="{{ url_for('delete', docid=project._id) }}" title="delete {{ project.name }}">x</a> ]</dt>
+        <dt>· <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a> [ <a href="{{ url_for('update', docid=project._id) }}" title="update {{ project.name }}">e</a> · <a href="{{ url_for('delete', docid=project._id) }}" title="delete {{ project.name }}">x</a> ]</dt>
         <dd>{{ project.category }}</dd>
         {%- if loop.last %}
     </dl>

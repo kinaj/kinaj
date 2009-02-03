@@ -23,4 +23,7 @@
         </fieldset>
     </form>
 </div>
+<div id="sub">
+    <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">Back to {{ project.name }}</a>
+</div>
 {% endblock %}

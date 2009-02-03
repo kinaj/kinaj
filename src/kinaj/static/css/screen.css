@@ -58,6 +58,7 @@
     div#page div#content div#single_project {width: 60em; margin: 0 auto;}
     div#page div#content div#single_project a.back {float: left; margin: 11em 0em 0em 0em;}
     div#page div#content div#single_project div.preview {width: 21.5em; height: 19.5em; background: transparent url(../img/frame_project.png) top left no-repeat; padding: 3em 3em 3em 4.75em; float: left; margin: 0em 0.35em 0em 0em;}
+    
     div#page div#content div#mask {width: 55em; margin: 0 auto;}
     div#page div#content div#mask ul {clear: both; margin: 2.5em 0em 0em 0em;}
     div#page div#content div#mask ul li {font-size: 1.2em; margin: 0em 0em 0.5em 0em;}
@@ -74,6 +75,10 @@
     div#page div#content div#mask form#update fieldset label {font-size: 1.4em;}
     div#page div#content div#mask form#update fieldset input {font-size: 1.4em; width: 21.42em;}
     div#page div#content div#mask form#update fieldset input.formsubmit {width: auto;}
+    
+    div#page div#content div#sub {width: 55em; margin: 4em auto 0em auto;}
+    div#page div#content div#sub a {font-size: 1.2em;}
+    
     div#page div#content div.info {float: right; width: 29em;}
     div#page div#content div.info h1 {margin: 0.3em 0em;}
     div#page div#content div.info span.category {font-size: 1.2em;}

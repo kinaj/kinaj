@@ -20,4 +20,7 @@
     {%- if loop.last %}</div>{%- endif %}
     {%- endfor %}
 </div>
+<div id="sub">
+    <a href="{{ url_for('list') }}" title="List of all projects">List of all projects</a>
+</div>
 {%- endblock %}
