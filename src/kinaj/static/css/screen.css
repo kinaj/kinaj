@@ -46,6 +46,11 @@
     div#page div#content div#project_list div#info ul.attachments li {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
     div#page div#content div#project_list div#info ul.attachments li a {color: #525e69;}
     div#page div#content div#project_list a.back {position: relative; left: -1.5em; top: 13.5em;}
+    div#page div#content div#project_list h1 {width: 50%; float: left; font-size: 1.4em; color: #4f585e;}
+    div#page div#content div#project_list h2 {width: 50%; margin: 0% 0% 0% 50%;  font-size: 1.4em; color: #4f585e;}
+    div#page div#content div#project_list dl {clear: both; margin: 2.5em 0em 0em 0em;}
+    div#page div#content div#project_list dl dt {display: block; width: 50%; clear: both; float: left; font-size: 1.2em; margin: 0em 0em 0.5em 0em;}
+    div#page div#content div#project_list dl dd {display: block; width: 50%; margin: 0% 0% 0.5em 50%; font-size: 1.2em;}
     
     div#page div#content div#single_project {width: 60em; margin: 0 auto;}
     div#page div#content div#single_project a.back {float: left; margin: 11em 0em 0em 0em;}

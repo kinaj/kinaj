@@ -1,10 +1,16 @@
 {%- extends "base.html" %}
-{%- block title %}list | {% endblock %}
+{%- block title %}list · {% endblock %}
 {%- block content %}
-<h1>List of projects</h1>
-{%- for project in active %}
-<h2><a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a></h2>
-{%- else %}
-<h2>No project created yet.</h2>
-{%- endfor %}
+<div id="project_list">
+    <h1>List of projects</h1>
+    <h2>Bowtie Themes - Icons - Widgets</h2>
+    <dl>
+        {%- for project in active %}
+        <dt>· <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a></dt>
+        <dd>{{ project.category }}</dd>
+        {%- else %}
+        <h2>No project created yet.</h2>
+        {%- endfor %}
+    </dl>
+</div>
 {%- endblock %}
