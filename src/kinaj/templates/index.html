@@ -3,7 +3,7 @@
 {%- block content %}
 <div id="project_list">
     {%- for project in featured %}
-    {%- if loop.index0 > 0 %}{% continue %}{%- endif %}
+    {%- if loop.index0 > 0 %}{% break %}{%- endif %}
     {%- if loop.first %}<div id="featured">{%- endif %}
         <div class="project" id="{{ project._id }}">
             <a href="/projects/retrieve/{{ project._id }}/"><img src="/static/projects/{{ project._id }}/{{ project.preview_big }}" title="{{ project.name }}" alt="{{ project.name }}" /></a>

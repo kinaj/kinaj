@@ -10,6 +10,8 @@
     h1 {font-size: 2.4em; font-family: 'HelveticaNeue-CondensedBold';}
     h3 {font-size: 1.4em; color: #4f585e; margin: 0em 0em 1em 0em;}
     
+    strong {font-weight: bold;}
+    
     div#page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
     
     div#page div#header {width: 55em; margin: 0 auto; padding: 7.5em 0em;}
@@ -48,8 +50,7 @@
     div#page div#content div#project_list div#info ul.attachments li {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
     div#page div#content div#project_list div#info ul.attachments li a {color: #525e69;}
     div#page div#content div#project_list a.back {position: relative; left: -1.5em; top: 13.5em;}
-    div#page div#content div#project_list h1 {width: 50%; float: left; font-size: 1.4em; color: #4f585e;}
-    div#page div#content div#project_list h2 {width: 50%; margin: 0% 0% 0% 50%; font-size: 1.4em; color: #4f585e;}
+    div#page div#content div#project_list h1 {font-size: 1.4em; color: #4f585e;}
     div#page div#content div#project_list dl {clear: both; margin: 2.5em 0em 0em 0em;}
     div#page div#content div#project_list dl dt {display: block; width: 50%; clear: both; float: left; font-size: 1.2em; margin: 0em 0em 0.5em 0em;}
     div#page div#content div#project_list dl dd {display: block; width: 50%; margin: 0% 0% 0.5em 50%; font-size: 1.2em;}
@@ -76,7 +77,8 @@
     div#page div#content div.info {float: right; width: 29em;}
     div#page div#content div.info h1 {margin: 0.3em 0em;}
     div#page div#content div.info span.category {font-size: 1.2em;}
-    div#page div#content div.info div {font-size: 1.4em; min-height: 9em; padding: 2em 0em;}
+    div#page div#content div.info div {font-size: 1.4em; min-height: 9em; padding: 2em 0em 2em 0em;}
+    div#page div#content div.info div p {margin: 0em 0em 1em 0em;}
     div#page div#content div.info p.download {font-size: 1.4em;}
     div#page div#content div.info p.download a {text-decoration: underline;}
     

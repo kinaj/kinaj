@@ -5,7 +5,6 @@
 {%- for project in active %}
     {%- if loop.first %}
     <h1>List of projects</h1>
-    <h2>Bowtie Themes - Icons - Widgets</h2>
     <dl>
         {%- endif %}
         <dt>· <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">{{ project.name }}</a> [ <a href="{{ url_for('delete', docid=project._id) }}" title="delete {{ project.name }}">x</a> ]</dt>

@@ -7,6 +7,7 @@ from simplecouchdb import schema
 class Project(schema.Document):
     name = schema.StringProperty(name='name')
     text = schema.StringProperty(name='text')
+    markup = schema.StringProperty(name='markup', default='markdown')
     category = schema.StringProperty(name='category')
     tags = schema.ListProperty(name='tags')
     active = schema.BooleanProperty(name='active', default=False)
@@ -21,6 +22,11 @@ class Project(schema.Document):
     
     db = None
     
+    def __unicode__(self):
+        """docstring for __unicode__"""
+        return self.text
+        
+        
     @classmethod
     def all(self):
         return self.db.view('projects/all')

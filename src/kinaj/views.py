@@ -4,8 +4,8 @@ import simplejson
 from datetime import datetime
 
 from kinaj.models import Project
-from kinaj.utils import expose, render_html, render_xml, render_atom, url_for
-from kinaj.utils import wrap, make_id
+from kinaj.utils import expose, make_id, url_for, wrap
+from kinaj.utils.template.render import render_html, render_xml, render_atom
 
 from werkzeug import Response, redirect
 
