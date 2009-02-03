@@ -16,9 +16,9 @@
             {%- if project.download_mac and project.download_pc %}
                 <p class="download">Download for <a href="/static/projects/{{ project.id }}/{{ project.download_mac }}">Mac</a> or <a href="/static/projects/{{ project.id }}/{{ project.download_pc }}">PC</a></p>
             {%- elif project.download_mac %}
-                <p class="download"><a href="/static/projects/{{ project.id }}/{{ project.download_mac }}">download</a></p>
+                <p class="download"><a href="/static/projects/{{ project.id }}/{{ project.download_mac }}">Download</a></p>
             {%- elif project.download_pc %}
-                <p class="download"><a href="/static/projects/{{ project.id }}/{{ project.download_pc }}">download</a></p>
+                <p class="download"><a href="/static/projects/{{ project.id }}/{{ project.download_pc }}">Download</a></p>
             {%- endif %}
         </div>
     </div>
