@@ -1,11 +1,11 @@
 @charset "UTF-8";
 @media screen {
-    body {background: #4f585e; color: #fff; font-size: 10px; font-family: 'HelveticaNeue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; padding: 0 auto;}
+    body {background: #4f585e; color: #cfcfcf; font-size: 10px; font-family: 'HelveticaNeue', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; padding: 0 auto;}
     
     img {font-size: 10px;}
     
-    a {color: #fff; text-decoration: none;}
-    a:hover {text-decoration: underline;}
+    a {color: #cfcfcf; text-decoration: none;}
+    a:hover {color: #fff;}
     
     h1 {font-size: 2.4em;}
     
@@ -18,6 +18,6 @@
     div#page div#footer {text-align: center; margin: 6em 0em 3em 0em;}
     div#page div#footer ul {margin: 0em 0em 2em 0em;}
     div#page div#footer ul li {display: inline;}
-    div#page div#footer ul li a {font-size: 1.2em; color: #cfcfcf; font-family: 'HelveticaNeue-CondensedBold', helvetica, arial, sans-serif;}
+    div#page div#footer ul li a {font-size: 1.2em; font-family: 'HelveticaNeue-CondensedBold', helvetica, arial, sans-serif;}
     div#page div#footer p {color: #657178; font-family: 'HelveticaNeue-Regular', helvetica, arial, sans-serif;}
 }
