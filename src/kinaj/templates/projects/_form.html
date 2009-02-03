@@ -1,0 +1,29 @@
+<label for="name">name</label>
+<input type="text" name="name" value="{{ project.name }}" id="name" />
+
+<label for="text">text</label>
+<textarea name="text" rows="8" cols="40" id="text">{{ project.text }}</textarea>
+
+<label for="active">active</label>
+<input type="checkbox" name="active" value="true" id="active"{% if project.active %} checked="checked"{%- endif %}/>
+
+<label for="featured">featured</label>
+<input type="checkbox" name="featured" value="true" id="featured"{%- if project.featured %} checked="checked"{%- endif %} />
+
+<label for="category">category</label>
+<input type="text" name="category" value="{{ project.category }}" id="category" />
+
+<label for="tags">tags</label>
+<input type="text" name="tags" value="{{ project.tags }}" id="tags" />
+
+<label for="preview_small">preview small</label>
+<input type="text" name="preview_small" value="{{ project.preview_small }}" id="preview_small" />
+
+<label for="preview_big">preview big</label>
+<input type="text" name="preview_big" value="{{ project.preview_big }}" id="preview_big" />
+
+<label for="download_mac">download mac</label>
+<input type="text" name="download_mac" value="{{ project.download_mac }}" id="download_mac" />
+
+<label for="download_pc">download pc</label>
+<input type="text" name="download_pc" value="{{ project.download_pc }}" id="download_pc" />

@@ -49,21 +49,26 @@ def create(request):
         if request.method == 'POST':
             p = Project()
             p['id'] = make_id(request.form.get('name'))
-            p['preview_small'] = request.form.get('preview_small')
-            p['preview_big'] = request.form.get('preview_big')
             p['name'] = request.form.get('name')
             p['text'] = request.form.get('text')
-            p['tags'] = request.form.get('tags').split(' ')
             p['active'] = bool(request.form.get('active'))
             p['featured'] = bool(request.form.get('featured'))
+            p['category'] = request.form.get('category')
+            p['tags'] = request.form.get('tags').split(' ')
+            p['preview_small'] = request.form.get('preview_small')
+            p['preview_big'] = request.form.get('preview_big')
+            p['download_mac'] = request.form.get('download_mac')
+            p['download_pc'] = request.form.get('download_pc')
             
             resp = Project.create(p)
 
             return redirect(url_for('update', docid=p['id']))
         
         elif request.method == 'GET':
-            
-            return render_html('projects/create.html')
+            context = {
+                "project": {}
+            }
+            return render_html('projects/create.html',context)
         
     else:
         raise NotImplementedError('nothing here')
@@ -93,19 +98,20 @@ def retrieve(request, docid):
 def update(request,docid):
     if request.method == 'POST':
         if not request.is_xhr:
-            d = Project.db.get(docid)
-            
-            d['name'] = request.form.get('name')
-            d['preview_small'] = request.form.get('preview_small')
-            d['preview_big'] = request.form.get('preview_big')
-            d['tags'] = request.form.get('tags')
-            d['text'] = request.form.get('text')
-            d['active'] = bool(request.form.get('active'))
-            d['featured'] = bool(request.form.get('featured'))
+            p = Project.db.get(docid)
+            p['id'] = make_id(request.form.get('name'))
+            p['name'] = request.form.get('name')
+            p['text'] = request.form.get('text')
+            p['active'] = bool(request.form.get('active'))
+            p['featured'] = bool(request.form.get('featured'))
+            p['category'] = request.form.get('category')
+            p['tags'] = request.form.get('tags').split(' ')
+            p['preview_small'] = request.form.get('preview_small')
+            p['preview_big'] = request.form.get('preview_big')
+            p['download_mac'] = request.form.get('download_mac')
+            p['download_pc'] = request.form.get('download_pc')
 
-            d['tags'] = d['tags'].split(' ')
-
-            Project.update(d)
+            Project.update(p)
 
             return redirect(url_for('update', docid=docid))
         

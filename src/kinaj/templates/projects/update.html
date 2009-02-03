@@ -2,16 +2,7 @@
 {% block content %}
 <form action="" method="post" accept-charset="utf-8">
     <fieldset>
-        <input type="hidden" name="id" id="id" value="{{ project._id }}" />
-        <input type="hidden" name="rev" id="rev" value="{{ project._rev }}" />
-        <label for="name">Name</label><input type="text" name="name" value="{{ project.name }}" id="name" />
-        <label for="preview_small">Preview: small</label><input type="text" name="preview_small" value="{{ project.preview_small }}" id="preview_small" />
-        <label for="preview_big">Preview: big</label><input type="text" name="preview_big" value="{{ project.preview_big }}" id="preview_big" />
-        <label for="tags">Tags</label><input type="text" name="tags" value="{{ project.tags }}" id="tags" />
-        <label for="text">Text</label><textarea name="text" rows="8" cols="40" id="text">{{ project.text }}</textarea>
-        <label for="active">Active</label><input type="checkbox" name="active" value="true" id="active" {% if project.active %}checked="checked"{% endif %}/>
-        <label for="featured">Featured</label><input type="checkbox" name="featured" value="true" id="featured" {% if project.featured %}checked="checked"{% endif %}/>
-        
+        {%- include "projects/_form.html" %}
         <input type="submit" name="formsubmit" value="Update" class="formsubmit" />
     </fieldset>
 </form>

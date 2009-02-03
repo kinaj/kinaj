@@ -5,16 +5,19 @@ from simplecouchdb import schema
 
 
 class Project(schema.Document):
-    preview_small = schema.StringProperty(name='preview_small')
-    preview_big = schema.StringProperty(name='preview_big')
     name = schema.StringProperty(name='name')
-    type = schema.StringProperty(name='type', default='project')
-    tags = schema.ListProperty(name='tags')
     text = schema.StringProperty(name='text')
+    category = schema.StringProperty(name='category')
+    tags = schema.ListProperty(name='tags')
     active = schema.BooleanProperty(name='active', default=False)
     featured = schema.BooleanProperty(name='featured', default=False)
     ctime = schema.DateTimeProperty(name='ctime', auto_now_add=True)
     mtime = schema.DateTimeProperty(name='mtime', auto_now=True)
+    
+    preview_small = schema.StringProperty(name='preview_small')
+    preview_big = schema.StringProperty(name='preview_big')
+    download_mac = schema.StringProperty(name='download_mac')
+    download_pc = schema.StringProperty(name='download_pc')
     
     db = None
     
@@ -45,7 +48,7 @@ class Project(schema.Document):
     
     @classmethod    
     def update(self, doc):
-        return self.db.post(doc)
+        return self.db.save(doc)
     
     @classmethod    
     def delete(self, docid):
