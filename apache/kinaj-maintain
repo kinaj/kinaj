@@ -5,6 +5,18 @@ NameVirtualHost 85.214.138.166:80
   ServerAlias kinaj.com
   ServerAdmin alx@metaen.de
 
+  LogLevel info
+
+  DocumentRoot /home/kinaj/projects/kinaj/maintain/
+
+  Alias /favicon.ico /home/kinaj/projects/kinaj/maintain/static/img/favicon.ico
+</VirtualHost>
+
+<VirtualHost 85.214.138.166:80>
+  ServerName  dev.kinaj.com
+  ServerAlias dev.kinaj.com
+  ServerAdmin alx@metaen.de
+
   LogLevel debug
   CustomLog /var/log/apache2/kinaj-access.log combined
   ErrorLog /var/log/apache2/kinaj-error.log
