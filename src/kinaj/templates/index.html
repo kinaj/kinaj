@@ -1,5 +1,5 @@
 {%- extends "base.html" %}
-{%- block title %}showroom · {% endblock %}
+{%- block title %}Showroom · {% endblock %}
 {%- block content %}
 <div id="project_list">
     {%- for project in featured %}
@@ -21,6 +21,6 @@
     {%- endfor %}
 </div>
 <div id="sub">
-    <a href="{{ url_for('list') }}" title="List of all projects">List of all projects</a>
+    <a href="{{ url_for('list') }}" title="list of all projects">all projects</a>
 </div>
 {%- endblock %}

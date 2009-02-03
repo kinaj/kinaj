@@ -5,10 +5,10 @@
     <h3>Attachments</h3>
     <ul>
     {%- for attachment in project._attachments %}
-        <li>· <a href="/static/projects/{{ project._id }}/{{ attachment }}">{{ attachment }}</a> [ <a href="">x</a> ]</li>
+        <li>· <a href="/static/projects/{{ project._id }}/{{ attachment }}">{{ attachment }}</a> [ <a href="{{ url_for('deleteAttachment', docid=project._id, attachment=attachment) }}" title="delete {{ attachment }}">x</a> ]</li>
     {%- endfor %}
     </ul>
-    <form id="upload" action="{{ url_for('upload', docid=project._id) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    <form id="upload" action="{{ url_for('uploadAttachment', docid=project._id) }}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
         <fieldset>
             <legend>Upload attachments</legend>
             <input type="file" name="upload" />
@@ -24,6 +24,6 @@
     </form>
 </div>
 <div id="sub">
-    <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">Back to {{ project.name }}</a>
+    <a href="{{ url_for('retrieve', docid=project._id) }}" title="{{ project.name }}">back to {{ project.name }}</a>
 </div>
 {% endblock %}

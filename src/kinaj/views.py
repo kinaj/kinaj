@@ -147,17 +147,6 @@ def delete(request,docid):
         
         else:
             raise NotImplementedError('nothing here')
-
-
-@expose('/projects/upload/<path:docid>')
-def upload(request, docid):
-    """docstring for upload"""
-    doc = Project.db.get(docid)
-    
-    for file in request.files:
-        Project.db.add_attachment(doc, request.files[file].read(), request.files[file].filename, content_type=request.files[file].content_type)
-    
-    return redirect(url_for('update', docid=docid))
     
 @expose('/projects/feed/rss/')
 def rss(request):
@@ -182,7 +171,26 @@ def atom(request):
     
     return render_atom('projects/atom.xml', context)
     
+
+@expose('/projects/retrieve/<path:docid>/upload/')
+def uploadAttachment(request, docid):
+    """docstring for upload"""
+    doc = Project.db.get(docid)
+
+    for file in request.files:
+        Project.db.add_attachment(doc, request.files[file].read(), request.files[file].filename, content_type=request.files[file].content_type)
+
+    return redirect(url_for('update', docid=docid))
     
+@expose('/projects/retrieve/<path:docid>/delete/<attachment>')
+def deleteAttachment(request, docid, attachment):
+    """docstring for upload"""
+    doc = Project.db.get(docid)
+
+    Project.db.delete_attachment(doc, attachment)
+
+    return redirect(url_for('update', docid=docid))
+
 @expose('/static/projects/<path:path>')
 def attachment(request, path):
     """docstring for attachments"""
