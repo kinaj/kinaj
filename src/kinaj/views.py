@@ -123,8 +123,6 @@ def update(request,docid):
             project = Project.db.get(docid)
             project["tags"] = " ".join(project["tags"])
 
-            print project
-
             context = {
                 'project': project 
             }
@@ -157,8 +155,6 @@ def upload(request, docid):
     doc = Project.db.get(docid)
     
     for file in request.files:
-        print file
-        print request.files[file]
         Project.db.add_attachment(doc, request.files[file].read(), request.files[file].filename, content_type=request.files[file].content_type)
     
     return redirect(url_for('update', docid=docid))
