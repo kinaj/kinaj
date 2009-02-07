@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
-import simplejson
+import simplejson, time, uuid
 
-from datetime import datetime
-
+from kinaj.auth import secure
 from kinaj.models import Project
-from kinaj.utils import expose, make_id, url_for, wrap
-from kinaj.utils.template.render import render_html, render_xml, render_atom
+from kinaj.models import User
+from kinaj.utils import chkpwd
+from kinaj.utils import expose
+from kinaj.utils import make_id
+from kinaj.utils import url_for
+from kinaj.utils import wrap
+from kinaj.utils.template.render import render_html
+from kinaj.utils.template.render import render_xml 
+from kinaj.utils.template.render import render_atom
 
 from werkzeug import Response, redirect
 
 
 @expose('/')
 def index(request):
-
+    print request.authorization
     if not request.is_xhr:
         context = {
             'featured': [wrap(project) for project in Project.allFeatured()],
@@ -25,9 +31,9 @@ def index(request):
         raise NotImplementedError('nothing here')
 
 
-@expose('/projects/list/')
+@expose('/projects/list/', roles=('admin',))
 def list(request):
-
+    
     if not request.is_xhr:
         activeResults = [wrap(project) for project in Project.allActive()]
         
@@ -40,7 +46,7 @@ def list(request):
         raise NotImplementedError('nothing here')
 
 
-@expose('/projects/create/')
+@expose('/projects/create/', roles=('admin',))
 def create(request):
     if not request.is_xhr:
         if request.method == 'POST':
@@ -91,8 +97,8 @@ def retrieve(request, docid):
             return Response(resp, mimetype='application/json')
 
 
-@expose('/projects/update/<path:docid>/')
-def update(request,docid):
+@expose('/projects/update/<path:docid>/', roles=('admin',))
+def update(request, docid):
     if request.method == 'POST':
         if not request.is_xhr:
             p = Project.db.get(docid)
@@ -114,7 +120,7 @@ def update(request,docid):
         
         else:
             
-            resp = '''ok'''
+            resp = 'ok'
             
             return Response(resp,mimetype='text/plain')
         
@@ -133,7 +139,7 @@ def update(request,docid):
             raise NotImplementedError('nothing here')
 
 
-@expose('/projects/delete/<path:docid>/')
+@expose('/projects/delete/<path:docid>/', roles=('admin',))
 def delete(request,docid):
     if not request.is_xhr:
         Project.delete(docid)
@@ -172,7 +178,7 @@ def atom(request):
     return render_atom('projects/atom.xml', context)
     
 
-@expose('/projects/retrieve/<path:docid>/upload/')
+@expose('/projects/retrieve/<path:docid>/upload/', roles=('admin',))
 def uploadAttachment(request, docid):
     """docstring for upload"""
     doc = Project.db.get(docid)
@@ -182,7 +188,8 @@ def uploadAttachment(request, docid):
 
     return redirect(url_for('update', docid=docid))
     
-@expose('/projects/retrieve/<path:docid>/delete/<attachment>')
+
+@expose('/projects/retrieve/<path:docid>/delete/<attachment>', roles=('admin',))
 def deleteAttachment(request, docid, attachment):
     """docstring for upload"""
     doc = Project.db.get(docid)
@@ -191,6 +198,7 @@ def deleteAttachment(request, docid, attachment):
 
     return redirect(url_for('update', docid=docid))
 
+
 @expose('/static/projects/<path:path>')
 def attachment(request, path):
     """docstring for attachments"""
@@ -198,6 +206,59 @@ def attachment(request, path):
         return redirect('http://localhost:5984/kinaj-projects/%s' % path)
     else:
         raise NotImplementedError('Should be ACCESS DENIED')
+            
+            
+@expose('/users/login')
+def login(request):
+    """docstring for login"""
+    
+    if request.method == 'GET':
+        
+        context = {
+            'referrer': request.args['referrer']
+        }
+        
+        return render_html('login.html', context)
+        
+    elif request.method == 'POST':
+        
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        user = User.db.get(username)
+        
+        reference = user['password']
+        
+        if chkpwd(password, reference):
+            session_id = uuid.uuid4().hex
+            
+            user['session_id'] = session_id
+            user['last_login'] = time.time()
+        
+            User.update(user)
+            
+            red = redirect(request.args['referrer'])
+            red.set_cookie('session_id', session_id)
+            
+            return red
+        
+        context = {
+            'referrer': request.args['referrer']
+        }
+        
+        return render_html('login.html', context)
+
+
+@expose('/users/logout')
+def logout(request):
+    """docstring for logout"""
+    red = redirect(url_for('index'))
+    red.delete_cookie('session_id')
+    
+    return red
+    
+    return 
+    
 
 def not_found(request):
     return render_html('not_found.html')

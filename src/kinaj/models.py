@@ -68,5 +68,31 @@ class Project(schema.Document):
         
 class User(schema.Document):
     """docstring for User"""
+    password = schema.StringProperty(name='password')
+    roles = schema.ListProperty(name='roles')
+    
     db = None
+    
+    @classmethod
+    def update(self, doc):
+        return self.db.save(doc)
+    
+    @classmethod
+    def valid_user(self, username, password):
+        """docstring for valid_user"""
+        user = User.db.get(username)
+        
+        if user['password'] == password:
+            return True
+            
+        return False
+        
+        
+    @classmethod
+    def user_roles(self, username):
+        user = User.db.get(username)
+        
+        return user['roles']
+        """docstring for user_roles"""
+        pass
         

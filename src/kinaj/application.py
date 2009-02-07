@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
-from werkzeug import Request, ClosingIterator
-from werkzeug.exceptions import HTTPException, NotFound
+from werkzeug import AuthorizationMixin
+from werkzeug import Request, ClosingIterator, redirect
+from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
 
 from simplecouchdb import Server
 from simplecouchdb.resource import ResourceConflict
 
 from kinaj import views
 from kinaj.models import Project, User
-from kinaj.utils import STATIC_PATH, local, local_manager, url_map
+from kinaj.utils import STATIC_PATH, local, local_manager, url_map, url_for
 
+from barrel.basic import BasicAuth
 
 class Kinaj(object):
     
     def __init__(self, debug=False):
+        local.debug = debug
         local.application = self
         Project.db = Server()['kinaj-projects']
         User.db = Server()['kinaj-users']
@@ -30,6 +33,9 @@ class Kinaj(object):
         except NotFound, e:
             response = views.not_found(request)
             response.status_code = 404
+            
+        except Unauthorized, e:
+            response = redirect(url_for('login', referrer=request.url))
             
         except HTTPException, e:
             response = e
