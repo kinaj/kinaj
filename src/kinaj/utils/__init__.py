@@ -39,7 +39,7 @@ def expose(rule, **kw):
             else:
                 user_roles = ()
             
-            if roles.isdisjoint(user_roles): raise Unauthorized()
+            if not roles.intersection(user_roles): raise Unauthorized()
                 
             return f(request, *arg, **kw)
             
