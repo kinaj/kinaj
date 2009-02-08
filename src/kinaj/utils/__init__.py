@@ -8,14 +8,9 @@ from werkzeug.routing import Map, Rule
 from kinaj.models import User
 from kinaj.static import STATIC_PATH
 
-ALLOWED_SCHEMES = frozenset(['http', 'https', 'ftp', 'ftps'])
-URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
-
-
 local = Local()
 local_manager = LocalManager([local])
 application = local('application')
-
 
 url_map = Map()
 
@@ -35,10 +30,10 @@ def expose(rule, **kw):
         url_map.add(Rule(rule, **kw))
         
         def wrapper(req, *arg, **kw):
-            session_id = req.cookies.get('session_id')
+            sid = req.cookies.get('sid')
             
-            if session_id:
-                db_res = tuple(User.db.view('session/roles', key=session_id))
+            if sid:
+                db_res = tuple(User.db.view('session/roles', key=sid))
                 user_roles = (db_res[0]['value'] if db_res else ())
                 
             else:
@@ -61,10 +56,10 @@ def url_for(endpoint, _external=False, **values):
     return local.url_adapter.build(endpoint, values, force_external=_external)
 
               
-def make_id(text,delim="-"):
+def make_id(text, delim="-"):
     """docstring for make_id"""
+    print text
     t = text.lower()
     normal_id = delim.join(t.split())
     return normal_id
-    
     

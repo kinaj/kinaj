@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from werkzeug import AuthorizationMixin
+import uuid
+
 from werkzeug import Request, ClosingIterator, redirect
 from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
 
@@ -8,9 +9,8 @@ from simplecouchdb.resource import ResourceConflict
 
 from kinaj import views
 from kinaj.models import Project, User
-from kinaj.utils import STATIC_PATH, local, local_manager, url_map, url_for
+from kinaj.utils import local, local_manager, url_map, url_for
 
-from barrel.basic import BasicAuth
 
 class Kinaj(object):
     
@@ -39,10 +39,9 @@ class Kinaj(object):
             
         except HTTPException, e:
             response = e
-            
+        
         return ClosingIterator(response(environ, start_response), 
                                         [local_manager.cleanup])
-
     
     def __call__(self, environ, start_response):
         return self.dispatch(environ, start_response)

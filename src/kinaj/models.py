@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import hashlib
 from datetime import datetime
 
 from simplecouchdb import schema
@@ -70,12 +71,14 @@ class User(schema.Document):
     """docstring for User"""
     password = schema.StringProperty(name='password')
     roles = schema.ListProperty(name='roles')
+    session = schema.DictProperty(name='session')
     
     db = None
     
     @classmethod
     def update(self, doc):
         return self.db.save(doc)
+    
     
     @classmethod
     def valid_user(self, username, password):
@@ -93,6 +96,20 @@ class User(schema.Document):
         user = User.db.get(username)
         
         return user['roles']
-        """docstring for user_roles"""
-        pass
+    
+    
+    @staticmethod
+    def pwdhash(password, algo='sha512', salt=None):
+        salt = salt or hashlib.new(algo, str(random.random())).hexdigest()[:5]
+        hpwd = hashlib.new(algo, ''.join((salt, password))).hexdigest()
+
+        return '$'.join((algo, salt, hpwd))
+
+   
+    @classmethod
+    def chkpwd(self, password, reference):
+        algo, salt, _ = reference.split('$')
+
+        return (User.pwdhash(password, algo, salt) == reference)
+        
         
