@@ -218,7 +218,7 @@ def login(request):
         
         user = User.db.get(username)
         
-        if User.chkpwd(password, user['password']):
+        if user and User.chkpwd(password, user['password']):
             request.session['id'] = uuid.uuid4().hex
             request.session['roles'] = user['roles'] or []
             
