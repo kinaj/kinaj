@@ -3,6 +3,7 @@ import uuid
 
 from werkzeug import Request, ClosingIterator, redirect
 from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
+from werkzeug.contrib.securecookie import SecureCookie
 
 from simplecouchdb import Server
 from simplecouchdb.resource import ResourceConflict
@@ -25,6 +26,11 @@ class Kinaj(object):
         local.application = self
         request = Request(environ)
         local.url_adapter = adapter = url_map.bind_to_environ(environ)
+
+        request.session = SecureCookie.load_cookie(request, 
+                                                   key='com.kinaj.session', 
+                                                   secret_key='kinaj')
+        
         try:
             endpoint, values = adapter.match()
             handler = getattr(views, endpoint)
@@ -39,6 +45,8 @@ class Kinaj(object):
             
         except HTTPException, e:
             response = e
+
+        request.session.save_cookie(response, key='com.kinaj.session')
         
         return ClosingIterator(response(environ, start_response), 
                                         [local_manager.cleanup])

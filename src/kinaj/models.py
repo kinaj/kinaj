@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import hashlib
+import hashlib, random
 from datetime import datetime
 
 from simplecouchdb import schema
@@ -111,5 +111,4 @@ class User(schema.Document):
         algo, salt, _ = reference.split('$')
 
         return (User.pwdhash(password, algo, salt) == reference)
-        
-        
+

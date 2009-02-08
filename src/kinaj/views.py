@@ -21,7 +21,10 @@ def index(request):
             
         context = {
             'featured': [wrap(p) for p in Project.allFeatured()],
-            'active': reversed([wrap(p) for p in Project.allActiveNotFeatured()])
+            'active': reversed([wrap(p) for p in Project.allActiveNotFeatured()]),
+            'user': {
+                'roles': request.session.get('roles', []) 
+            }
         }
         
         return render_html('index.html', context)
@@ -30,13 +33,18 @@ def index(request):
         raise NotImplementedError('nothing here')
 
 
-@expose('/projects/list/', roles=('admin',))
+@expose('/projects/list/')
 def plist(request):
     
     if not request.is_xhr:
         activeResults = [wrap(project) for project in Project.allActive()]
         
-        context = {'active': reversed(activeResults)}
+        context = {
+            'active': reversed(activeResults),
+            'user': {
+                'roles': request.session.get('roles', []) 
+            }
+        }
         
         return render_html('/projects/list.html', context)
 
@@ -63,7 +71,14 @@ def create(request):
             return redirect(url_for('update', docid=p['id']))
         
         elif request.method == 'GET':
-            return render_html('projects/create.html', {})
+            context = {
+                'project': {},
+                'user': {
+                    'roles': request.session.get('roles', []) 
+                }
+            }
+            
+            return render_html('projects/create.html', context)
             
 
 @expose('/projects/retrieve/<path:docid>/')
@@ -74,6 +89,9 @@ def retrieve(request, docid):
         if not request.is_xhr:
             context = {
                 "project": project,
+                'user': {
+                    'roles': request.session.get('roles', []) 
+                }
             }
             
             return render_html('projects/retrieve.html',context)
@@ -106,7 +124,10 @@ def update(request, docid):
             project["tags"] = " ".join(project["tags"])
 
             context = {
-                'project': project 
+                'project': project,
+                'user': {
+                    'roles': request.session.get('roles', []) 
+                }
             }
 
             return render_html('projects/update.html',context)
@@ -125,7 +146,12 @@ def rss(request):
         active_doc_results = Project.allActive()
         active_results = [wrap(project) for project in active_doc_results]
 
-        context = {'active': reversed(active_results)}
+        context = {
+            'active': reversed(active_results),
+            'user': {
+                'roles': request.session.get('roles', []) 
+            }
+        }
 
         return render_xml('projects/rss2.xml', context)
 
@@ -136,7 +162,12 @@ def atom(request):
         activeDocResults = Project.allActive()
         activeResults = [wrap(project) for project in activeDocResults]
     
-        context = {'active': reversed(activeResults)}
+        context = {
+            'active': reversed(activeResults),
+            'user': {
+                'roles': request.session.get('roles', []) 
+            }
+        }
     
         return render_atom('projects/atom.xml', context)
     
@@ -156,12 +187,11 @@ def uploadAttachment(request, docid):
 
 @expose('/projects/retrieve/<path:docid>/delete/<attachment>', roles=('admin',))
 def deleteAttachment(request, docid, attachment):
-    if request.method == 'POST':
-        doc = Project.db.get(docid)
+    doc = Project.db.get(docid)
 
-        Project.db.delete_attachment(doc, attachment)
+    Project.db.delete_attachment(doc, attachment)
 
-        return redirect(url_for('update', docid=docid))
+    return redirect(url_for('update', docid=docid))
 
 
 @expose('/static/projects/<path:path>')
@@ -190,19 +220,24 @@ def login(request):
         user = User.db.get(username)
         
         if User.chkpwd(password, user['password']):
-            sid = uuid.uuid4().hex
+            request.session['id'] = uuid.uuid4().hex
+            request.session['roles'] = user['roles'] or []
             
-            user['session_id'] = sid
+            user['session'] = request.session
             user['last_login'] = time.time()
-        
+            
             User.update(user)
             
             red = redirect(request.args.get('referrer', url_for('index')))
-            red.set_cookie('sid', sid)
             
             return red
         
-        context = {'referrer': request.args['referrer']}
+        context = {
+            'referrer': request.args['referrer'],
+            'user': {
+                'roles': request.session.get('roles', []) 
+            }
+        }
         
         return render_html('login.html', context)
 
@@ -210,15 +245,15 @@ def login(request):
 @expose('/users/logout')
 def logout(request):
     """docstring for logout"""
-    sid = request.cookies.get('sid')
+    sid = request.session.get('id', None)
     
     if sid:
         user = tuple(User.db.view('session/users', key=sid))[0]['value']
-        user.pop('session_id')
+        user.pop('session')
         User.db.save(user)
         
     red = redirect(url_for('index'))
-    red.delete_cookie('sid')
+    red.delete_cookie('com.kinaj.session')
     
     return red 
     

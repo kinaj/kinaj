@@ -29,8 +29,8 @@ def expose(rule, **kw):
         kw['endpoint'] = f.__name__
         url_map.add(Rule(rule, **kw))
         
-        def wrapper(req, *arg, **kw):
-            sid = req.cookies.get('sid')
+        def wrapper(request, *arg, **kw):
+            sid = request.session.get('id', None)
             
             if sid:
                 db_res = tuple(User.db.view('session/roles', key=sid))
@@ -41,7 +41,7 @@ def expose(rule, **kw):
             
             if roles.isdisjoint(user_roles): raise Unauthorized()
                 
-            return f(req, *arg, **kw)
+            return f(request, *arg, **kw)
             
         if roles:
             return wrapper
@@ -58,8 +58,8 @@ def url_for(endpoint, _external=False, **values):
               
 def make_id(text, delim="-"):
     """docstring for make_id"""
-    print text
     t = text.lower()
     normal_id = delim.join(t.split())
     return normal_id
+
     
