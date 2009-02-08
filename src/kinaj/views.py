@@ -23,7 +23,8 @@ def index(request):
             'active': reversed([wrap(p) for p in Project.allActiveNotFeatured()]),
             'user': {
                 'roles': request.session.get('roles', []) 
-            }
+            },
+            'debug': request.debug
         }
         
         return render_html('index.html', context)
@@ -42,7 +43,8 @@ def plist(request):
             'active': reversed(activeResults),
             'user': {
                 'roles': request.session.get('roles', []) 
-            }
+            },
+            'debug': request.debug
         }
         
         return render_html('/projects/list.html', context)
@@ -74,7 +76,8 @@ def create(request):
                 'project': {},
                 'user': {
                     'roles': request.session.get('roles', []) 
-                }
+                },
+                'debug': request.debug
             }
             
             return render_html('projects/create.html', context)
@@ -90,7 +93,8 @@ def retrieve(request, docid):
                 "project": project,
                 'user': {
                     'roles': request.session.get('roles', []) 
-                }
+                },
+                'debug': request.debug
             }
             
             return render_html('projects/retrieve.html',context)
@@ -126,7 +130,8 @@ def update(request, docid):
                 'project': project,
                 'user': {
                     'roles': request.session.get('roles', []) 
-                }
+                },
+                'debug': request.debug
             }
 
             return render_html('projects/update.html',context)
@@ -149,7 +154,8 @@ def rss(request):
             'active': reversed(active_results),
             'user': {
                 'roles': request.session.get('roles', []) 
-            }
+            },
+            'debug': request.debug
         }
 
         return render_xml('projects/rss2.xml', context)
@@ -165,7 +171,8 @@ def atom(request):
             'active': reversed(activeResults),
             'user': {
                 'roles': request.session.get('roles', []) 
-            }
+            },
+            'debug': request.debug
         }
     
         return render_atom('projects/atom.xml', context)
@@ -235,7 +242,8 @@ def login(request):
             'referrer': request.args['referrer'],
             'user': {
                 'roles': request.session.get('roles', []) 
-            }
+            },
+            'debug': request.debug
         }
         
         return render_html('login.html', context)

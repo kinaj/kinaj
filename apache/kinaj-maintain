@@ -37,6 +37,6 @@ NameVirtualHost 85.214.138.166:80
   <IfModule wsgi_module>
     WSGIDaemonProcess kinaj python-path=/home/kinaj/projects/kinaj/src:/home/kinaj/development/python/site-packages processes=10 maximum-requests=500 threads=1
     WSGIProcessGroup kinaj
-    WSGIScriptAlias / /home/kinaj/projects/kinaj/apache/kinajproductive.wsgi
+    WSGIScriptAlias / /home/kinaj/projects/kinaj/apache/kinajmaintain.wsgi
   </IfModule>
 </VirtualHost>

@@ -16,7 +16,7 @@ from kinaj.utils import local, local_manager, url_map, url_for
 class Kinaj(object):
     
     def __init__(self, debug=False):
-        local.debug = debug
+        self.debug = debug
         local.application = self
         Project.db = Server()['kinaj-projects']
         User.db = Server()['kinaj-users']
@@ -27,6 +27,8 @@ class Kinaj(object):
         request = Request(environ)
         local.url_adapter = adapter = url_map.bind_to_environ(environ)
 
+        request.debug = self.debug
+        
         request.session = SecureCookie.load_cookie(request, 
                                                    key='com.kinaj.session', 
                                                    secret_key='kinaj')
