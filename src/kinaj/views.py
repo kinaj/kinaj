@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import time, uuid
 
-from kinaj.auth import secure
 from kinaj.models import Project
 from kinaj.models import User
 from kinaj.utils import expose
