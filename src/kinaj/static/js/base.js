@@ -1,8 +1,4 @@
 $(function (){
-    $('div#content').bind('change resize', function(event) {
-        console.log('content changed');
-        console.log(event);
-    });
     
     var index_container = $('div#project_list');
     

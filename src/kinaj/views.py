@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import time, uuid
+import simplejson, time, uuid
 
 from kinaj.models import Project
 from kinaj.models import User
@@ -12,6 +12,7 @@ from kinaj.utils.template.render import render_xml
 from kinaj.utils.template.render import render_atom
 
 from werkzeug import redirect
+from werkzeug import Response
 
 
 @expose('/')
@@ -36,11 +37,13 @@ def index(request):
 @expose('/projects/list/')
 def plist(request):
     
-    if not request.is_xhr:
-        activeResults = [wrap(project) for project in Project.allActive()]
+    active_results = [wrap(p) for p in Project.allActive()]
+    
+    
+    if not request.is_xhr and request.method == 'GET':
         
         context = {
-            'active': reversed(activeResults),
+            'active': reversed(active_results),
             'user': {
                 'roles': request.session.get('roles', []) 
             },
@@ -48,6 +51,12 @@ def plist(request):
         }
         
         return render_html('/projects/list.html', context)
+    
+    
+    elif request.is_xhr and request.method == 'GET':
+        
+        return Response(simplejson.dumps(active_results), 
+                        mimetype='application/json')
 
 
 @expose('/projects/create/', roles=('admin',))
@@ -216,7 +225,7 @@ def login(request):
     if request.method == 'GET':
         context = {'referrer': request.args.get('referrer', url_for('index'))}
         
-        return render_html('login.html', context)
+        return render_html('users/login.html', context)
         
     elif request.method == 'POST':
         
@@ -246,7 +255,7 @@ def login(request):
             'debug': request.debug
         }
         
-        return render_html('login.html', context)
+        return render_html('users/login.html', context)
 
 
 @expose('/users/logout')
