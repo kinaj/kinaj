@@ -10,7 +10,7 @@ NameVirtualHost 85.214.138.166:80
   RewriteEngine  on
   RewriteCond %{HTTP_HOST}   !^kinaj.com [NC]
   RewriteCond %{HTTP_HOST}   !^$
-  RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R]
+  RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R=301]
 
   DocumentRoot /home/kinaj/projects/kinaj/maintain/
 

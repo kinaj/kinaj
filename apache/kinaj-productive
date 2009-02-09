@@ -14,7 +14,7 @@ NameVirtualHost 85.214.138.166:80
   RewriteEngine  on
   RewriteCond %{HTTP_HOST}   !^kinaj.com [NC]
   RewriteCond %{HTTP_HOST}   !^$
-  RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R]
+  RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R=301]
 
   Alias /favicon.ico /home/kinaj/projects/kinaj/src/kinaj/static/img/favicon.ico
   Alias /static /home/kinaj/projects/kinaj/src/kinaj/static/
