@@ -10,6 +10,11 @@ NameVirtualHost 85.214.138.166:80
   ErrorLog /var/log/apache2/kinaj-error.log
 
   DocumentRoot /home/kinaj/projects/kinaj/maintain/
+  
+  RewriteEngine  on
+  RewriteCond %{HTTP_HOST}   !^kinaj.com [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R]
 
   Alias /favicon.ico /home/kinaj/projects/kinaj/src/kinaj/static/img/favicon.ico
   Alias /static /home/kinaj/projects/kinaj/src/kinaj/static/

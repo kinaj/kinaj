@@ -7,6 +7,11 @@ NameVirtualHost 85.214.138.166:80
 
   LogLevel info
 
+  RewriteEngine  on
+  RewriteCond %{HTTP_HOST}   !^kinaj.com [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R]
+
   DocumentRoot /home/kinaj/projects/kinaj/maintain/
 
   Alias /favicon.ico /home/kinaj/projects/kinaj/maintain/static/img/favicon.ico
