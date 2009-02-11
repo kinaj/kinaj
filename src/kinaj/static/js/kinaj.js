@@ -99,6 +99,23 @@ Kinaj.fn = Kinaj.prototype = {
         $.ajax(options);
 
     },
+	
+	/*
+	 * This function returns an dom object with the attributes given.
+	 * 
+	 * @param (String) el The name of the element.
+	 * @param (Object) attr Dictionary with attributes to map.
+	 * 
+	 */
+	elWithAttr: function( el , attr ) {
+		
+		var el = $(document.createElement( el ));
+		
+		$(el).attr( attr );
+            
+		return el;
+	}
+	
 };
 
 
@@ -149,10 +166,78 @@ Kinaj.Showroom.prototype = {
 				data['featured'] = featured;
 				
 	            return data;
+				
 	        },
             success: function( data , status ) {
-                
-				$(ins.container).empty();
+				
+				var active = data['active'];
+				var featured = data['featured'];
+				
+				var list = $('div#list', ins.container);
+				
+				$('div#mainlist', ins.cotainer)
+					.css( 'display' , 'none' )
+					.remove();
+				
+				$(list)
+					.css({
+						display: 'none',
+						width: (active.length  * 7.5) + 'em'
+					})
+					.empty();
+				
+				for ( var i = 0; i < active.length; i++ ) {
+					
+					var p = active[i];
+					
+					var div = Kinaj.fn.elWithAttr( 'div' , { 
+						id: p.id , 
+						class: 'project' 
+					});
+					
+					$(div)
+						.bind('click', function(event) {
+						
+							return false;
+						})
+						.css( 'cursor' , 'pointer' );
+					
+					var img = Kinaj.fn.elWithAttr( 'img' , {
+						alt: p.name,
+						src: '/static/projects/' + p.id + '/' + p.preview_small,
+						title: p.name
+					});
+					var link = Kinaj.fn.elWithAttr( 'a', { 
+						href: '/projects/retrieve/' + p.id,
+						title: p.name
+					});
+					
+					$(link)
+						.append(img);
+						
+						
+					$(div).append(link);
+					
+					$(list).append(div);
+					
+				}
+				
+				$('div.project:first', list)
+					.addClass('visible')
+					.next()
+					.addClass('visible');
+					
+					console.log(Math.round( active.length /2 ) +1)
+					
+				$('div.project:eq(' + (Math.round( active.length /2 ) +1) + ')')
+					.addClass('visible')
+					.next()
+					.addClass('visible');
+					
+				$('div.project:not(.visible)', list).css( 'opacity' , '0' );
+				
+				$(list)
+					.css( 'display' , 'block' )
 				
             }
 
