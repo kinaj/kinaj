@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-import os
 from werkzeug import script, SharedDataMiddleware
 
-from kinaj.auth import MyCombo
 from kinaj.utils import STATIC_PATH
 
 def make_app():

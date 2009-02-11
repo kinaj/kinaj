@@ -51,35 +51,32 @@ Kinaj.defaults = {
 
         // functions
         beforeSend: function( xhr ) {
-            console.log(xhr);
+            // some code here...
         },
         
         complete: function( xhr , status ) {
-            console.log(xhr);
-            console.log(status);
+            // some code here...
         },
 
         dataFilter: function( data , type ) {
-            console.log(data);
-            console.log(type);
+            // some code here...
             
             // must return data so following functions can handle it
             return data;
         },
         
         error: function( xhr , status , error ) {
-            console.log(xhr);
-            console.log(status);
-            console.log(error);
+            // some code here...
         },
         
         success: function( data , status ) {
-            console.log(data);
-            console.log(status);
+            // some code here...
         },
 
         // modify this function for special XMLHttpRequest object creation
         xhr:function(){
+            
+            // must return an object
 			return window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
 		}
 		
@@ -113,45 +110,58 @@ Kinaj.Showroom = function( container , opts ) {
     
     this.container = container;
     
-    this.list(this);
+    this.load(this);
     
 };
 
 
 Kinaj.Showroom.prototype = {
     
-    list: function(ins) {
+    load: function(ins) {
         
         Kinaj.fn.ajax({
 
             url: '/projects/list/',
-            type: 'get',
-            dataType: 'json',
+			dataFilter: function( data , type ) {
+				
+				/*
+				 * TODO: Replace with JSON library
+				 */
+				
+				if ( type == "json" )
+						data = window["eval"]("(" + data + ")");
+				
+				var active = [];
+				var featured = [];
+				
+				for (var i = data.length - 1; i >= 0; i--) {
+					
+					if (data[i]['featured']) {
+						
+						featured.push(data[i]);
+						
+					} else {
+					
+						active.push(data[i]);
+						
+					}
+					
+				};
+				
+				data = {};
+				data['active'] = active;
+				data['featured'] = featured;
+				
+	            return data;
+	        },
             success: function( data , status ) {
                 
-                ins.load( ins , data );
-                
+				$(ins.container).empty();
+                console.log(data);
+				
             }
 
         });
-        
-    },
-    
-    load: function( ins , projectsList ) {
-        
-        var l = projectsList;
-        var lactive = [];
-        var lfeatured = [];
-        
-        for (var i = l.length - 1; i >= 0; i--){
-            if (l[i]['featured'])
-                lfeatured.push(l[i]);
-                
-            lactive.push(l[i]);
-        };
-        
-        console.log(lactive);
-        console.log(lfeatured);
         
     }
       

@@ -14,7 +14,6 @@ from kinaj.utils.template.render import render_atom
 from werkzeug import redirect
 from werkzeug import Response
 
-
 @expose('/')
 def index(request):    
     if not request.is_xhr:

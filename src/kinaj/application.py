@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import uuid
 
 from werkzeug import Request, ClosingIterator, redirect
 from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
@@ -44,7 +43,11 @@ class Kinaj(object):
             
         except Unauthorized, e:
             response = redirect(url_for('login', referrer=request.url))
-            
+        
+        # TODO: CouchDB resource conflict exception handling
+        except ResourceConflict, e:
+            pass
+        
         except HTTPException, e:
             response = e
 
