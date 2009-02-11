@@ -124,12 +124,8 @@ Kinaj.Showroom.prototype = {
             url: '/projects/list/',
 			dataFilter: function( data , type ) {
 				
-				/*
-				 * TODO: Replace with JSON library
-				 */
-				
 				if ( type == "json" )
-						data = window["eval"]("(" + data + ")");
+					data = JSON.parse(data);
 				
 				var active = [];
 				var featured = [];
@@ -157,7 +153,6 @@ Kinaj.Showroom.prototype = {
             success: function( data , status ) {
                 
 				$(ins.container).empty();
-                console.log(data);
 				
             }
 
