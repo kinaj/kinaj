@@ -170,10 +170,19 @@ Kinaj.Showroom.prototype = {
 	        },
             success: function( data , status ) {
 				
+				$('div.project', ins.container)
+					.live('click', function(event) {
+						
+						return false;
+					})
+					.css( 'cursor' , 'pointer' );
+				
 				var active = data['active'];
 				var featured = data['featured'];
 				
 				var list = $('div#list', ins.container);
+				
+				var llength = Math.round( active.length /2 );
 				
 				$('div#mainlist', ins.cotainer)
 					.css( 'display' , 'none' )
@@ -190,18 +199,6 @@ Kinaj.Showroom.prototype = {
 					
 					var p = active[i];
 					
-					var div = Kinaj.fn.elWithAttr( 'div' , { 
-						id: p.id , 
-						class: 'project' 
-					});
-					
-					$(div)
-						.bind('click', function(event) {
-						
-							return false;
-						})
-						.css( 'cursor' , 'pointer' );
-					
 					var img = Kinaj.fn.elWithAttr( 'img' , {
 						alt: p.name,
 						src: '/static/projects/' + p.id + '/' + p.preview_small,
@@ -210,13 +207,14 @@ Kinaj.Showroom.prototype = {
 					var link = Kinaj.fn.elWithAttr( 'a', { 
 						href: '/projects/retrieve/' + p.id,
 						title: p.name
-					});
-					
-					$(link)
-						.append(img);
+					}).append(img);
 						
-						
-					$(div).append(link);
+					var div = Kinaj.fn.elWithAttr( 'div' , { 
+							id: p.id
+						})
+						.addClass('project')
+						.css( 'cursor' , 'pointer' )
+						.append(link);
 					
 					$(list).append(div);
 					
@@ -227,18 +225,135 @@ Kinaj.Showroom.prototype = {
 					.next()
 					.addClass('visible');
 					
-					console.log(Math.round( active.length /2 ) +1)
-					
-				$('div.project:eq(' + (Math.round( active.length /2 ) +1) + ')')
+				$('div.project:eq(' + ( llength +1 ) + ')')
 					.addClass('visible')
 					.next()
 					.addClass('visible');
 					
 				$('div.project:not(.visible)', list).css( 'opacity' , '0' );
 				
-				$(list)
-					.css( 'display' , 'block' )
 				
+				var leftLink = Kinaj.fn.elWithAttr( 'a' , {
+						href: '#',
+						title: 'left',
+						id: 'left'
+					})
+					.append(Kinaj.fn.elWithAttr( 'img' , {
+						src: '/static/img/arrow_left.png',
+						title: 'left',
+						alt: 'left'
+					}))
+					.bind('click', function(event) {
+						
+						if ( showroom.page > 0 ) {
+							var curr1 = $('div.visible:eq(1)', list);
+							var curr3 = $('div.visible:eq(3)', list);
+							
+							$(curr1)
+								.removeClass('visible')
+								.animate({opacity: 0}, 200)
+								.prev()
+								.prev()
+								.animate({opacity: 1}, 200)
+								.addClass('visible');
+							
+							if (curr3.length) {
+								$(curr3)
+									.removeClass('visible')
+									.animate({opacity: 0}, 200)
+									.prev()
+									.prev()
+									.animate({opacity: 1}, 200)
+									.addClass('visible');	
+							} else {
+								$('div.visible:eq(2)', list)
+									.prev()
+									.animate({opacity: 1}, 200)
+									.addClass('visible');
+							}
+							
+							$(list).animate({left: '+=12.4em'}, 350, 'swing');
+							
+							showroom.page -= 1;
+						}
+						
+						if ( showroom.page === 0 ) {
+							
+							$(this).css('opacity', 0)
+						}
+						
+						if ( showroom.page < showroom.pages ) {
+							
+							$('a#right', ins.container).css('opacity', 1);
+						}
+						
+						return false;
+					})
+					.css('opacity', 0);
+				
+				var rightLink = Kinaj.fn.elWithAttr( 'a' , {
+						href: '#',
+						title: 'right',
+						id: 'right'
+					})
+					.append(Kinaj.fn.elWithAttr( 'img' , {
+						src: '/static/img/arrow_right.png',
+						title: 'right',
+						alt: 'right'
+					}))
+					.bind('click', function(event) {
+						
+						if ( showroom.page < showroom.pages ) {
+							
+							$('div.visible:eq(0)', list)
+								.removeClass('visible')
+								.animate({opacity: 0}, 200)
+								.next()
+								.next()
+								.animate({opacity: 1}, 200)
+								.addClass('visible');
+							
+							$('div.visible:eq(2)', list)
+								.removeClass('visible')
+								.animate({opacity: 0}, 200)
+								.next()
+								.next()
+								.animate({opacity: 1}, 200)
+								.addClass('visible');	
+							
+							$(list).animate({left: '-=12.4em'}, 350, 'swing');
+							
+							showroom.page += 1;
+						}
+						
+						if ( showroom.page === showroom.pages ) {
+							
+							$(this).css('opacity', 0)
+						}
+						
+						if ( showroom.page > 0 ) {
+							
+							$('a#left', ins.container).css('opacity', 1);
+						}
+						
+						return false;
+					});
+				
+				
+				
+				$(ins.container)
+					.prepend(leftLink)
+					.append(rightLink);
+				
+				$(list)
+					.css( 'display' , 'block' );
+				
+				window.showroom = {
+					pages: llength -2,
+					page: 0,
+					active: active,
+					featured: featured
+				};
             }
 
         });
