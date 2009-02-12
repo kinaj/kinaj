@@ -80,7 +80,7 @@ Kinaj.defaults = {
 			return window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
 		}
 		
-    },
+    }
     
 }
 
