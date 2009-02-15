@@ -111,7 +111,7 @@ $(function (){
         
         
         $('div.project', index_container)
-            .live("click", function(event) {
+            .bind("click", function(event) {
                 var tar = this;
                 var link = $('a',this).get(0);
                 var project;

@@ -1,6 +1,7 @@
 /*
  * Kinaj
  * version: 0.3
+ *
  * @requires jQuery v1.3.1 or later
  *
  * 
@@ -134,106 +135,8 @@ Kinaj.Showroom = function( container , opts ) {
 
 Kinaj.Showroom.prototype = {
     
-    load: function(ins) {
-        
-        Kinaj.fn.ajax({
-
-            url: '/projects/list/',
-			dataFilter: function( data , type ) {
-				
-				if ( type == "json" )
-					data = JSON.parse(data);
-				
-				var active = [];
-				var featured = [];
-				
-				for (var i = data.length - 1; i >= 0; i--) {
-					
-					if (data[i]['featured']) {
-						
-						featured.push(data[i]);
-						
-					} else {
-					
-						active.push(data[i]);
-						
-					}
-					
-				};
-				
-				data = {};
-				data['active'] = active;
-				data['featured'] = featured;
-				
-	            return data;
-				
-	        },
-            success: function( data , status ) {
-				
-				$('div.project', ins.container)
-					.live('click', function(event) {
-						
-						return false;
-					})
-					.css( 'cursor' , 'pointer' );
-				
-				var active = data['active'];
-				var featured = data['featured'];
-				
-				var list = $('div#list', ins.container);
-				
-				var llength = Math.round( active.length /2 );
-				
-				$('div#mainlist', ins.cotainer)
-					.css( 'display' , 'none' )
-					.remove();
-				
-				$(list)
-					.css({
-						display: 'none',
-						width: (active.length  * 7.5) + 'em'
-					})
-					.empty();
-				
-				for ( var i = 0; i < active.length; i++ ) {
-					
-					var p = active[i];
-					
-					var img = Kinaj.fn.elWithAttr( 'img' , {
-						alt: p.name,
-						src: '/static/projects/' + p.id + '/' + p.preview_small,
-						title: p.name
-					});
-					var link = Kinaj.fn.elWithAttr( 'a', { 
-						href: '/projects/retrieve/' + p.id,
-						title: p.name
-					}).append(img);
-						
-					var div = Kinaj.fn.elWithAttr( 'div' , { 
-							id: p.id
-						})
-						.addClass('project')
-						.css( 'cursor' , 'pointer' )
-						.append(link);
-					
-					$(list).append(div);
-					
-				}
-				
-				$('div.project:first', list)
-					.addClass('visible')
-					.next()
-					.addClass('visible');
-					
-				$('div.project:eq(' + ( llength +1 ) + ')')
-					.addClass('visible')
-					.next()
-					.addClass('visible');
-					
-				$('div.project:not(.visible)', list).css( 'opacity' , '0' );
-				
-				
-				var leftLink = Kinaj.fn.elWithAttr( 'a' , {
+	_leftLink: function( list ) {
+		var leftLink = Kinaj.fn.elWithAttr( 'a' , {
 						href: '#',
 						title: 'left',
 						id: 'left'
@@ -284,14 +187,18 @@ Kinaj.Showroom.prototype = {
 						
 						if ( showroom.page < showroom.pages ) {
 							
-							$('a#right', ins.container).css('opacity', 1);
+							$('a#right', showroom.container).css('opacity', 1);
 						}
 						
 						return false;
 					})
 					.css('opacity', 0);
-				
-				var rightLink = Kinaj.fn.elWithAttr( 'a' , {
+					
+		return leftLink;
+	},
+	
+	_rightLink: function( list ) {
+		var rightLink = Kinaj.fn.elWithAttr( 'a' , {
 						href: '#',
 						title: 'right',
 						id: 'right'
@@ -333,32 +240,191 @@ Kinaj.Showroom.prototype = {
 						
 						if ( showroom.page > 0 ) {
 							
-							$('a#left', ins.container).css('opacity', 1);
+							$('a#left', showroom.container).css('opacity', 1);
 						}
 						
 						return false;
 					});
-				
-				
-				
-				$(ins.container)
-					.prepend(leftLink)
-					.append(rightLink);
-				
-				$(list)
-					.css( 'display' , 'block' );
-				
-				window.showroom = {
-					pages: llength -2,
-					page: 0,
-					active: active,
-					featured: featured
-				};
-            }
-
-        });
+		
+		return rightLink;
+	},
+	
+    load: function() {
         
-    }
+		var self = this;
+		
+		if (!window.showroom) {
+			
+			Kinaj.fn.ajax({
+				url: '/projects/list/',
+				dataFilter: function( data , type ) {
+					
+					if ( type == "json" )
+						data = JSON.parse(data);
+					
+					var all = [];
+					var active = [];
+					var featured = [];
+					
+					for (var i = data.length - 1; i >= 0; i--) {
+						
+						all[data[i]['id']] = data[i];
+						
+						if (data[i]['featured']) {
+							
+							featured.push(data[i]);
+							
+						} else {
+						
+							active.push(data[i]);
+							
+						}
+						
+					};
+					
+					data = {};
+					data['all'] = all;
+					data['active'] = active;
+					data['featured'] = featured;
+					
+		            return data;
+					
+		        },
+	            success: function( data , status ) {
+					
+					var active = data['active'];
+					var featured = data['featured'];
+					var llength = Math.round( active.length /2 );	
+					
+					
+					showroom = window.showroom = {
+						container: self.container,
+						pages: llength -2,
+						page: 0,
+						all: data['all'],
+						active: active,
+						featured: featured
+					};
+					
+					$.extend(self, showroom);
+					$.extend(showroom, self);
+					
+					self.list();
+	            }
+        	});
+			
+		} else {
+			self.list();
+		}
+        
+    },
+	
+	list: function() {
+		
+		var self = this;
+		
+		var active = self.active;
+		var llength = Math.round( active.length /2 );
+		
+		var fp = self.featured[0];
+		
+		var fimg = Kinaj.fn.elWithAttr( 'img' , {
+				alt: fp.name,
+				src: '/static/projects/' + fp.id + '/' + fp.preview_big,
+				title: fp.name
+			});
+		var flink = Kinaj.fn.elWithAttr( 'a', { 
+				href: '/projects/retrieve/' + fp.id,
+				title: fp.name
+			}).append(fimg);
+				
+		var fproject = Kinaj.fn.elWithAttr( 'div' , { 
+				id: fp.id
+			})
+			.addClass('project')
+			.append(flink);
+		var featured = Kinaj.fn.elWithAttr( 'div' , {
+				id: 'featured'
+			})
+			.append( fproject );
+		
+		var list = Kinaj.fn.elWithAttr( 'div' , {
+				id: 'list'
+			})
+			.css({
+				width: (active.length  * 7.5) + 'em'
+			});
+		
+		for ( var i = 0; i < active.length; i++ ) {
+			
+			var p = active[i];
+			
+			var img = Kinaj.fn.elWithAttr( 'img' , {
+				alt: p.name,
+				src: '/static/projects/' + p.id + '/' + p.preview_small,
+				title: p.name
+			});
+			var link = Kinaj.fn.elWithAttr( 'a', { 
+				href: '/projects/retrieve/' + p.id,
+				title: p.name
+			}).append(img);
+				
+			var div = Kinaj.fn.elWithAttr( 'div' , { 
+					id: p.id
+				})
+				.addClass('project')
+				.append(link);
+			
+			$(list).append(div);
+			
+		}
+		
+		$('div.project:first', list)
+			.addClass('visible')
+			.next()
+			.addClass('visible');
+			
+		$('div.project:eq(' + ( llength ) + ')', list)
+			.addClass('visible')
+			.next()
+			.addClass('visible');
+			
+		$('div.project:not(.visible)', list).css( 'opacity' , '0' );
+		
+		var leftLink = self._leftLink(list);
+		var rightLink = self._rightLink(list);
+		
+		$(self.container)
+			.css( 'display' , 'none' )
+			.empty()
+			.append(leftLink)
+			.append(featured)
+			.append(list)
+			.append(rightLink)
+			.fadeIn(1000);
+			
+		$('div.project', self.container).bind('click', function(event) {
+			
+			self.single( this.id );
+			
+			return false;
+		});
+			
+	},
+	
+	single: function( project ) {
+		
+		var self = this;
+		
+		var current = self['current'] = self.all[project];
+		
+		console.log(current);
+		
+		$('a#left , a#right').css('opacity', 0);
+		
+		$('div#list', self.container).fadeOut(350);
+		
+	}
       
 };
     
