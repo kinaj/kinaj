@@ -480,12 +480,42 @@ Kinaj.Showroom.prototype = {
 		        padding: 0
 		    })
 		    .bind('click', function(event) {
+		        var pre = this;
+		        
 		        var next = self.allArr[showroom.next];
-		        $('img', this)
-		            .css('opacity', 0)
-		            .attr('src', '/static/projects/' + next._id + '/' + next.preview_big )
-		            .stop()
-		            .animate({opacity: 1}, 1000);
+		        
+		        var img = $('<img />').attr('src', '/static/projects/' + next._id + '/' + next.preview_big).css({width:'17.1em', opacity: 0})
+		        
+		        $('div:nth-child(2)', pre).append(img);
+		        
+		        $('div:first', pre).fadeOut(100, function() {
+		            $(this).remove();
+		            
+		            $('div:first img', pre).animate({width: '19.5em', opacity: 1}, 500);
+                    $('div:first', pre)
+                        .css({zIndex: 3, backgroundImage: 'url(/static/img/frame_big.png)'})
+                        .stop()
+                        .animate({width: '19.5em', height: '19.5em', padding: '3em', left: '4em', top: '0em'}, 350, function() {
+                            $('div:nth-child(2)', pre)
+                                .css({zIndex: 2, backgroundImage: 'url(/static/img/frame2.png)', textAlign: 'center',})
+                                .stop()
+                                .animate({width: '17.1em', height: '17.1em', padding: '2em', left: '3em', top: '2em'}, 350, function() {
+                                    $('<div />')
+                                        .css({
+                                            position: 'absolute',
+                            		        zIndex: 1,
+                            		        opacity: 0, 
+                            		        width: '19em', 
+                            		        height: '19em', 
+                            		        left: '1.5em', 
+                            		        top: '3em', 
+                            		        backgroundImage: 'url(/static/img/frame3.png)'
+                            		    })
+                            		    .appendTo(pre)
+                            		    .animate({opacity: 1}, 350)
+                                })
+                        })
+		        });
 		        
 		        next.text = converter.makeHtml(next.text);
 		        
@@ -520,10 +550,12 @@ Kinaj.Showroom.prototype = {
 		    .end()
 		    .find('div.second')
 		    .css({
+		        textAlign: 'center',
 		        zIndex: 2,
 		        opacity: 1, 
-		        width: '21.1em',
-		        height: '21.1em', 
+		        width: '17.1em',
+		        height: '17.1em',
+		        padding: '2em',
 		        left: '3em', 
 		        top: '2em',
 		        backgroundImage: 'url(/static/img/frame2.png)'
