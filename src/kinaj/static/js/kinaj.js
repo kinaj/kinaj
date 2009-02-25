@@ -308,8 +308,10 @@ Kinaj.Showroom.prototype = {
 		var self = this;
 		
 		$(self.container)
-		    .attr('id', 'project_list')
-		    .css('opacity', 0);
+		    .css('opacity', 0)
+		    .attr('id', 'project_list');
+		    
+		showroom['page'] = 0;
 		
 		var active = self.active;
 		var llength = Math.round( active.length /2 );
@@ -329,7 +331,7 @@ Kinaj.Showroom.prototype = {
 		var fproject = $( '<div />').attr({ 
 				id: fp.id
 			})
-			.addClass('project')
+			.addClass('project visible')
 			.append(flink);
 		var featured = $( '<div />').attr({
 				id: 'featured'
@@ -391,10 +393,11 @@ Kinaj.Showroom.prototype = {
 			.css('display', 'block')
 			.stop()
 			.animate({opacity: 1}, 1000);
-			
+		
 		$('div.project', self.container).bind('click', function(event) {
 			
-			self.single( this.id );
+			if ( $(this).hasClass('visible') )
+			    self.single( this.id );
 			
 			return false;
 		});
