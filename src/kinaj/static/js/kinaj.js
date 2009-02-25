@@ -428,6 +428,9 @@ Kinaj.Showroom.prototype = {
 		$.each(self.allArr, function(idx) {
             if (self.allArr[idx]['_id'] === current['_id'])
                 showroom.next = idx +1;
+                
+                if (showroom.next === self.allArr.length)
+                    showroom.next = 0;
 		});
 		
 		current.text = converter.makeHtml(current.text);
