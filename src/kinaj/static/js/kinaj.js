@@ -457,12 +457,13 @@ Kinaj.Showroom.prototype = {
 		    })
 		    .end()
 		    .find('div.preview')
+		    .css('cursor', 'pointer')
 		    .bind('click', function(event) {
 		        var next = self.allArr[showroom.next];
 		        $('img', this)
 		            .css('opacity', 0)
 		            .attr('src', '/static/projects/' + next._id + '/' + next.preview_big )
-		            .animate({opacity: 1}, 500);
+		            .animate({opacity: 1}, 1000);
 		        
 		        next.text = converter.makeHtml(next.text);
 		        
@@ -470,7 +471,7 @@ Kinaj.Showroom.prototype = {
 		            .css('opacity', 0)
 		            .html( $.srender(infoTmpl, next))
 		            .stop()
-		            .animate({opacity: 1}, 500);
+		            .animate({opacity: 1}, 1000);
 		        
 		        showroom.next++;
 		        
