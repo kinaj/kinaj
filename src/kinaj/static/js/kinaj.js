@@ -130,6 +130,11 @@ Kinaj.Showroom.prototype = {
 						title: 'left',
 						alt: 'left'
 					}))
+					.hover(function() {
+					    $('img', this).attr('src', '/static/img/arrow_left_hover.png');
+					}, function() {
+					    $('img', this).attr('src', '/static/img/arrow_left.png');
+					})
 					.bind('click', function(event) {
 						
 						if ( showroom.page > 0 ) {
@@ -186,6 +191,11 @@ Kinaj.Showroom.prototype = {
 						href: '#',
 						title: 'right',
 						id: 'right'
+					})
+					.hover(function() {
+					    $('img', this).attr('src', '/static/img/arrow_right_hover.png');
+					}, function() {
+					    $('img', this).attr('src', '/static/img/arrow_right.png');
 					})
 					.append($( '<img />').attr({
 						src: '/static/img/arrow_right.png',
