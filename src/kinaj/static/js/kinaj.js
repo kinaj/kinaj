@@ -473,6 +473,7 @@ Kinaj.Showroom.prototype = {
 		        $('img', this)
 		            .css('opacity', 0)
 		            .attr('src', '/static/projects/' + next._id + '/' + next.preview_big )
+		            .stop()
 		            .animate({opacity: 1}, 1000);
 		        
 		        next.text = converter.makeHtml(next.text);
