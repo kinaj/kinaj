@@ -16,7 +16,7 @@
     
     div#page div#header {width: 55em; margin: 0 auto; padding: 7.5em 0em;}
     
-    div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; padding: 5em 0em 5em 0em;}
+    div#page div#content {margin: 0 auto; background: transparent url(../img/content_background.png) top left repeat; padding: 5em 0em 5em 0em; overflow: hidden;}
     div#page div#content form {margin: 0em 0em 4em 0em;}
     div#page div#content form fieldset legend {color: #4f585e;}
     div#page div#content form fieldset label {margin: 1em 0em 0.5em 0em; display: block; clear: both;}

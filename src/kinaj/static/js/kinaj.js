@@ -389,6 +389,7 @@ Kinaj.Showroom.prototype = {
 			.append(list)
 			.append(rightLink)
 			.css('display', 'block')
+			.stop()
 			.animate({opacity: 1}, 1000);
 			
 		$('div.project', self.container).bind('click', function(event) {
@@ -443,6 +444,7 @@ Kinaj.Showroom.prototype = {
 		$(self.container)
 		    .attr('id', 'single_project')
 		    .append(html)
+		    .stop()
 		    .animate({opacity: 1}, 1000);
 		
 	}
