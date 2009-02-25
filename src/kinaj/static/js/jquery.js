@@ -1,13 +1,13 @@
 /*!
- * jQuery JavaScript Library v1.3.1
+ * jQuery JavaScript Library v1.3.2
  * http://jquery.com/
  *
  * Copyright (c) 2009 John Resig
  * Dual licensed under the MIT and GPL licenses.
  * http://docs.jquery.com/License
  *
- * Date: 2009-02-13 23:58:57 +0100 (Fr, 13 Feb 2009)
- * Revision: 6195
+ * Date: 2009-02-19 17:34:21 -0500 (Thu, 19 Feb 2009)
+ * Revision: 6246
  */
 (function(){
 
@@ -88,14 +88,16 @@ jQuery.fn = jQuery.prototype = {
 			this.context = selector.context;
 		}
 
-		return this.setArray(jQuery.makeArray(selector));
+		return this.setArray(jQuery.isArray( selector ) ?
+			selector :
+			jQuery.makeArray(selector));
 	},
 
 	// Start with an empty selector
 	selector: "",
 
 	// The current version of jQuery being used
-	jquery: "1.3.1",
+	jquery: "1.3.2",
 
 	// The number of elements contained in the matched element set
 	size: function() {
@@ -108,7 +110,7 @@ jQuery.fn = jQuery.prototype = {
 		return num === undefined ?
 
 			// Return a 'clean' array
-			jQuery.makeArray( this ) :
+			Array.prototype.slice.call( this ) :
 
 			// Return just the object
 			this[ num ];
@@ -278,23 +280,21 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	// For internal use only.
-	// Behaves like an Array's .push method, not like a jQuery method.
+	// Behaves like an Array's method, not like a jQuery method.
 	push: [].push,
+	sort: [].sort,
+	splice: [].splice,
 
 	find: function( selector ) {
-		if ( this.length === 1 && !/,/.test(selector) ) {
+		if ( this.length === 1 ) {
 			var ret = this.pushStack( [], "find", selector );
 			ret.length = 0;
 			jQuery.find( selector, this[0], ret );
 			return ret;
 		} else {
-			var elems = jQuery.map(this, function(elem){
+			return this.pushStack( jQuery.unique(jQuery.map(this, function(elem){
 				return jQuery.find( selector, elem );
-			});
-
-			return this.pushStack( /[^+>] [^+>]/.test( selector ) ?
-				jQuery.unique( elems ) :
-				elems, "find", selector );
+			})), "find", selector );
 		}
 	},
 
@@ -515,13 +515,13 @@ jQuery.fn = jQuery.prototype = {
 		if ( this[0] ) {
 			var fragment = (this[0].ownerDocument || this[0]).createDocumentFragment(),
 				scripts = jQuery.clean( args, (this[0].ownerDocument || this[0]), fragment ),
-				first = fragment.firstChild,
-				extra = this.length > 1 ? fragment.cloneNode(true) : fragment;
+				first = fragment.firstChild;
 
 			if ( first )
 				for ( var i = 0, l = this.length; i < l; i++ )
-					callback.call( root(this[i], first), i > 0 ? extra.cloneNode(true) : fragment );
-			
+					callback.call( root(this[i], first), this.length > 1 || i > 0 ?
+							fragment.cloneNode(true) : fragment );
+		
 			if ( scripts )
 				jQuery.each( scripts, evalScript );
 		}
@@ -1202,13 +1202,16 @@ jQuery.each({
 	insertAfter: "after",
 	replaceAll: "replaceWith"
 }, function(name, original){
-	jQuery.fn[ name ] = function() {
-		var args = arguments;
+	jQuery.fn[ name ] = function( selector ) {
+		var ret = [], insert = jQuery( selector );
 
-		return this.each(function(){
-			for ( var i = 0, length = args.length; i < length; i++ )
-				jQuery( args[ i ] )[ original ]( this );
-		});
+		for ( var i = 0, l = insert.length; i < l; i++ ) {
+			var elems = (i > 0 ? this.clone(true) : this).get();
+			jQuery.fn[ original ].apply( jQuery(insert[i]), elems );
+			ret = ret.concat( elems );
+		}
+
+		return this.pushStack( ret, name, selector );
 	};
 });
 
@@ -1247,7 +1250,7 @@ jQuery.each({
 
 	empty: function() {
 		// Remove element nodes and prevent memory leaks
-		jQuery( ">*", this ).remove();
+		jQuery(this).children().remove();
 
 		// Remove any remaining nodes
 		while ( this.firstChild )
@@ -1415,7 +1418,7 @@ jQuery.fn.extend({
  */
 (function(){
 
-var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|['"][^'"]*['"]|[^[\]'"]+)+\]|\\.|[^ >+~,(\[]+)+|[>+~])(\s*,\s*)?/g,
+var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|['"][^'"]*['"]|[^[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?/g,
 	done = 0,
 	toString = Object.prototype.toString;
 
@@ -1520,6 +1523,19 @@ var Sizzle = function(selector, context, results, seed) {
 
 	if ( extra ) {
 		Sizzle( extra, context, results, seed );
+
+		if ( sortOrder ) {
+			hasDuplicate = false;
+			results.sort(sortOrder);
+
+			if ( hasDuplicate ) {
+				for ( var i = 1; i < results.length; i++ ) {
+					if ( results[i] === results[i-1] ) {
+						results.splice(i--, 1);
+					}
+				}
+			}
+		}
 	}
 
 	return results;
@@ -1561,7 +1577,8 @@ Sizzle.find = function(expr, context, isXML){
 };
 
 Sizzle.filter = function(expr, set, inplace, not){
-	var old = expr, result = [], curLoop = set, match, anyFound;
+	var old = expr, result = [], curLoop = set, match, anyFound,
+		isXMLFilter = set && set[0] && isXML(set[0]);
 
 	while ( expr && set.length ) {
 		for ( var type in Expr.filter ) {
@@ -1574,7 +1591,7 @@ Sizzle.filter = function(expr, set, inplace, not){
 				}
 
 				if ( Expr.preFilter[ type ] ) {
-					match = Expr.preFilter[ type ]( match, curLoop, inplace, result, not );
+					match = Expr.preFilter[ type ]( match, curLoop, inplace, result, not, isXMLFilter );
 
 					if ( !match ) {
 						anyFound = found = true;
@@ -1619,8 +1636,6 @@ Sizzle.filter = function(expr, set, inplace, not){
 			}
 		}
 
-		expr = expr.replace(/\s*,\s*/, "");
-
 		// Improper expression
 		if ( expr == old ) {
 			if ( anyFound == null ) {
@@ -1659,23 +1674,32 @@ var Expr = Sizzle.selectors = {
 	},
 	relative: {
 		"+": function(checkSet, part, isXML){
-			var	isPartStr = typeof part === "string",
+			var isPartStr = typeof part === "string",
 				isTag = isPartStr && !/\W/.test(part),
 				isPartStrNotTag = isPartStr && !isTag;
-			if ( isTag && !isXML ) part = part.toUpperCase();
+
+			if ( isTag && !isXML ) {
+				part = part.toUpperCase();
+			}
+
 			for ( var i = 0, l = checkSet.length, elem; i < l; i++ ) {
-				if ( elem = checkSet[i] ) {
-					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {};
+				if ( (elem = checkSet[i]) ) {
+					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}
+
 					checkSet[i] = isPartStrNotTag || elem && elem.nodeName === part ?
-						 elem : elem === part;
+						elem || false :
+						elem === part;
 				}
 			}
-			if (isPartStrNotTag) {
+
+			if ( isPartStrNotTag ) {
 				Sizzle.filter( part, checkSet, true );
 			}
 		},
 		">": function(checkSet, part, isXML){
-			if ( typeof part === "string" && !/\W/.test(part) ) {
+			var isPartStr = typeof part === "string";
+
+			if ( isPartStr && !/\W/.test(part) ) {
 				part = isXML ? part : part.toUpperCase();
 
 				for ( var i = 0, l = checkSet.length; i < l; i++ ) {
@@ -1689,13 +1713,13 @@ var Expr = Sizzle.selectors = {
 				for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 					var elem = checkSet[i];
 					if ( elem ) {
-						checkSet[i] = typeof part === "string" ?
+						checkSet[i] = isPartStr ?
 							elem.parentNode :
 							elem.parentNode === part;
 					}
 				}
 
-				if ( typeof part === "string" ) {
+				if ( isPartStr ) {
 					Sizzle.filter( part, checkSet, true );
 				}
 			}
@@ -1729,8 +1753,16 @@ var Expr = Sizzle.selectors = {
 			}
 		},
 		NAME: function(match, context, isXML){
-			if ( typeof context.getElementsByName !== "undefined" && !isXML ) {
-				return context.getElementsByName(match[1]);
+			if ( typeof context.getElementsByName !== "undefined" ) {
+				var ret = [], results = context.getElementsByName(match[1]);
+
+				for ( var i = 0, l = results.length; i < l; i++ ) {
+					if ( results[i].getAttribute("name") === match[1] ) {
+						ret.push( results[i] );
+					}
+				}
+
+				return ret.length === 0 ? null : ret;
 			}
 		},
 		TAG: function(match, context){
@@ -1738,8 +1770,12 @@ var Expr = Sizzle.selectors = {
 		}
 	},
 	preFilter: {
-		CLASS: function(match, curLoop, inplace, result, not){
+		CLASS: function(match, curLoop, inplace, result, not, isXML){
 			match = " " + match[1].replace(/\\/g, "") + " ";
+
+			if ( isXML ) {
+				return match;
+			}
 
 			for ( var i = 0, elem; (elem = curLoop[i]) != null; i++ ) {
 				if ( elem ) {
@@ -1778,10 +1814,10 @@ var Expr = Sizzle.selectors = {
 
 			return match;
 		},
-		ATTR: function(match){
+		ATTR: function(match, curLoop, inplace, result, not, isXML){
 			var name = match[1].replace(/\\/g, "");
 			
-			if ( Expr.attrMap[name] ) {
+			if ( !isXML && Expr.attrMap[name] ) {
 				match[1] = Expr.attrMap[name];
 			}
 
@@ -1794,7 +1830,7 @@ var Expr = Sizzle.selectors = {
 		PSEUDO: function(match, curLoop, inplace, result, not){
 			if ( match[1] === "not" ) {
 				// If we're dealing with a complex expression, or a simple one
-				if ( match[3].match(chunker).length > 1 ) {
+				if ( match[3].match(chunker).length > 1 || /^\w/.test(match[3]) ) {
 					match[3] = Sizzle(match[3], null, null, curLoop);
 				} else {
 					var ret = Sizzle.filter(match[3], curLoop, inplace, true ^ not);
@@ -1803,7 +1839,7 @@ var Expr = Sizzle.selectors = {
 					}
 					return false;
 				}
-			} else if ( Expr.match.POS.test( match[0] ) ) {
+			} else if ( Expr.match.POS.test( match[0] ) || Expr.match.CHILD.test( match[0] ) ) {
 				return true;
 			}
 			
@@ -1900,6 +1936,25 @@ var Expr = Sizzle.selectors = {
 		}
 	},
 	filter: {
+		PSEUDO: function(elem, match, i, array){
+			var name = match[1], filter = Expr.filters[ name ];
+
+			if ( filter ) {
+				return filter( elem, i, match, array );
+			} else if ( name === "contains" ) {
+				return (elem.textContent || elem.innerText || "").indexOf(match[3]) >= 0;
+			} else if ( name === "not" ) {
+				var not = match[3];
+
+				for ( var i = 0, l = not.length; i < l; i++ ) {
+					if ( not[i] === elem ) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+		},
 		CHILD: function(elem, match){
 			var type = match[1], node = elem;
 			switch (type) {
@@ -1943,25 +1998,6 @@ var Expr = Sizzle.selectors = {
 					}
 			}
 		},
-		PSEUDO: function(elem, match, i, array){
-			var name = match[1], filter = Expr.filters[ name ];
-
-			if ( filter ) {
-				return filter( elem, i, match, array );
-			} else if ( name === "contains" ) {
-				return (elem.textContent || elem.innerText || "").indexOf(match[3]) >= 0;
-			} else if ( name === "not" ) {
-				var not = match[3];
-
-				for ( var i = 0, l = not.length; i < l; i++ ) {
-					if ( not[i] === elem ) {
-						return false;
-					}
-				}
-
-				return true;
-			}
-		},
 		ID: function(elem, match){
 			return elem.nodeType === 1 && elem.getAttribute("id") === match;
 		},
@@ -1969,7 +2005,8 @@ var Expr = Sizzle.selectors = {
 			return (match === "*" && elem.nodeType === 1) || elem.nodeName === match;
 		},
 		CLASS: function(elem, match){
-			return match.test( elem.className );
+			return (" " + (elem.className || elem.getAttribute("class")) + " ")
+				.indexOf( match ) > -1;
 		},
 		ATTR: function(elem, match){
 			var name = match[1],
@@ -2053,6 +2090,39 @@ try {
 			}
 		}
 
+		return ret;
+	};
+}
+
+var sortOrder;
+
+if ( document.documentElement.compareDocumentPosition ) {
+	sortOrder = function( a, b ) {
+		var ret = a.compareDocumentPosition(b) & 4 ? -1 : a === b ? 0 : 1;
+		if ( ret === 0 ) {
+			hasDuplicate = true;
+		}
+		return ret;
+	};
+} else if ( "sourceIndex" in document.documentElement ) {
+	sortOrder = function( a, b ) {
+		var ret = a.sourceIndex - b.sourceIndex;
+		if ( ret === 0 ) {
+			hasDuplicate = true;
+		}
+		return ret;
+	};
+} else if ( document.createRange ) {
+	sortOrder = function( a, b ) {
+		var aRange = a.ownerDocument.createRange(), bRange = b.ownerDocument.createRange();
+		aRange.selectNode(a);
+		aRange.collapse(true);
+		bRange.selectNode(b);
+		bRange.collapse(true);
+		var ret = aRange.compareBoundaryPoints(Range.START_TO_END, bRange);
+		if ( ret === 0 ) {
+			hasDuplicate = true;
+		}
 		return ret;
 	};
 }
@@ -2173,8 +2243,10 @@ if ( document.getElementsByClassName && document.documentElement.getElementsByCl
 		return;
 
 	Expr.order.splice(1, 0, "CLASS");
-	Expr.find.CLASS = function(match, context) {
-		return context.getElementsByClassName(match[1]);
+	Expr.find.CLASS = function(match, context, isXML) {
+		if ( typeof context.getElementsByClassName !== "undefined" && !isXML ) {
+			return context.getElementsByClassName(match[1]);
+		}
 	};
 })();
 
@@ -2295,15 +2367,11 @@ jQuery.expr = Sizzle.selectors;
 jQuery.expr[":"] = jQuery.expr.filters;
 
 Sizzle.selectors.filters.hidden = function(elem){
-	return "hidden" === elem.type ||
-		jQuery.css(elem, "display") === "none" ||
-		jQuery.css(elem, "visibility") === "hidden";
+	return elem.offsetWidth === 0 || elem.offsetHeight === 0;
 };
 
 Sizzle.selectors.filters.visible = function(elem){
-	return "hidden" !== elem.type &&
-		jQuery.css(elem, "display") !== "none" &&
-		jQuery.css(elem, "visibility") !== "hidden";
+	return elem.offsetWidth > 0 || elem.offsetHeight > 0;
 };
 
 Sizzle.selectors.filters.animated = function(elem){
@@ -2599,7 +2667,8 @@ jQuery.event = {
 		var all, handlers;
 
 		event = arguments[0] = jQuery.event.fix( event || window.event );
-
+		event.currentTarget = this;
+		
 		// Namespaced event handlers
 		var namespaces = event.type.split(".");
 		event.type = namespaces.shift();
@@ -3225,7 +3294,7 @@ jQuery.fn.extend({
 		.filter(function(){
 			return this.name && !this.disabled &&
 				(this.checked || /select|textarea/i.test(this.nodeName) ||
-					/text|hidden|password/i.test(this.type));
+					/text|hidden|password|search/i.test(this.type));
 		})
 		.map(function(i, elem){
 			var val = jQuery(this).val();
@@ -3741,12 +3810,12 @@ jQuery.fn.extend({
 					
 					jQuery.data(this[i], "olddisplay", display);
 				}
+			}
 
-				// Set the display of the elements in a second loop
-				// to avoid the constant reflow
-				for ( var i = 0, l = this.length; i < l; i++ ){
-					this[i].style.display = jQuery.data(this[i], "olddisplay");
-				}
+			// Set the display of the elements in a second loop
+			// to avoid the constant reflow
+			for ( var i = 0, l = this.length; i < l; i++ ){
+				this[i].style.display = jQuery.data(this[i], "olddisplay") || "";
 			}
 			
 			return this;
