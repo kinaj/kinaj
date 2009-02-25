@@ -434,7 +434,11 @@ Kinaj.Showroom.prototype = {
 		
 		var tmpl = '<div id="<%= _id %>">'
 		         + '<a href="/" class="back"><img src="/static/img/back.png" title="back" alt="back" /></a>'
-		         + '<div class="preview"><img src="/static/projects/<%= _id %>/<%= preview_big %>" /></div>'
+		         + '<div class="preview">'
+		         + '<div class="first"><img src="/static/projects/<%= _id %>/<%= preview_big %>" /></div>'
+		         + '<div class="second"></div>'
+		         + '<div class="third"></div>'
+		         + '</div>'
 		         + '<div class="info">'
 		         + '<h1><%= name %></h1>'
 		         + '<span class="category"><%= category %></span>'
@@ -467,7 +471,14 @@ Kinaj.Showroom.prototype = {
 		    })
 		    .end()
 		    .find('div.preview')
-		    .css('cursor', 'pointer')
+		    .css({
+		        position: 'relative',
+		        width: '29em',
+		        height: '25.5em',
+		        cursor: 'pointer',
+		        background: 'none',
+		        padding: 0
+		    })
 		    .bind('click', function(event) {
 		        var next = self.allArr[showroom.next];
 		        $('img', this)
@@ -490,6 +501,43 @@ Kinaj.Showroom.prototype = {
 		            showroom.next = 0;
 		        
 		        return false;
+		    })
+		    .end()
+		    .find('div.preview div')
+		    .css({
+		        position: 'absolute'
+		    })
+		    .end()
+		    .find('div.first')
+		    .css({
+		        left: '4em',
+		        width: '19.5em',
+		        zIndex: 3,
+		        opacity: 1, 
+		        padding: '3em',
+		        backgroundImage: 'url(/static/img/frame_big.png)'
+		    })
+		    .end()
+		    .find('div.second')
+		    .css({
+		        zIndex: 2,
+		        opacity: 1, 
+		        width: '21.1em',
+		        height: '21.1em', 
+		        left: '3em', 
+		        top: '2em',
+		        backgroundImage: 'url(/static/img/frame2.png)'
+		    })
+		    .end()
+		    .find('div.third')
+		    .css({
+		        zIndex: 1,
+		        opacity: 1, 
+		        width: '19em', 
+		        height: '19em', 
+		        left: '1.5em', 
+		        top: '3em', 
+		        backgroundImage: 'url(/static/img/frame3.png)'
 		    })
 		    .end();
 		    
