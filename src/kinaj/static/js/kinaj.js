@@ -307,6 +307,10 @@ Kinaj.Showroom.prototype = {
 		
 		var self = this;
 		
+		$(self.container)
+		    .attr('id', 'project_list')
+		    .css('opacity', 0);
+		
 		var active = self.active;
 		var llength = Math.round( active.length /2 );
 		
@@ -384,7 +388,8 @@ Kinaj.Showroom.prototype = {
 			.append(featured)
 			.append(list)
 			.append(rightLink)
-			.fadeIn(1000);
+			.css('display', 'block')
+			.animate({opacity: 1}, 1000);
 			
 		$('div.project', self.container).bind('click', function(event) {
 			
@@ -401,11 +406,44 @@ Kinaj.Showroom.prototype = {
 		
 		var current = self['current'] = self.all[project];
 		
-		console.log(current);
+		var converter = new Showdown.converter();
 		
-		$('a#left , a#right').css('opacity', 0);
+		current.text = converter.makeHtml(current.text);
 		
-		$('div#list', self.container).fadeOut(350);
+		var tmpl = '<div id="<%= _id %>">'
+		         + '<a href="/" class="back"><img src="/static/img/back.png" title="back" alt="back" /></a>'
+		         + '<div class="preview"><img src="/static/projects/<%= _id %>/<%= preview_big %>" /></div>'
+		         + '<div class="info">'
+		         + '<h1><%= name %></h1>'
+		         + '<span class="category"><%= category %></span>'
+		         + '<div><p><%= text %></p></div>'
+		         + '<% if (download_mac.length && download_pc.length) %>'
+		         + '<p class="download">Download for <a href="/static/projects/<%= _id %>/<%= download_mac %>">Mac</a> or <a href="/static/projects/<%= _id %>/<%= download_pc %>">PC</a></p>'
+		         + '<% if (download_mac.length && !download_pc.length) %>'
+		         + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_mac %>">Download</a></p>'
+		         + '<% if (download_pc.length && !download_mac.length) %>'
+		         + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_pc %>">Download</a></p>'
+		         + '</div>'
+		         + '</div>';
+		
+		var html = $( $.srender( tmpl , current ) )
+		    .find( 'a.back' )
+		    .bind( 'click' , function(event) {
+                self.load()
+		        
+		        return false;
+		    })
+		    .end();
+		
+		$(self.container)
+		    .css('opacity', 0)
+		    .children()
+		    .remove();
+		
+		$(self.container)
+		    .attr('id', 'single_project')
+		    .append(html)
+		    .animate({opacity: 1}, 1000);
 		
 	}
       
