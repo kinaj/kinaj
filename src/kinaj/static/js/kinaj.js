@@ -246,13 +246,15 @@ Kinaj.Showroom.prototype = {
 					if ( type == "json" )
 						data = $.parseJSON(data);
 					
-					var all = [];
+					var all = {};
+					var allArr = [];
 					var active = [];
 					var featured = [];
 					
 					for (var i = data.length - 1; i >= 0; i--) {
 						
 						all[data[i]['id']] = data[i];
+						allArr.push(data[i]);
 						
 						if (data[i]['featured']) {
 							
@@ -268,6 +270,7 @@ Kinaj.Showroom.prototype = {
 					
 					data = {};
 					data['all'] = all;
+					data['allArr'] = allArr;
 					data['active'] = active;
 					data['featured'] = featured;
 					
@@ -286,6 +289,7 @@ Kinaj.Showroom.prototype = {
 						pages: llength -2,
 						page: 0,
 						all: data['all'],
+						allArr: data['allArr'],
 						active: active,
 						featured: featured
 					};
@@ -407,10 +411,14 @@ Kinaj.Showroom.prototype = {
 	single: function( project ) {
 		
 		var self = this;
+		var converter = new Showdown.converter();
 		
 		var current = self['current'] = self.all[project];
 		
-		var converter = new Showdown.converter();
+		$.each(self.allArr, function(idx) {
+            if (self.allArr[idx]['_id'] === current['_id'])
+                showroom.next = idx +1;
+		});
 		
 		current.text = converter.makeHtml(current.text);
 		
@@ -420,7 +428,7 @@ Kinaj.Showroom.prototype = {
 		         + '<div class="info">'
 		         + '<h1><%= name %></h1>'
 		         + '<span class="category"><%= category %></span>'
-		         + '<div><p><%= text %></p></div>'
+		         + '<div><%= text %></div>'
 		         + '<% if (download_mac.length && download_pc.length) %>'
 		         + '<p class="download">Download for <a href="/static/projects/<%= _id %>/<%= download_mac %>">Mac</a> or <a href="/static/projects/<%= _id %>/<%= download_pc %>">PC</a></p>'
 		         + '<% if (download_mac.length && !download_pc.length) %>'
@@ -429,6 +437,16 @@ Kinaj.Showroom.prototype = {
 		         + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_pc %>">Download</a></p>'
 		         + '</div>'
 		         + '</div>';
+		         
+		var infoTmpl = '<h1><%= name %></h1>'
+ 		             + '<span class="category"><%= category %></span>'
+ 		             + '<div><%= text %></div>'
+ 		             + '<% if (download_mac.length && download_pc.length) %>'
+ 		             + '<p class="download">Download for <a href="/static/projects/<%= _id %>/<%= download_mac %>">Mac</a> or <a href="/static/projects/<%= _id %>/<%= download_pc %>">PC</a></p>'
+ 		             + '<% if (download_mac.length && !download_pc.length) %>'
+ 		             + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_mac %>">Download</a></p>'
+ 		             + '<% if (download_pc.length && !download_mac.length) %>'
+ 		             + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_pc %>">Download</a></p>';
 		
 		var html = $( $.srender( tmpl , current ) )
 		    .find( 'a.back' )
@@ -437,8 +455,32 @@ Kinaj.Showroom.prototype = {
 		        
 		        return false;
 		    })
+		    .end()
+		    .find('div.preview')
+		    .bind('click', function(event) {
+		        var next = self.allArr[showroom.next];
+		        $('img', this)
+		            .css('opacity', 0)
+		            .attr('src', '/static/projects/' + next._id + '/' + next.preview_big )
+		            .animate({opacity: 1}, 500);
+		        
+		        next.text = converter.makeHtml(next.text);
+		        
+		        $('div.info', self.container)
+		            .css('opacity', 0)
+		            .html( $.srender(infoTmpl, next))
+		            .stop()
+		            .animate({opacity: 1}, 500);
+		        
+		        showroom.next++;
+		        
+		        if (showroom.next === self.allArr.length)
+		            showroom.next = 0;
+		        
+		        return false;
+		    })
 		    .end();
-		
+		    
 		$(self.container)
 		    .css('opacity', 0)
 		    .children()
