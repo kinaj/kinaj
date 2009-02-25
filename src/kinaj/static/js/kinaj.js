@@ -487,18 +487,26 @@ Kinaj.Showroom.prototype = {
 		        
 		        var next = self.allArr[showroom.next];
 		        
-		        var img = $('<img />').attr('src', '/static/projects/' + next._id + '/' + next.preview_big).css({width:'17.1em', opacity: 0})
-		        
-		        $('div:nth-child(2)', pre).append(img);
-		        
-		        $('div:first', pre).fadeOut(100, function() {
-		            $(this).remove();
+		        $('div:first', pre)
+		            .find('img')
+		            .animate({opacity: 0}, 200)
+		            .end()
+		            .fadeOut(300, function() {
+		                $(this)
+		                    .empty()
+		                    .remove();
 		            
 		            $('div:first img', pre).animate({width: '19.5em', opacity: 1}, 500);
                     $('div:first', pre)
                         .css({zIndex: 3, backgroundImage: 'url(/static/img/frame_big.png)'})
                         .stop()
                         .animate({width: '19.5em', height: '19.5em', padding: '3em', left: '4em', top: '0em'}, 350, function() {
+                            $(this)
+                                .append($('<img />').attr('src', '/static/projects/' + next._id + '/' + next.preview_big)
+                                    .css({opacity: 0})
+                                )
+                                .find('img')
+                                .animate({opacity: 1}, 350)
                             $('div:nth-child(2)', pre)
                                 .css({zIndex: 2, backgroundImage: 'url(/static/img/frame2.png)', textAlign: 'center',})
                                 .stop()
