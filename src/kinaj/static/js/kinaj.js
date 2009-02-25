@@ -2,7 +2,7 @@
  * Kinaj
  * version: 0.3
  *
- * @requires jQuery v1.3.1 or later
+ * @requires jQuery
  *
  * 
 */
@@ -38,7 +38,7 @@ Kinaj.defaults = {
         // options
         async: true,
         cache: false,
-        contentType: 'application/x-www-form-urlencoded',
+        contentType: 'application/json',
         dataType: 'json',
         global: true,
         ifModified: false,
@@ -99,23 +99,7 @@ Kinaj.fn = Kinaj.prototype = {
         
         $.ajax(options);
 
-    },
-	
-	/*
-	 * This function returns an dom object with the attributes given.
-	 * 
-	 * @param (String) el The name of the element.
-	 * @param (Object) attr Dictionary with attributes to map.
-	 * 
-	 */
-	elWithAttr: function( el , attr ) {
-		
-		var el = $(document.createElement( el ));
-		
-		$(el).attr( attr );
-            
-		return el;
-	}
+    }
 	
 };
 
@@ -136,12 +120,12 @@ Kinaj.Showroom = function( container , opts ) {
 Kinaj.Showroom.prototype = {
     
 	_leftLink: function( list ) {
-		var leftLink = Kinaj.fn.elWithAttr( 'a' , {
+		var leftLink = $( '<a />' ).attr({
 						href: '#',
 						title: 'left',
 						id: 'left'
 					})
-					.append(Kinaj.fn.elWithAttr( 'img' , {
+					.append($( '<img />').attr( {
 						src: '/static/img/arrow_left.png',
 						title: 'left',
 						alt: 'left'
@@ -198,12 +182,12 @@ Kinaj.Showroom.prototype = {
 	},
 	
 	_rightLink: function( list ) {
-		var rightLink = Kinaj.fn.elWithAttr( 'a' , {
+		var rightLink = $( '<a />').attr({
 						href: '#',
 						title: 'right',
 						id: 'right'
 					})
-					.append(Kinaj.fn.elWithAttr( 'img' , {
+					.append($( '<img />').attr({
 						src: '/static/img/arrow_right.png',
 						title: 'right',
 						alt: 'right'
@@ -260,7 +244,7 @@ Kinaj.Showroom.prototype = {
 				dataFilter: function( data , type ) {
 					
 					if ( type == "json" )
-						data = JSON.parse(data);
+						data = $.parseJSON(data);
 					
 					var all = [];
 					var active = [];
@@ -328,27 +312,27 @@ Kinaj.Showroom.prototype = {
 		
 		var fp = self.featured[0];
 		
-		var fimg = Kinaj.fn.elWithAttr( 'img' , {
+		var fimg = $( '<img />').attr({
 				alt: fp.name,
 				src: '/static/projects/' + fp.id + '/' + fp.preview_big,
 				title: fp.name
 			});
-		var flink = Kinaj.fn.elWithAttr( 'a', { 
+		var flink = $( '<a />').attr({ 
 				href: '/projects/retrieve/' + fp.id,
 				title: fp.name
 			}).append(fimg);
 				
-		var fproject = Kinaj.fn.elWithAttr( 'div' , { 
+		var fproject = $( '<div />').attr({ 
 				id: fp.id
 			})
 			.addClass('project')
 			.append(flink);
-		var featured = Kinaj.fn.elWithAttr( 'div' , {
+		var featured = $( '<div />').attr({
 				id: 'featured'
 			})
 			.append( fproject );
 		
-		var list = Kinaj.fn.elWithAttr( 'div' , {
+		var list = $( '<div />').attr({
 				id: 'list'
 			})
 			.css({
@@ -359,17 +343,17 @@ Kinaj.Showroom.prototype = {
 			
 			var p = active[i];
 			
-			var img = Kinaj.fn.elWithAttr( 'img' , {
+			var img = $( '<img />').attr({
 				alt: p.name,
 				src: '/static/projects/' + p.id + '/' + p.preview_small,
 				title: p.name
 			});
-			var link = Kinaj.fn.elWithAttr( 'a', { 
+			var link = $( '<a />').attr({ 
 				href: '/projects/retrieve/' + p.id,
 				title: p.name
 			}).append(img);
 				
-			var div = Kinaj.fn.elWithAttr( 'div' , { 
+			var div = $( '<div />').attr({ 
 					id: p.id
 				})
 				.addClass('project')
@@ -395,7 +379,6 @@ Kinaj.Showroom.prototype = {
 		var rightLink = self._rightLink(list);
 		
 		$(self.container)
-			.css( 'display' , 'none' )
 			.empty()
 			.append(leftLink)
 			.append(featured)

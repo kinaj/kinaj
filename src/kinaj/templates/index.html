@@ -20,6 +20,12 @@
     {%- if loop.last %}</div>{%- endif %}
     {%- endfor %}
 </div>
+<script type="text/javascript" charset="utf-8">
+    var content = document.getElementById('content')
+    var container = document.getElementById('project_list');
+    content.style.height = "260px";
+    container.style.display = "none";
+</script>
 {%- if user and 'admin' in user.roles %}
 <div id="sub">
     <a href="{{ url_for('plist') }}" title="list of all projects">all projects</a>
