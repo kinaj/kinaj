@@ -33,7 +33,7 @@ def index(request):
         raise NotImplementedError('nothing here')
 
 
-@expose('/projects/list/')
+@expose('/projects/list/', roles=('admin',))
 def plist(request):
     
     active_results = [wrap(p) for p in Project.allActive()]

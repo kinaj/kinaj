@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
-		<meta http-equiv="content-language" content="en-en" />
+    <head xml:lang="en">
+        <meta http-equiv="content-type" content="text/html charset=utf-8" />
         <title>{%- block title %}{%- endblock %}AMAZING PIXELZ</title>
         
-        <meta name="robots" content="index, follow" />
-        <meta name="domain" content="http://kinaj.com" />
-        <meta name="author" content="kinaj" />
-        <meta name="copyright" content="janik baumgartner" />
-        <meta name="reply-to" content="mail@kinaj.com" />
-        <meta name="keywords" content="mac,icons,osx,leopard,themes,widgets,customization,design,graphics,gui,apple" />
-        <meta name="description" xml:lang="en" content="i am ossom™." />
+        <meta name="robots"      content="index, follow" />
+        <meta name="domain"      content="http://kinaj.com" />
+        <meta name="author"      content="kinaj" />
+        <meta name="copyright"   content="janik baumgartner" />
+        <meta name="reply-to"    content="mail@kinaj.com" />
+        <meta name="keywords"    content="kinaj,icons,themes,widgets,customization,design,graphics,gui,apple" />
+        <meta name="description" content="i am ossom™." />
         
-        <link rel="alternate" type="application/rss+xml" title="RSS: projects | kinaj" href="{{ url_for('rss') }}" />
-        <link rel="alternate" type="application/atom+xml" title="ATOM: projects | kinaj" href="{{ url_for('atom') }}" />
-        <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" />
-        <link charset="utf-8" type="text/css" rel="stylesheet" media="all" href="/static/css/load.css" />
+        <link rel="alternate"       type="application/rss+xml"  title="RSS: projects | kinaj" href="{{ url_for('rss') }}" />
+        <link rel="alternate"       type="application/atom+xml" title="ATOM: projects | kinaj" href="{{ url_for('atom') }}" />
+        <link rel="shortcut icon"   type="image/x-icon"         href="/static/img/favicon.ico" />
+        <link rel="stylesheet"      type="text/css"             media="all" charset="utf-8" href="/static/css/load.css" />
+        
         <!--[if IE 7]>
+            
             <link charset="utf-8" type="text/css" rel="stylesheet" media="screen" href="/static/css/ie7.css" />
+            
         <![endif]-->
     </head>
     <body>
@@ -50,11 +52,11 @@
                 {%- endif %}
             </div>
         </div>
-        <script charset="utf-8" type="text/javascript" src="/static/js/jquery.js"></script>
-        <script charset="utf-8" type="text/javascript" src="/static/js/jquery.utils.js"></script>
-        <script charset="utf-8" type="text/javascript" src="/static/js/showdown.js"></script>
-        <script charset="utf-8" type="text/javascript" src="/static/js/kinaj.js"></script>
-        <script charset="utf-8" type="text/javascript" src="/static/js/init.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/static/js/jquery.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/static/js/jquery.utils.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/static/js/showdown.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/static/js/kinaj.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/static/js/init.js"></script>
         {%- if not debug %}
         <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

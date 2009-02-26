@@ -75,7 +75,7 @@ Kinaj.defaults = {
         },
 
         // modify this function for special XMLHttpRequest object creation
-        xhr:function(){
+        xhr: function(){
             
             // must return an object
 			return window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
