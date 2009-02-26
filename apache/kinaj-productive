@@ -17,7 +17,7 @@ NameVirtualHost 85.214.138.166:80
   RewriteRule ^/(.*)         http://kinaj.com/$1 [L,R=301]
 
   Alias /favicon.ico /home/kinaj/projects/kinaj/src/kinaj/static/img/favicon.ico
-  Alias /robots.txt /home/kinaj/projects/kinaj/src/kinaj/static/text/robots.txt
+  Alias /robots.txt /home/kinaj/projects/kinaj/src/kinaj/static/txt/robots.txt
   Alias /static /home/kinaj/projects/kinaj/src/kinaj/static/
 
   <Location /static/projects/>
