@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os, re
 
+from random import sample, randrange
+
 from werkzeug import Local, LocalManager
 from werkzeug.exceptions import Unauthorized
 from werkzeug.routing import Map, Rule
@@ -60,6 +62,4 @@ def make_id(text, delim="-"):
     """docstring for make_id"""
     t = text.lower()
     normal_id = delim.join(t.split())
-    return normal_id
-
-    
+    return normal_id 
