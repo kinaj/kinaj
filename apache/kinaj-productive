@@ -34,3 +34,32 @@ NameVirtualHost 85.214.138.166:80
     WSGIScriptAlias / /home/kinaj/projects/kinaj/apache/kinajproductive.wsgi
   </IfModule>
 </VirtualHost>
+
+<VirtualHost 85.214.138.166:80>
+  ServerName  dev.kinaj.com
+  ServerAlias dev.kinaj.com
+  ServerAdmin alx@metaen.de
+
+  LogLevel debug
+  CustomLog /var/log/apache2/kinaj-dev-access.log combined
+  ErrorLog /var/log/apache2/kinaj-dev-error.log
+
+  DocumentRoot /home/kinaj/projects/kinaj-dev/maintain/
+
+  Alias /favicon.ico /home/kinaj/projects/kinaj-dev/src/kinaj/static/img/favicon.ico
+  Alias /static /home/kinaj/projects/kinaj-dev/src/kinaj/static/
+
+  <Location /static/projects/>
+    Order deny,allow
+    Allow from all
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} ^GET$
+    RewriteRule /static/projects/([^_].+) http://127.0.0.1:5984/kinaj-projects/$1 [L,P]
+  </Location>
+  
+  <IfModule wsgi_module>
+    WSGIDaemonProcess kinaj python-path=/home/kinaj/projects/kinaj-dev/src:/home/kinaj/development/python/site-packages processes=10 maximum-requests=500 threads=1
+    WSGIProcessGroup kinaj
+    WSGIScriptAlias / /home/kinaj/projects/kinaj-dev/apache/kinajmaintain.wsgi
+  </IfModule>
+</VirtualHost>
