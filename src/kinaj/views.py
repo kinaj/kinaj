@@ -278,6 +278,8 @@ def logout(request):
 def up(req):
     if req.method == 'POST':
         
+        print req.authorization
+        
         if req.authorization.username:
             username = req.authorization.username
             
