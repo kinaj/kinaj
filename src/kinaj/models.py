@@ -143,7 +143,7 @@ class Up(schema.Document):
         for attachment in attachments:
             f = {
                 "content_type": attachments[attachment]['content_type'],
-                "file": self.db.get_attachment(docid, attachment)
+                "file": self.db.fetch_attachment(docid, attachment)
             }
             
         return f;

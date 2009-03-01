@@ -278,16 +278,15 @@ def logout(request):
 def up(req):
     if req.method == 'POST':
         
-        auth = req.authorization
-        
-        username = auth['username']
-        password = auth['password']
+        username = req.authorization.username
+        password = req.authorization.password
         
         user = User.db.get(username)
         
         if user and User.chkpwd(password, user['password']):
             
             for file in req.files:
+                
                 resp = Up.create(req.files[file].read(), 
                           name=req.files[file].filename, 
                           content_type=req.files[file].content_type)
