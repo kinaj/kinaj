@@ -219,7 +219,7 @@ def attachment(request, path):
             
 
 # TODO: Implement complete CRUD mechanism for User
-@expose('/users/login')
+@expose('/users/login/')
 def login(request):
     """docstring for login"""
     if request.method == 'GET':
@@ -258,7 +258,7 @@ def login(request):
         return render_html('users/login.html', context)
 
 
-@expose('/users/logout')
+@expose('/users/logout/')
 def logout(request):
     """docstring for logout"""
     sid = request.session.get('id', None)
@@ -274,11 +274,15 @@ def logout(request):
     return red
 
 
-@expose('/u')
+@expose('/u/')
 def up(req):
     if req.method == 'POST':
-        username = req.authorization.username
-        password = req.authorization.password
+        
+        if req.authorization.username:
+            username = req.authorization.username
+            
+        if req.authorization.password:
+            password = req.authorization.password
         
         user = User.db.get(username)
         
@@ -294,7 +298,7 @@ def up(req):
             return Response(simplejson.dumps({"ok": True, "url": url}), 
                     mimetype='application/json')
     
-@expose('/u/<path:path>')
+@expose('/u/<path:path>/')
 def up_get(req, path):
     """docstring for up_get"""
     if req.method == 'GET':
