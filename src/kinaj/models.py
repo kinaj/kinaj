@@ -124,7 +124,7 @@ class Up(schema.Document):
     @classmethod
     def create(self, content, name=None, content_type=None):
         """docstring for create"""
-        uid = ''.join(sample(URL_CHARS, randrange(3, 9)))
+        uid = ''.join(sample(URL_CHARS, randrange(3, 4)))
         
         tdoc = Up(id=uid, sid=uid)
         
