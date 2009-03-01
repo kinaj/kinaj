@@ -8,6 +8,7 @@ from kinaj.utils import expose
 from kinaj.utils import make_id
 from kinaj.utils import url_for
 from kinaj.utils import wrap
+from kinaj.utils import map_mime
 from kinaj.utils.template.render import render_html
 from kinaj.utils.template.render import render_xml 
 from kinaj.utils.template.render import render_atom
@@ -287,9 +288,11 @@ def up(req):
             
             for file in req.files:
                 
+                content_type = map_mime(req.files[file].filename.split('.')[-1])
+                
                 resp = Up.create(req.files[file].read(), 
                           name=req.files[file].filename, 
-                          content_type=req.files[file].content_type)
+                          content_type=content_type)
 
             url = 'http://kinaj.com/u/%s' % resp
 

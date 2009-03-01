@@ -63,3 +63,24 @@ def make_id(text, delim="-"):
     t = text.lower()
     normal_id = delim.join(t.split())
     return normal_id 
+    
+
+# TODO Better mimetype handling
+def map_mime(fileend):
+    """docstring for map_mime"""
+    
+    mimes = {
+        "jpg": "image/jpeg",
+        "gif": "image/gif",
+        "mov": "video/quicktime",
+        "pdf": "application/pdf",
+        "png": "image/png",
+        "zip": "application/zip"
+    }
+    
+    try:
+        m = mimes[fileend]
+    except KeyError, e:
+        m = "application/octet-stream"
+    
+    return m
