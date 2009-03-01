@@ -278,8 +278,10 @@ def logout(request):
 def up(req):
     if req.method == 'POST':
         
-        username = req.authorization.username
-        password = req.authorization.password
+        auth = req.authorization
+        
+        username = auth.username
+        password = auth.password
         
         user = User.db.get(username)
         
