@@ -238,6 +238,7 @@ def login(request):
         if user and User.chkpwd(password, user['password']):
             request.session['id'] = uuid.uuid4().hex
             request.session['roles'] = user['roles'] or []
+            request.session['username'] = user['_id']
             
             user['session'] = request.session
             user['last_login'] = time.time()
@@ -290,11 +291,12 @@ def up(req):
                 
                 content_type = map_mime(req.files[file].filename.split('.')[-1])
                 
-                resp = Up.create(req.files[file].read(), 
-                          name=req.files[file].filename, 
-                          content_type=content_type)
+                resp = Up.create(username,
+                            req.files[file].read(), 
+                            name=req.files[file].filename, 
+                            content_type=content_type)
 
-            url = 'http://kinaj.com/u/%s' % resp
+                url = 'http://kinaj.com/u/%s' % resp
 
             return Response(simplejson.dumps({"ok": True, "url": url}), 
                     mimetype='application/json')
@@ -303,13 +305,31 @@ def up(req):
                         mimetype='application/json')
                         
                         
-@expose('/u/<path:path>/')
+@expose('/u/<path:path>')
 def up_get(req, path):
     """docstring for up_get"""
     if req.method == 'GET':
         attachment = Up.retrieve(path)
 
         return Response(attachment['file'], mimetype=attachment['content_type'])
+        
+
+@expose('/u/list/', roles=('admin',))
+def up_list(req):
+    """docstring for up_list"""
+    if req.method == 'GET':
+        print req.session['username']
+        
+        docs = [wrap(p) for p in Up.list(req.session['username'])]
+        
+        context = {
+            "docs": docs
+        }
+        
+        return render_html('u/list.html', context)
+        
+    else:
+        raise NotFound
 
 def not_found(request):
     return render_html('not_found.html')

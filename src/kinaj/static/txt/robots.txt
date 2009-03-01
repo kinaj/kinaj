@@ -5,5 +5,5 @@ Disallow: /projects/update/
 Disallow: /projects/delete/
 Disallow: /projects/list/
 Disallow: /static/projects/
-Disallow: /users/login/
-Disallow: /users/logout/
+Disallow: /users/
+Disallow: /u/

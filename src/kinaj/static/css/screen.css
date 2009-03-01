@@ -91,6 +91,13 @@
     div#page div#content div.info p.download {font-size: 1.4em;}
     div#page div#content div.info p.download a {text-decoration: underline;}
     
+    div#page div#content div#ulist {position: relative; margin: 0 auto; width: 55em; min-height: 26em; padding: 0em 2em 0em 2em; overflow: hidden;}
+    div#page div#content div#ulist ul li {font-size: 1.4em; margin: 0em 0em 1em 0em;}
+    div#page div#content div#ulist ul li * {display: inline-block;}
+    div#page div#content div#ulist ul li a {width: 4%; text-align: left; border-bottom: dotted 1px #cfcfcf;}
+    div#page div#content div#ulist ul li p {width: 86%; text-align: right;}
+    div#page div#content div#ulist ul li span {width: 10%; text-align: right;}
+    
     div#page div#footer {text-align: center; margin: 6em 0em 3em 0em;}
     div#page div#footer ul {margin: 0em 0em 2em 0em;}
     div#page div#footer ul li {display: inline;}

@@ -1,0 +1,11 @@
+{%- extends "base.html" %}
+{%- block title %}upldr list · {% endblock %}
+{%- block content %}
+<div id="ulist">
+    <ul>
+    {% for doc in docs %}
+        <li><a href="http://kinaj.com/u/{{ doc.sid }}">{{ doc.sid }}</a><p>{% for attachment in doc._attachments %}{{ attachment }}{% endfor %}</p><span>[{{ doc.views }}]</span></li>
+    {% endfor %}
+    </ul>
+</div>
+{%- endblock %}

@@ -118,15 +118,18 @@ class User(schema.Document):
 class Up(schema.Document):
     """docstring for Up"""
     sid = schema.StringProperty(name='sid')
+    user = schema.StringProperty(name='user')
+    views = schema.IntegerProperty(name='views')
+    ctime = schema.DateTimeProperty(name='ctime', auto_now_add=True)
     
     db = None
     
     @classmethod
-    def create(self, content, name=None, content_type=None):
+    def create(self, user, content, name=None, content_type=None):
         """docstring for create"""
         uid = ''.join(sample(URL_CHARS, randrange(3, 4)))
         
-        tdoc = Up(id=uid, sid=uid)
+        tdoc = Up(id=uid, sid=uid, user=user, views=0)
         
         tdoc.save(self.db)
         
@@ -139,7 +142,12 @@ class Up(schema.Document):
     @classmethod
     def retrieve(self, docid):
         """docstring for retrieve"""
-        attachments = self.db.get(docid)['_attachments']
+        doc = self.db.get(docid)
+        doc['views'] += 1
+        
+        self.db.save(doc)
+        
+        attachments = doc['_attachments']
         for attachment in attachments:
             f = {
                 "content_type": attachments[attachment]['content_type'],
@@ -148,3 +156,11 @@ class Up(schema.Document):
             
         return f;
         
+    @classmethod
+    def list(self, user):
+        """docstring for list"""
+        design = {
+            "map": 'function(doc) { if ((doc.doc_type === "Up") && (doc.user === "%s")) { emit(doc.ctime, doc); } }' % user
+        }
+        
+        return self.db.temp_view(design)
