@@ -289,7 +289,7 @@ def up(req):
                           name=req.files[file].filename, 
                           content_type=req.files[file].content_type)
 
-            url = 'http://127.0.0.1:5000/u/%s' % resp
+            url = 'http://kinaj.com/u/%s' % resp
 
             return Response(simplejson.dumps({"ok": True, "url": url}), 
                     mimetype='application/json')
