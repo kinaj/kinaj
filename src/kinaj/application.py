@@ -8,7 +8,7 @@ from simplecouchdb import Server
 from simplecouchdb.resource import ResourceConflict
 
 from kinaj import views
-from kinaj.models import Project, User
+from kinaj.models import Project, User, Up
 from kinaj.utils import local, local_manager, url_map, url_for
 
 
@@ -19,6 +19,7 @@ class Kinaj(object):
         local.application = self
         Project.db = Server()['kinaj-projects']
         User.db = Server()['kinaj-users']
+        Up.db = Server()['kinaj-uploads']
         
         
     def dispatch(self, environ, start_response):

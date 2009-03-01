@@ -3,6 +3,7 @@ import simplejson, time, uuid
 
 from kinaj.models import Project
 from kinaj.models import User
+from kinaj.models import Up
 from kinaj.utils import expose
 from kinaj.utils import make_id
 from kinaj.utils import url_for
@@ -15,7 +16,7 @@ from werkzeug import redirect
 from werkzeug import Response
 
 @expose('/')
-def index(request):    
+def index(request):
     if not request.is_xhr:
             
         context = {
@@ -197,7 +198,7 @@ def uploadAttachment(request, docid):
                                       content_type=request.files[file].content_type)
 
         return redirect(url_for('update', docid=docid))
-    
+
 
 @expose('/projects/retrieve/<path:docid>/delete/<attachment>', roles=('admin',))
 def deleteAttachment(request, docid, attachment):
@@ -217,7 +218,7 @@ def attachment(request, path):
         raise NotImplementedError('Should be ACCESS DENIED')
             
 
-# TODO: Implement complete CRUD mechanic for User
+# TODO: Implement complete CRUD mechanism for User
 @expose('/users/login')
 def login(request):
     """docstring for login"""
@@ -270,8 +271,36 @@ def logout(request):
     red = redirect(url_for('index'))
     red.delete_cookie('com.kinaj.session')
     
-    return red 
+    return red
+
+
+@expose('/u')
+def up(req):
+    if req.method == 'POST':
+        username = req.authorization.username
+        password = req.authorization.password
+        
+        user = User.db.get(username)
+        
+        if user and User.chkpwd(password, user['password']):
+            
+            for file in req.files:
+                resp = Up.create(req.files[file].read(), 
+                          name=req.files[file].filename, 
+                          content_type=req.files[file].content_type)
+
+            url = 'http://127.0.0.1:5000/u/%s' % resp
+
+            return Response(simplejson.dumps({"ok": True, "url": url}), 
+                    mimetype='application/json')
     
+@expose('/u/<path:path>')
+def up_get(req, path):
+    """docstring for up_get"""
+    if req.method == 'GET':
+        attachment = Up.retrieve(path)
+
+        return Response(attachment['file'], mimetype=attachment['content_type'])
 
 def not_found(request):
     return render_html('not_found.html')

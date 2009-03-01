@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import hashlib, random
 from datetime import datetime
+from random import sample, randrange
 
 from simplecouchdb import schema
 
+URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
 
 class Project(schema.Document):
     name = schema.StringProperty(name='name')
@@ -112,3 +114,37 @@ class User(schema.Document):
 
         return (User.pwdhash(password, algo, salt) == reference)
 
+
+class Up(schema.Document):
+    """docstring for Up"""
+    sid = schema.StringProperty(name='sid')
+    
+    db = None
+    
+    @classmethod
+    def create(self, content, name=None, content_type=None):
+        """docstring for create"""
+        uid = ''.join(sample(URL_CHARS, randrange(3, 9)))
+        
+        tdoc = Up(id=uid, sid=uid)
+        
+        tdoc.save(self.db)
+        
+        doc = self.db.get(uid)
+        
+        self.db.put_attachment(doc, content, name, content_type)
+        
+        return uid
+        
+    @classmethod
+    def retrieve(self, docid):
+        """docstring for retrieve"""
+        attachments = self.db.get(docid)['_attachments']
+        for attachment in attachments:
+            f = {
+                "content_type": attachments[attachment]['content_type'],
+                "file": self.db.get_attachment(docid, attachment)
+            }
+            
+        return f;
+        
