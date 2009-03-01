@@ -278,9 +278,6 @@ def logout(request):
 def up(req):
     if req.method == 'POST':
         
-        return Response(simplejson.dumps(req.authorization), 
-                        mimetype='application/json')
-        
         username = req.authorization.username
         password = req.authorization.password
         
@@ -299,7 +296,7 @@ def up(req):
             return Response(simplejson.dumps({"ok": True, "url": url}), 
                     mimetype='application/json')
     
-        return Response(simplejson.dumps(req.authorization), 
+        return Response(simplejson.dumps({"ok": False, "error": "omfg"}), 
                         mimetype='application/json')
                         
                         
