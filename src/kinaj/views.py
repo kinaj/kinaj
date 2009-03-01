@@ -318,7 +318,6 @@ def up_get(req, path):
 def up_list(req):
     """docstring for up_list"""
     if req.method == 'GET':
-        print req.session['username']
         
         docs = [wrap(p) for p in Up.list(req.session['username'])]
         
