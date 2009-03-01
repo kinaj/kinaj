@@ -296,6 +296,8 @@ def up(req):
             return Response(simplejson.dumps({"ok": True, "url": url}), 
                     mimetype='application/json')
     
+        return Response(simplejson.dumps(req.authorization), 
+                        mimetype='application/json')
 @expose('/u/<path:path>/')
 def up_get(req, path):
     """docstring for up_get"""
