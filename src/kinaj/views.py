@@ -278,6 +278,9 @@ def logout(request):
 def up(req):
     if req.method == 'POST':
         
+        return Response(simplejson.dumps(req.authorization), 
+                        mimetype='application/json')
+        
         username = req.authorization.username
         password = req.authorization.password
         
@@ -298,6 +301,8 @@ def up(req):
     
         return Response(simplejson.dumps(req.authorization), 
                         mimetype='application/json')
+                        
+                        
 @expose('/u/<path:path>/')
 def up_get(req, path):
     """docstring for up_get"""
