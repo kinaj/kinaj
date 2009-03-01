@@ -280,8 +280,8 @@ def up(req):
         
         auth = req.authorization
         
-        username = auth.username
-        password = auth.password
+        username = auth['username']
+        password = auth['password']
         
         user = User.db.get(username)
         
