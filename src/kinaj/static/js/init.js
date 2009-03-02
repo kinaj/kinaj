@@ -8,8 +8,6 @@ jQuery(function($) {
             
             var sid = $(this).parent().parent().attr('id');
             
-            console.log(sid);
-            
             if (confirm("Really want delete this Document?")) { 
                 Kinaj.fn.ajax({
                     type: 'delete',
