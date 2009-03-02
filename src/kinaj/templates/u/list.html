@@ -4,7 +4,7 @@
 <div id="ulist">
     <ul>
     {% for doc in docs %}
-        <li><a href="http://kinaj.com/u/{{ doc.sid }}">{{ doc.sid }}</a><p>{% for attachment in doc._attachments %}{{ attachment }}{% endfor %}</p><span>[{{ doc.views }}]</span></li>
+        <li id="{{ doc.sid }}"><a href="http://kinaj.com/u/{{ doc.sid }}">{{ doc.sid }}</a><p>{% for attachment in doc._attachments %}{{ attachment }}{% endfor %}</p><span>[{{ doc.views }}] <a href="#" class="delete">[X]</a></span></li>
     {% endfor %}
     </ul>
 </div>

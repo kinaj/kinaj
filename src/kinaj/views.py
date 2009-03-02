@@ -314,6 +314,17 @@ def up_get(req, path):
         return Response(attachment['file'], mimetype=attachment['content_type'])
         
 
+@expose('/u/delete/<path:path>', roles=('admin',))
+def up_get(req, path):
+    """docstring for up_get"""
+    if req.is_xhr and req.method == 'DELETE':
+        sid = Up.delete(path)
+        
+        print sid
+        
+        return Response(simplejson.dumps({"ok": True, "sid": sid}), 
+                        mimetype='application/json')
+                
 @expose('/u/list/', roles=('admin',))
 def up_list(req):
     """docstring for up_list"""

@@ -157,6 +157,11 @@ class Up(schema.Document):
         return f;
         
     @classmethod
+    def delete(self, docid):
+        """docstring for delete"""
+        return self.db.delete(docid)
+        
+    @classmethod
     def list(self, user):
         """docstring for list"""
         design = {
