@@ -320,8 +320,6 @@ def up_get(req, path):
     if req.is_xhr and req.method == 'DELETE':
         sid = Up.delete(path)
         
-        print sid
-        
         return Response(simplejson.dumps({"ok": True, "sid": sid}), 
                         mimetype='application/json')
                 
