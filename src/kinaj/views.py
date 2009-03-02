@@ -308,9 +308,7 @@ def up(req):
 @expose('/u/<path:path>')
 def up_get(req, path):
     """docstring for up_get"""
-    print 'ha'
     if req.method == 'GET':
-        print 'lala'
         attachment = Up.retrieve(path)
 
         return Response(attachment['file'], mimetype=attachment['content_type'])
