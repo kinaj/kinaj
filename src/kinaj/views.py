@@ -308,14 +308,16 @@ def up(req):
 @expose('/u/<path:path>')
 def up_get(req, path):
     """docstring for up_get"""
+    print 'ha'
     if req.method == 'GET':
+        print 'lala'
         attachment = Up.retrieve(path)
 
         return Response(attachment['file'], mimetype=attachment['content_type'])
         
 
 @expose('/u/delete/<path:path>', roles=('admin',))
-def up_get(req, path):
+def up_delete(req, path):
     """docstring for up_get"""
     if req.is_xhr and req.method == 'DELETE':
         sid = Up.delete(path)
