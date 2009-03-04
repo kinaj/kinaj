@@ -1,0 +1,14 @@
+body {
+    margin: 0px;
+}
+
+#message {
+    -khtml-margin-top-collapse: separate;
+    -khtml-margin-bottom-collapse: separate;
+    margin-left: 6px;
+    margin-top: 142px;
+    width: auto;
+    margin-right: -6px;
+    min-height: 0px;
+    height: auto;
+}
