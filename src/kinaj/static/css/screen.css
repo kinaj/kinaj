@@ -85,11 +85,11 @@
     div#page div#content div.info {float: right; width: 29em;}
     div#page div#content div.info h1 {margin: 0.3em 0em;}
     div#page div#content div.info span.category {font-size: 1.2em;}
-    div#page div#content div.info div {font-size: 1.4em; min-height: 9em; padding: 2em 0em 2em 0em;}
+    div#page div#content div.info div {font-size: 1.4em; min-height: 7em; padding: 2em 0em 2em 0em;}
     div#page div#content div.info div p {margin: 0em 0em 1em 0em;}
     div#page div#content div.info div a {border-bottom: dotted 1px #cfcfcf; padding: 0em 0.1em;}
-    div#page div#content div.info p.download {font-size: 1.4em;}
-    div#page div#content div.info p.download a {text-decoration: underline;}
+    div#page div#content div.info p.download {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
+    div#page div#content div.info p.download a {margin: 0em 0.2em 0em 0em;}
     
     div#page div#content div#ulist {position: relative; margin: 0 auto; width: 55em; min-height: 26em; padding: 0em 2em 0em 2em; overflow: hidden;}
     div#page div#content div#ulist ul li {font-size: 1.4em; margin: 0em 0em 1em 0em;}
