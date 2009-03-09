@@ -103,7 +103,7 @@
     div#page div#footer ul li {display: inline;}
     div#page div#footer ul li a {font-size: 1.2em; font-family: 'HelveticaNeue-CondensedBold', helvetica, arial, sans-serif;}
     div#page div#footer p {color: #657178; font-family: 'HelveticaNeue-Regular', helvetica, arial, sans-serif; margin: 0em 0em 1em 0em;}
-    div#page div#footer p.work {color: #cfcfcf;}
+    div#page div#footer p.work {color: #cfcfcf; margin: 0em 0em 2em 0em;}
 	
 	div#profile {background: #fff; color: #000; height: 25em; overflow: auto; text-align: left; padding: 3em 2em;}
 	div#profile table {width: 100%; font-size: 1.6em;}
