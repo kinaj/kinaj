@@ -15,7 +15,7 @@
             <div>{{ project.text|markup(project.markup) }}</div>
             {%- if project.download_mac and project.download_pc %}
                 <p class="download">Download</p>
-                <p class="download"><a href="/static/projects/{{ project.id }}/{{ project.download_mac }}" title="Download for Mac"><img src="/static/img/apple.png" title="Download for Mac" alt="Download for Mac" /></a> or <a href="/static/projects/{{ project.id }}/{{ project.download_pc }}"><img src="/static/img/win.png" title="Download for PC" alt="Download for PC" /></a></p>
+                <p class="download"><a href="/static/projects/{{ project.id }}/{{ project.download_mac }}" title="Download for Mac"><img src="/static/img/apple.png" title="Download for Mac" alt="Download for Mac" /></a><a href="/static/projects/{{ project.id }}/{{ project.download_pc }}"><img src="/static/img/win.png" title="Download for PC" alt="Download for PC" /></a></p>
             {%- elif project.download_mac %}
                 <p><a href="/static/projects/{{ project.id }}/{{ project.download_mac }}" title="Download for Mac"><img src="/static/img/apple.png" title="Download for Mac" alt="Download for Mac" /></a></p>
             {%- elif project.download_pc %}

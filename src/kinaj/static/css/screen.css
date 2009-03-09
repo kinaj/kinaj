@@ -89,7 +89,7 @@
     div#page div#content div.info div p {margin: 0em 0em 1em 0em;}
     div#page div#content div.info div a {border-bottom: dotted 1px #cfcfcf; padding: 0em 0.1em;}
     div#page div#content div.info p.download {font-size: 1.4em; margin: 0em 0em 0.5em 0em;}
-    div#page div#content div.info p.download a {margin: 0em 0.2em 0em 0em;}
+    div#page div#content div.info p.download a {margin: 0em 0.75em 0em 0em;}
     
     div#page div#content div#ulist {position: relative; margin: 0 auto; width: 55em; min-height: 26em; padding: 0em 2em 0em 2em; overflow: hidden;}
     div#page div#content div#ulist ul li {font-size: 1.4em; margin: 0em 0em 1em 0em;}
