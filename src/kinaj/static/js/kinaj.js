@@ -16,6 +16,9 @@ $.fn.kinajShowroom = function(options) {
     
     return this.each(function(idx) {
         
+        if (window.location.pathname.length > 1)
+            return;
+        
         new Kinaj.Showroom( this , opts );
         
     });
@@ -460,7 +463,8 @@ Kinaj.Showroom.prototype = {
  		             + '<span class="category"><%= category %></span>'
  		             + '<div><%= text %></div>'
  		             + '<% if (download_mac.length && download_pc.length) %>'
- 		             + '<p class="download">Download for <a href="/static/projects/<%= _id %>/<%= download_mac %>" title="Download for Mac"><img src="/static/img/apple.png" title="Download for Mac" alt="Download for Mac" /></a> or <a href="/static/projects/<%= _id %>/<%= download_pc %>" title="Download for PC"><img src="/static/img/win.png" title="Download for PC" alt="Download for PC" /></a></p>'
+ 		             + '<p class="download">Download</p>'
+     		         + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_mac %>" title="Download for Mac"><img src="/static/img/apple.png" title="Download for Mac" alt="Download for Mac" /></a><a href="/static/projects/<%= _id %>/<%= download_pc %>" title="Download for PC"><img src="/static/img/win.png" title="Download for PC" alt="Download for PC" /></a></p>'
  		             + '<% if (download_mac.length && !download_pc.length) %>'
  		             + '<p class="download"><a href="/static/projects/<%= _id %>/<%= download_mac %>">Download</a></p>'
  		             + '<% if (download_pc.length && !download_mac.length) %>'
