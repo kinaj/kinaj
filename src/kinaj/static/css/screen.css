@@ -1,6 +1,7 @@
 @charset "utf-8";
 @media screen {
-    body {background: #4f585e; color: #cfcfcf; font-size: 10px; font-family: 'HelveticaNeue-Regular', 'HelveticaNeue', 'Trebuchet MS', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; overflow: scroll; overflow-x: hidden;}
+    html {overflow: scroll; overflow-x: hidden;}
+    body {background: #4f585e; color: #cfcfcf; font-size: 10px; font-family: 'HelveticaNeue-Regular', 'HelveticaNeue', 'Trebuchet MS', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; overflow: hidden;}
     
     img {font-size: 10px;}
     
