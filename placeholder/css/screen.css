@@ -1,7 +1,7 @@
 @charset "utf-8";
 @media screen {
     html {overflow: scroll; overflow-x: hidden;}
-    body {background: rgb(32, 32, 32); color: #cfcfcf; font-size: 10px; font-family: 'HelveticaCYPlain', 'HelveticaCY', 'HelveticaNeue', 'Trebuchet MS', helvetica, arial, sans-serif; font-weight: lighter; text-align: center; overflow: hidden;}
+    body {background: rgb(32, 32, 32); color: #fff; font-size: 10px; font-family: helvetica, arial, verdana, sans-serif; font-weight: lighter; text-align: center; overflow: hidden; text-shadow: rgb(8, 8, 8) 0px 5px;}
     img {font-size: 10px;}
     
     a {text-decoration: none;}
@@ -11,7 +11,7 @@
     .deviantart {color: rgb(233, 255, 206);}
     .flickr {color: rgb(255, 255, 255);}
     .lastfm {color: rgb(255, 175, 175);}
-    .twitter {color: rgb(179, 255, 255);}
+    .twitter {color: rgb(206, 233, 255);}
     
     #page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
     
@@ -19,6 +19,7 @@
     #placeholder h1 {font-size: 42px;}
     #placeholder ul {margin: 25px 0px 0px 0px;}
     #placeholder ul li {display: inline; margin: 0px 3px;}
-    #placeholder ul li a {font-size: 20px;}
-    #placeholder p {margin: 35px; font-size: 14px;}
+    #placeholder ul li a {font-size: 20px; letter-spacing: 0.04em; text-shadow: rgb(8, 8, 8) 0px 4px;}
+    #placeholder p {margin: 35px; font-size: 14px; text-shadow: rgb(8, 8, 8) 0px 2px;}
+    #placeholder p a {color: rgb(255, 255, 255);}
 }
