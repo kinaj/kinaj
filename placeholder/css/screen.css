@@ -1,25 +1,20 @@
 @charset "utf-8";
 @media screen {
-    html {overflow: scroll; overflow-x: hidden;}
-    body {background: rgb(32, 32, 32); color: #fff; font-size: 10px; font-family: helvetica, arial, verdana, sans-serif; font-weight: lighter; text-align: center; overflow: hidden; text-shadow: rgb(8, 8, 8) 0px 5px;}
+    html {}
+    body {background: rgb(135, 148, 159); color: rgb(255, 255, 255); font-size: 10px; font-family: helvetica, arial, verdana, sans-serif; font-weight: lighter; text-align: center;}
     img {font-size: 10px;}
     
-    a {text-decoration: none;}
-    
+    a {color: rgb(255, 255, 255); text-decoration: none;}
     strong {font-weight: bold;}
     
-    .deviantart {color: rgb(233, 255, 206);}
-    .flickr {color: rgb(255, 255, 255);}
-    .lastfm {color: rgb(255, 175, 175);}
-    .twitter {color: rgb(206, 233, 255);}
+    #page {margin: 0 auto; text-align: left;}
     
-    #page {margin: 0 auto; min-height: 101%; height: auto !important; height: 101%; text-align: left;}
-    
-    #placeholder {width: 400px; margin: 200px auto 0 auto; text-align: center;}
-    #placeholder h1 {font-size: 42px;}
-    #placeholder ul {margin: 25px 0px 0px 0px;}
-    #placeholder ul li {display: inline; margin: 0px 3px;}
-    #placeholder ul li a {font-size: 20px; letter-spacing: 0.04em; text-shadow: rgb(8, 8, 8) 0px 4px;}
-    #placeholder p {margin: 35px; font-size: 14px; text-shadow: rgb(8, 8, 8) 0px 2px;}
-    #placeholder p a {color: rgb(255, 255, 255);}
+    #placeholder {width: 400px; margin: 110px auto 0 auto; text-align: center;}
+    #placeholder h1 {text-align: center;}
+    #placeholder ul {margin: 170px 0px 0px 0px;}
+    #placeholder ul li {display: block; text-align: center;}
+    #placeholder ul li img {display: block; margin: 0 auto 55px auto;}
+    #placeholder ul li p,
+    #placeholder ul li a {padding: 1px 2px; font-size: 11px; font-weight: bold; letter-spacing: 0.04em; text-shadow: rgb(48, 65, 79) 0px 1px 2px; border-radius: 2px;}
+    #placeholder ul li a:hover {background: rgb(152, 163, 173);}
 }
