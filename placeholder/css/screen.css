@@ -10,14 +10,18 @@
     #page {margin: 0 auto; text-align: left;}
     #page h1 {margin: 100px 0px 0px 0px; text-align: center;}
     
-    #showroom {position: relative; width: 400px; min-height: 400px; margin: 100px auto 0 auto; font-size: 11px; text-align: center; font-weight: bold; letter-spacing: 0.04em; -moz-text-shadow: rgb(48, 65, 79) 0px 1px 2px; -webkit-text-shadow: rgb(48, 65, 79) 0px 1px 2px; text-shadow: rgb(48, 65, 79) 0px 1px 2px;}
-    #showroom div {position: absolute; display: block; width: 400px; top: 0; left: 0; text-align: center;}
+    #showroom {position: relative; width: 400px; min-height: 230px; margin: 100px auto 0 auto; font-size: 11px; text-align: center; font-weight: bold; letter-spacing: 0.04em; -moz-text-shadow: rgb(48, 65, 79) 0px 1px 2px; -webkit-text-shadow: rgb(48, 65, 79) 0px 1px 2px; text-shadow: rgb(48, 65, 79) 0px 1px 2px;}
+    #showroom div {position: absolute; display: none; width: 400px; top: 0; left: 0; text-align: center;}
     #showroom div img {display: block; margin: 0 auto 55px auto; cursor: pointer;}
     #showroom div p,
     #showroom div a {padding: 1px 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px;}
     #showroom div a:hover {background: rgb(152, 163, 173);}
     
-    #navigation {text-align: center;}
+    #navigation {font-size: 12px; text-align: center;}
+    #navigation li {display: inline-block;}
+    #navigation li a {color: rgb(164, 178, 190);}
+    #navigation li a:hover {color: rgb(191, 207, 221);}
+    #navigation li a.active {color: rgb(255, 255, 255);}
     
 /*    #showroom #front {display: none; margin: 170px 0px 0px 0px;}
     #showroom #back {display: none; margin: 65px 0px 0px 0px;}
