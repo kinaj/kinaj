@@ -8,18 +8,27 @@
     strong {font-weight: bold;}
     
     #page {margin: 0 auto; text-align: left;}
+    #page h1 {margin: 100px 0px 0px 0px; text-align: center;}
     
-    #placeholder {width: 400px; margin: 110px auto 0 auto; font-size: 11px; text-align: center; font-weight: bold; letter-spacing: 0.04em; -moz-text-shadow: rgb(48, 65, 79) 0px 1px 2px; -webkit-text-shadow: rgb(48, 65, 79) 0px 1px 2px; text-shadow: rgb(48, 65, 79) 0px 1px 2px;}
-    #placeholder #front {display: none; margin: 170px 0px 0px 0px;}
-    #placeholder #back {display: none; margin: 65px 0px 0px 0px;}
-    #placeholder h1 {text-align: center;}
-    #placeholder ul li {display: block; text-align: center;}
-    #placeholder ul li img {display: block; margin: 0 auto 55px auto; cursor: pointer;}
-    #placeholder ul li p,
-    #placeholder ul li a {padding: 1px 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px;}
-    #placeholder ul li a:hover {background: rgb(152, 163, 173);}
+    #showroom {position: relative; width: 400px; min-height: 400px; margin: 100px auto 0 auto; font-size: 11px; text-align: center; font-weight: bold; letter-spacing: 0.04em; -moz-text-shadow: rgb(48, 65, 79) 0px 1px 2px; -webkit-text-shadow: rgb(48, 65, 79) 0px 1px 2px; text-shadow: rgb(48, 65, 79) 0px 1px 2px;}
+    #showroom div {position: absolute; display: block; width: 400px; top: 0; left: 0; text-align: center;}
+    #showroom div img {display: block; margin: 0 auto 55px auto; cursor: pointer;}
+    #showroom div p,
+    #showroom div a {padding: 1px 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px;}
+    #showroom div a:hover {background: rgb(152, 163, 173);}
     
-    #placeholder #back {}
+    #navigation {text-align: center;}
+    
+/*    #showroom #front {display: none; margin: 170px 0px 0px 0px;}
+    #showroom #back {display: none; margin: 65px 0px 0px 0px;}
+    #showroom h1 {text-align: center;}
+    #showroom ul li {display: block; text-align: center;}
+    #showroom ul li img {display: block; margin: 0 auto 55px auto; cursor: pointer;}
+    #showroom ul li p,
+    #showroom ul li a {padding: 1px 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px;}
+    #showroom ul li a:hover {background: rgb(152, 163, 173);}
+    
+    #showroom #back {}*/
     
     .twotimes {margin-bottom: 30px;}
     .onetime {margin-bottom: 15px;}
