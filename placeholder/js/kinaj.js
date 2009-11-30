@@ -1,14 +1,27 @@
 jQuery(function ($) {
     var hideAdvice = function () {
+        var options = {
+            advice: false
+        };
+        
         kinaj.advice = false;
         
         if (kinaj.info.is(':visible')) {
-            kinaj.info.animate({top: '-22px'}, 250);
+            kinaj.info.stop().animate({top: '-22px'}, 450);
+            
+            $.cookie('kinaj', JSON.stringify(options), {path: '/', expires: 14});
         }
     };
     var listener = function () {
         kinaj.listener(arguments.callee);
     };
+    var cookie = $.cookie('kinaj');
+    
+    if (cookie) {
+        cookie = JSON.parse(cookie);
+        
+        kinaj = $.extend(kinaj, cookie);
+    }
     
     kinaj.divlist = $('#showroom div');
     kinaj.navigation = $('ul#navigation');
@@ -84,7 +97,7 @@ jQuery(function ($) {
     
     setTimeout(function () {
         if (kinaj.advice) {
-            kinaj.info.animate({top: '0px'}, 350);
+            kinaj.info.stop().animate({top: '0px'}, 750);
         }
     }, 3000);
 });
