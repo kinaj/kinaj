@@ -47,12 +47,6 @@ jQuery(function ($) {
         }
     });
     
-    $(document).bind('keydown', 'down', function (event) {
-        /*
-            TODO on down arrow start download
-        */
-    });
-    
     $('#page h1 a').bind('click', function (event) {
         var el = $(this),
             hash = el.attr('href'),
