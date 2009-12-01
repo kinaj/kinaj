@@ -134,7 +134,7 @@ var kinaj = {
         
         if (hash !== '#about') {
             prefix = kinaj.navigation.find('a[href="' + hash + '"]').attr('title');
-            kinaj.navigation.show();
+            kinaj.navigation.fadeIn(750);
         } else {
             prefix = 'About';
             kinaj.navigation.hide();
