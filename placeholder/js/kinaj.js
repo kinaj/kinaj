@@ -134,10 +134,16 @@ var kinaj = {
         
         if (hash !== '#about') {
             prefix = kinaj.navigation.find('a[href="' + hash + '"]').attr('title');
-            kinaj.navigation.fadeIn(750);
+            
+            if (!kinaj.navigation.is(':visible')) {
+                kinaj.navigation.fadeIn(750);
+            }
         } else {
             prefix = 'About';
-            kinaj.navigation.hide();
+            
+            if (kinaj.navigation.is(':visible')) {
+                kinaj.navigation.hide();
+            }
         }
         
         kinaj.title.text(prefix + ' | Janik Baumgartner');
