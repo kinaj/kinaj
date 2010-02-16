@@ -26,15 +26,15 @@
             <div id="showroom" class="clear">
                 <div id="zyr">
                     <img src="img/zyr_preview.png" alt="Zyr" />
-                    <a href="files/zyr.zip">DOWNLOAD</a>
+                    <a href="files/zyr.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="ichat2010">
                     <img src="img/ichat_preview.png" alt="iChat 2010" />
-                    <a href="files/ichat2010.zip">DOWNLOAD</a>
+                    <a href="files/ichat2010.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="hardware">
                     <img src="img/hardware_preview.png" alt="Hardware Pixelz" />
-                    <a href="files/hardware.zip">DOWNLOAD</a>
+                    <a href="files/hardware.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="32">
                     <img src="img/32_soon.png" alt="32 Pixelz" />
@@ -54,31 +54,31 @@
                 </div>
                 <div id="finder">
                     <img src="img/finder_preview.png" alt="Finder" />
-                    <a href="files/finder.zip">DOWNLOAD</a>
+                    <a href="files/finder.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="sere">
                     <img src="img/sere_preview.png" alt="Sere" />
-                    <a href="files/sere.zip">DOWNLOAD</a>
+                    <a href="files/sere.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="airtunes">
                     <img src="img/airtunes_preview.png" alt="AirTunes" />
-                    <a href="files/airtunes.zip">DOWNLOAD</a>
+                    <a href="files/airtunes.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="35">
                     <img src="img/35_preview.png" alt="3.5&quot; HDD" />
-                    <a href="files/35.zip">DOWNLOAD</a>
+                    <a href="files/35.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="snowdrives">
                     <img src="img/snowdrives_preview.png" alt="Snow Drives" />
-                    <a href="files/snowdrives.zip">DOWNLOAD</a>
+                    <a href="files/snowdrives.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="ocean">
                     <img src="img/ocean_preview.png" alt="Ocean" />
-                    <a href="files/ocean.zip">DOWNLOAD</a>
+                    <a href="files/ocean.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="dearsteve">
                     <img src="img/dearsteve_preview.png" alt="Dear Steve" />
-                    <a href="files/dearsteve.zip">DOWNLOAD</a>
+                    <a href="files/dearsteve.zip" class="download">DOWNLOAD</a>
                 </div>
                 <div id="about">
                     <p class="twotimes">AVAILABLE FOR DESIGN WORK</p>
@@ -120,24 +120,26 @@
                 <li><a href="#dearsteve" title="Dear Steve">•</a></li>
             </ul>
         </div>
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/jquery.cookie.js"></script>
-        <script type="text/javascript" src="js/jquery.hotkeys.js"></script>
-        <script type="text/javascript" src="js/kinaj.js"></script>
         <script type="text/javascript">
             var _gaq = _gaq || [];
             
-            _gaq.push(['_setAccount', 'UA-6679975-1']);
-            _gaq.push(['_trackPageview']);
+            _gaq.push(
+              ['_setAccount', 'UA-6679975-1'],
+              ['_trackPageview'] 
+            );
 
-            (function () {
+            (function (window, document) {
                 var ga = document.createElement('script');
                 
                 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
                 ga.setAttribute('async', 'true');
                 
                 document.documentElement.firstChild.appendChild(ga);
-            })();
-        </script>
+            })(window, document);
+        </script>  
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/jquery.hotkeys.js"></script>
+        <script type="text/javascript" src="js/kinaj.js"></script>
   	</body>
 </html>
