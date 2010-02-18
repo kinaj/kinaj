@@ -109,6 +109,10 @@ jQuery(function ($) {
 });
 
 var track = function (category, action, label) {
+  if (label === 'undefined' && label === undefined) {
+    return;
+  }
+    
   if (_gaq.length) {
      _gaq.push(['_trackPageview', '/'], ['_trackEvent', category, action, label])
   } else {
