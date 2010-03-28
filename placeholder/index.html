@@ -24,6 +24,10 @@
             </div>
             <h1><a href="#about" title="About | Janik Baumgartner"><img src="img/janik.png" alt="About | Janik Baumgartner" /></a></h1>
             <div id="showroom" class="clear">
+                <div id="downloader">
+                    <img src="img/downloader_preview.png" alt="Zyr" />
+                    <a href="files/downloader.zip" class="download">DOWNLOAD</a>
+                </div>
                 <div id="zyr">
                     <img src="img/zyr_preview.png" alt="Zyr" />
                     <a href="files/zyr.zip" class="download">DOWNLOAD</a>
@@ -104,6 +108,7 @@
                 </div>
             </div>
             <ul id="navigation">
+                <li><a href="#downloader" title="Downloader">•</a></li>
                 <li><a href="#zyr" title="Zyr">•</a></li>
                 <li><a href="#ichat2010" title="iChat 2010">•</a></li>
                 <li><a href="#hardware" title="Hardware Pixelz">•</a></li>
@@ -130,7 +135,10 @@
             (function (window, document) {
                 var ga = document.createElement('script');
                 
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                ga.src = ('https:' == document.location.protocol ?
+                          'https://ssl' : 'http://www') +
+                          '.google-analytics.com/ga.js';
+
                 ga.setAttribute('async', 'true');
                 
                 document.documentElement.firstChild.appendChild(ga);
