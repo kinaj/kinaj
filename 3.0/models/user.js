@@ -5,22 +5,31 @@ var sys = require('sys')
   , algo = 'sha512'
   , hmacKey = 'com.kinaj.admin';
 
+
+function passwordHash(password, salt) {
+  var salt = salt || helper.fastUUID().substr(0, 6)
+    , hash = crypto.createHmac(algo, hmacKey).update([ salt, password ].join('')).digest('base64');
+
+  return [ algo, salt, hash ].join('$');
+};
+
 mongoose.model('User', {
   properties: [ 'username', 'email', 'password', 'updated_at' ]
-, indexes: []
+, indexes: [ [{ 'username': 1}, {unique: true }] ]
+, setters: {
+    password: function(v) {
+      return passwordHash(v);
+    }
+  }
 , methods: {
+    passwordHash: passwordHash,
     save: function(fn) {
       this.updated_at = new Date();
       this.__super__(fn);
     }
   }
 , static: {
-    passwordHash: function(password, salt) {
-      var salt = salt || helper.fastUUID().substr(0, 6)
-        , hash = crypto.createHmac(algo, hmacKey).update([ salt, password ].join('')).digest('base64');
-
-      return [ algo, salt, hash ].join('$');
-    },
+    passwordHash: passwordHash,
     validPassword: function(username, password, cb) {
       var self = this;
 
