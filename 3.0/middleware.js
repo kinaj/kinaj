@@ -23,6 +23,46 @@ exports.responseTime = function(req, res, params, next) {
   next();
 };
 
+exports.flash = function(req, res, params, next) {
+  var key = 'session:' + params.session.id + ':flash'
+    , push = function(text, cb) {
+        redis.rpush(key, text, function(err, rep) {
+          if (err) throw err;
+
+          cb(rep);
+        });
+      }
+    , del = function(cb) {
+        redis.del(key, function(err, rep) {
+          if (err) throw err;
+          
+          cb(rep);
+        });
+      };
+
+  params.flash = { msgs: [], push: push, del: del };
+  
+  redis.llen(key, function(err, len) {
+    if (err) throw err;
+
+    redis.lrange(key, 0, len, function(err, rep) {
+      if (err) throw err;
+
+      var msgs = []
+        , rep = rep || [];
+
+      for (var i = 0; i < rep.length; i++) {
+        sys.puts(i);
+        msgs.push({ text: rep[i] });
+      }
+
+      params.flash.msgs = res.msgs =  msgs;
+
+      params.flash.del(next);
+    });
+  });
+};
+
 exports.form = function(req, res, params, next) {
   if (req.method.toLowerCase() === 'post') {
     var form = new formidable.IncomingForm();
@@ -95,6 +135,8 @@ exports.session = function(req, res, params, next) {
 
 exports.authorization = function(req, res, params, next) {
   if (params.authorized && !params.session.uid) {
-    res.redirect('/login');
+    params.flash.push('You need to be logged in', function() {
+      res.redirect('/login');
+    });
   } else next();
 };

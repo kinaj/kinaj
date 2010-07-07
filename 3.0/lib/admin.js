@@ -1,4 +1,6 @@
-var User = require('../models').User;
+var sys = require('sys')
+  , User = require('../models').User
+  , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
 exports.dashboard = function(req, res, params) {
   res.template(200, {}, 'dashboard.html', {
@@ -7,6 +9,7 @@ exports.dashboard = function(req, res, params) {
 };
 
 exports.loginForm = function(req, res, params) {
+  ins(params.flash);
   res.template(200, {}, 'login-form.html', {});
 };
 
@@ -16,10 +19,16 @@ exports.login = function(req, res, params) {
 
   User.validPassword(username, password, function(check, uid) {
     if (check) {
-      res.redirect('/');
+      params.flash.push('Hej, ' + username, function() {
+        res.redirect('/');
+      });
 
       params.session.store(uid, username);
-    } else res.simple('/login');
+    } else {
+      params.flash.push('incorrect credentials', function() {
+        res.redirect('/login');
+      });
+    }
   });
 };
 
