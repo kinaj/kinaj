@@ -1,8 +1,6 @@
-require('./models/user');
-
 var sys = require('sys')
   , crypto = require('crypto')
-  , helper = require('../helper')
+  , helper = require('./helper')
   , mongoose = require('mongoose/mongoose').Mongoose
   , db = mongoose.connect('mongodb://127.0.0.1/kinaj')
   , algo = 'sha512'

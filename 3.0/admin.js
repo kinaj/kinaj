@@ -1,7 +1,7 @@
 var Ordnung = require('ordnung').Ordnung
   , middleware = require('./middleware')
   , mixins = require('./mixins')
-  , admin = require('./lib/admin');
+  , auth = require('./admin/auth');
 
 Ordnung.prototype.middleware = [ middleware.logger
                                , middleware.responseTime
@@ -16,13 +16,13 @@ Ordnung.prototype.response.mixin({ template: mixins.template });
 
 var app = new Ordnung({ name: 'kinaj/admin', port: 3001 });
 
-app.mapRoutes([ [ [ 'get' ],      '/',        admin.dashboard, true ]
-              , [ [ 'get' ],      '/login',   admin.loginForm ]
-              , [ [ 'post' ],     '/login',   admin.login ]
-              , [ [ 'delete' ],   '/login',   admin.logout ]
+app.mapRoutes([ [ [ 'get' ],      '/',        auth.dashboard, true ]
+              , [ [ 'get' ],      '/login',   auth.loginForm ]
+              , [ [ 'post' ],     '/login',   auth.login ]
+              , [ [ 'delete' ],   '/login',   auth.logout ]
 
               // TODO remove only for testing
-              , [ [ 'get' ],      '/logout',  admin.logout ]
+              , [ [ 'get' ],      '/logout',  auth.logout ]
               ]);
 
 app.start();

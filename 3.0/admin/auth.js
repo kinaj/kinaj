@@ -9,7 +9,6 @@ exports.dashboard = function(req, res, params) {
 };
 
 exports.loginForm = function(req, res, params) {
-  ins(params.flash);
   res.template(200, {}, 'login-form.html', {});
 };
 

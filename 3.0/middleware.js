@@ -52,7 +52,6 @@ exports.flash = function(req, res, params, next) {
         , rep = rep || [];
 
       for (var i = 0; i < rep.length; i++) {
-        sys.puts(i);
         msgs.push({ text: rep[i] });
       }
 
