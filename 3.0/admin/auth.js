@@ -18,13 +18,13 @@ exports.login = function(req, res, params) {
 
   User.validPassword(username, password, function(check, uid) {
     if (check) {
-      params.flash.push('Hej, ' + username, function() {
+      params.flash.push('Aloha, ' + username, function() {
         res.redirect('/');
       });
 
       params.session.store(uid, username);
     } else {
-      params.flash.push('incorrect credentials', function() {
+      params.flash.push('wrong credentials', function() {
         res.redirect('/login');
       });
     }
