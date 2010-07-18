@@ -59,9 +59,11 @@ mongoose.model('Project', {
 , methods: {
     save: function(fn) {
       this.updated_at = new Date();
-
+  
       this.__super__(fn);
     }
   }
 });
+
 exports.User = db.model('User');
+exports.Project = db.model('Project');

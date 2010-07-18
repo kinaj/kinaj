@@ -8,7 +8,7 @@ exports.template = function(status, hdrs, tmpl, ctx) {
   ctx['msgs'] = self.msgs;
 
   nun.render(atmpl, ctx, {}, function(err, out) {
-    if (err) throw err;
+    if (err) return self.simple(500, JSON.stringify(err, null, 2), {});
 
     hdrs['content-type'] = 'text/html';
 
