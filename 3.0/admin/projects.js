@@ -1,6 +1,6 @@
 var sys = require('sys')
   , Project = require('../models').Project
-  , ins = function(x) { return sys.debug(sys.inspect(x)); };
+  , ins = function(x) { return sys.debug(sys.inspect(x, true, 5)); };
 
 exports.list = function(req, res, params) {
   Project.find({}).all(function(projects) {
@@ -13,15 +13,21 @@ exports.list = function(req, res, params) {
 exports.create = function(req, res, params) {
   project = new Project();
 
-  for (var key in params.fields) {
-    project[key] = params.fields[key];
-  }
+  for (var key in params.fields) project[key] = params.fields[key];
 
-  project.save(function() { res.redirect('/projects/' + project.slug + '/edit'); });
+  project.save(function() {
+    res.redirect('/projects/' + project.slug + '/edit');
+  });
 };
 
 exports.update = function(req, res, params) {
-  res.simple(200, 'NotYetImplemented', {});
+  Project.find({ slug: params.slug }).first(function(project) {
+    for (var key in params.fields) project[key] = params.fields[key];
+
+    project.save(function() {
+      res.redirect('/projects/' + project.slug + '/edit');
+    });
+  });
 };
 
 exports.del = function(req, res, params) {
