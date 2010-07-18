@@ -1,4 +1,8 @@
-var path = require('path');
+var path = require('path')
+  , runtime = process.env['RUNTIME'];
 
+exports.runtime = runtime;
 exports.baseDir = __dirname;
-exports.viewDir = path.join(__dirname, 'views/admin');
+exports.viewDir = path.join(__dirname, 'views');
+exports.appDomain = (runtime === 'development') ? 'kinaj.dev' : 'kinaj.com';
+exports.domain = (runtime === 'development') ? 'kinaj.dev' : 'kinaj.com';

@@ -2,23 +2,30 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="domain" content="http://admin.{{ domain }}" />
+    
     <title>kinaj - login</title>
   </head>
   <body>
     <div id="navigation">
-    {{+ flash }}
-      {{> _flash.html}}
-    {{/ flash }}
+    {{+navigation}}
+      {{>_navigation.html}}
+    {{/navigation}}
+    {{+flash}}
+      {{>_flash.html}}
+    {{/flash}}
     </div>
     <div id="workspace">
-    {{+ workspace }}
-    {{/ workspace }}
+    {{+workspace}}
+    {{/workspace}}
     </div>
     <div id="meta">
-    {{+ info }}
-      {{> _info.html}}
-    {{/ info }}
+    {{+info}}
+      {{>_meta.html}}
+    {{/info}}
     </div>
+    <script type="text/javascript" src="http://static.{{ domain }}/js/kinaj.js"></script>
   </body>
 </html>
 

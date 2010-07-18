@@ -5,6 +5,7 @@ exports.template = function(status, hdrs, tmpl, ctx) {
   var self = this
     , atmpl = config.viewDir + '/' + tmpl;
 
+  ctx['domain'] = config.domain;
   ctx['msgs'] = self.msgs;
 
   nun.render(atmpl, ctx, {}, function(err, out) {

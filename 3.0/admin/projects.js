@@ -4,7 +4,7 @@ var sys = require('sys')
 
 exports.list = function(req, res, params) {
   Project.find({}).all(function(projects) {
-    res.template(200, {}, 'projects/list.html', {
+    res.template(200, {}, 'admin/projects/list.html', {
       projects: projects.map(function(p) { return p.__doc; })
     });
   });
@@ -41,7 +41,7 @@ exports.del = function(req, res, params) {
 };
 
 exports.newForm = function(req, res, params) {
-  res.template(200, {}, 'projects/form.html', {
+  res.template(200, {}, 'admin/projects/form.html', {
     _form: { submit: 'create'
            , action: '/projects/create'
            , method: 'post'
@@ -57,6 +57,6 @@ exports.editForm = function(req, res, params) {
                 , method: 'put'
                 };
 
-    res.template(200, {}, 'projects/form.html', ctx);
+    res.template(200, {}, 'admin/projects/form.html', ctx);
   });
 };

@@ -3,7 +3,7 @@ var sys = require('sys')
   , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
 exports.dashboard = function(req, res, params) {
-  res.template(200, {}, 'dashboard.html', {
+  res.template(200, {}, 'admin/dashboard.html', {
     username: params.session.username
   });
 };
@@ -14,7 +14,7 @@ exports.loginForm = function(req, res, params) {
   if (params.query.redirect)
     action += '?redirect=' + params.query.redirect;
 
-  res.template(200, {}, 'login-form.html', {
+  res.template(200, {}, 'admin/login-form.html', {
     action: action
   });
 };
