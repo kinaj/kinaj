@@ -1,0 +1,51 @@
+upstream app {
+  server 127.0.0.1:3000;
+}
+
+upstream admin {
+  server 127.0.0.1:3001;
+}
+
+server {
+  listen 80;
+  server_name kinaj.dev;
+
+  access_log /usr/local/var/log/nginx/kinaj.dev.access.log;
+  error_log /usr/local/var/log/nginx/kinaj.dev.error.log;
+
+  location / {
+    proxy_pass http://app/;
+  }
+
+  location /favicon.ico {
+    proxy_pass http://static.kinaj.dev;
+  }
+}
+
+server {
+  listen 80;
+  server_name admin.kinaj.dev;
+
+  access_log /usr/local/var/log/nginx/admin.kinaj.dev.access.log;
+  error_log /usr/local/var/log/nginx/admin.kinaj.dev.error.log;
+
+  location / {
+    proxy_pass http://admin/;
+  }
+
+  location /favicon.ico {
+    proxy_pass http://static.kinaj.dev/img/favicon.ico;
+  }
+}
+
+server {
+  listen 80;
+  server_name static.kinaj.dev;
+
+  access_log /usr/local/var/log/nginx/kinaj.dev.access.log;
+  error_log /usr/local/var/log/nginx/kinaj.dev.error.log;
+
+  location / {
+    root /Users/alx/development/workspace/kinaj/3.0/static;
+  }
+}

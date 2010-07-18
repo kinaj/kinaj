@@ -21,26 +21,6 @@ Ordnung.prototype.response.mixin({ template: mixins.template });
 
 var app = new Ordnung({ name: 'kinaj/admin', port: 3001 });
 
-// static delivery in development
-function staticDeliver(req, res, params) {
-  paperboy
-    .deliver(config.baseDir, req, res)
-    .addHeader('Expires', -1)
-    .addHeader('X-PaperRoute', 'kinaj/admin')
-    .otherwise(function(err) {
-      res.simple(500, err.stack, {});
-    });
-};
-
-if (process.env['RUNTIME'] === 'development') {
-  app.route([ 'get' ], '/favicon.ico', function(req, res, params) {
-    req.url = '/static/img/favicon.ico';
-
-    staticDeliver(req, res, params);
-  });
-  app.route([ 'get' ], /^\/static/, staticDeliver);
-}
-
 app.mapRoutes([ [ [ 'get' ],      '/',        auth.dashboard, true ]
               
               // auth
