@@ -4,9 +4,10 @@ var sys = require('sys')
 
 exports.list = function(req, res, params) {
   Project.find({}).all(function(projects) {
-    res.template(200, {}, 'admin/projects/list.html', {
-      projects: projects.map(function(p) { return p.__doc; })
-    });
+    var projects = projects.map(function(p) { return p.__doc; })
+    if (params.xhr) {
+      res.template(200, {}, 'admin/partials/projects-list.html', { projects: projects });
+    } else res.template(200, {}, 'admin/projects-manage.html', { projects: projects });
   });
 };
 
@@ -41,12 +42,14 @@ exports.del = function(req, res, params) {
 };
 
 exports.newForm = function(req, res, params) {
-  res.template(200, {}, 'admin/projects/form.html', {
-    _form: { submit: 'create'
-           , action: '/projects/create'
-           , method: 'post'
-           }
-  });
+  var form = { submit: 'create'
+              , action: '/projects/create'
+              , method: 'post'
+              };
+  
+  if (params.xhr) {
+    res.template(200, {}, 'admin/partials/projects-form.html', { _form: form });
+  } else res.template(200, {}, 'admin/projects-new.html', { _form: form });
 };
 
 exports.editForm = function(req, res, params) {
@@ -54,9 +57,11 @@ exports.editForm = function(req, res, params) {
     ctx = project.__doc;
     ctx._form = { submit: 'update'
                 , action: '/projects/' + params.slug + '/update'
-                , method: 'put'
+                , method: 'post'
                 };
 
-    res.template(200, {}, 'admin/projects/form.html', ctx);
+    if (params.xhr) {
+      res.template(200, {}, 'admin/partials/projects-form.html', ctx);
+    } else res.template(200, {}, 'admin/projects-edit.html', ctx);
   });
 };

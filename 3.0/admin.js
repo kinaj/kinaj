@@ -24,15 +24,15 @@ var app = new Ordnung({ name: 'kinaj/admin', port: 3001 });
 app.mapRoutes([ [ [ 'get' ],      '/',        auth.dashboard, true ]
               
               // auth
-              , [ [ 'get' ],      '/login',   auth.loginForm ]
-              , [ [ 'post' ],     '/login',   auth.login ]
-              , [ [ 'delete' ],   '/login',   auth.logout ]
+              , [ [ 'get' ],        '/login',   auth.loginForm ]
+              , [ [ 'post' ],       '/login',   auth.login ]
+              , [ [ 'delete' ],     '/login',   auth.logout ]
 
               // projects
-              , [ [ 'get' ],      '/projects',              projects.list, true ]
-              , [ [ 'post' ],     '/projects/create',       projects.create, true ]
-              , [ [ 'put' ],      '/projects/:slug/update', projects.update, true ]
-              , [ [ 'delete' ],   '/projects/:slug/delete', projects.del, true ]
+              , [ [ 'get' ],        '/projects',              projects.list, true ]
+              , [ [ 'post' ],       '/projects/create',       projects.create, true ]
+              , [ [ 'post', 'put' ],'/projects/:slug/update', projects.update, true ]
+              , [ [ 'delete' ],     '/projects/:slug/delete', projects.del, true ]
 
               // projects forms
               , [ [ 'get' ],      '/projects/new',          projects.newForm, true ]

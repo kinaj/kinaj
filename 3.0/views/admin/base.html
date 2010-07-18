@@ -10,10 +10,10 @@
   <body>
     <div id="navigation">
     {{+navigation}}
-      {{>_navigation.html}}
+      {{>partials/navigation.html}}
     {{/navigation}}
     {{+flash}}
-      {{>_flash.html}}
+      {{>partials/flash.html}}
     {{/flash}}
     </div>
     <div id="workspace">
@@ -22,7 +22,7 @@
     </div>
     <div id="meta">
     {{+info}}
-      {{>_meta.html}}
+      {{>partials/meta.html}}
     {{/info}}
     </div>
     <script type="text/javascript" src="http://static.{{ domain }}/js/kinaj.js"></script>

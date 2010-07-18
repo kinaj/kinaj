@@ -14,7 +14,7 @@ exports.loginForm = function(req, res, params) {
   if (params.query.redirect)
     action += '?redirect=' + params.query.redirect;
 
-  res.template(200, {}, 'admin/login-form.html', {
+  res.template(200, {}, 'admin/auth-login.html', {
     action: action
   });
 };
