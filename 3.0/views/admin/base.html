@@ -5,20 +5,20 @@
     <title>kinaj - login</title>
   </head>
   <body>
-    {{+ header }}
-    <h1>kinaj.admin</h1>
-    {{/ header }}
-
-    {{+ info }}
-      {{> _info.html}}
-    {{/ info }}
-
+    <div id="navigation">
     {{+ flash }}
       {{> _flash.html}}
     {{/ flash }}
-
-    {{+ content }}
-    {{/ content }}
+    </div>
+    <div id="workspace">
+    {{+ workspace }}
+    {{/ workspace }}
+    </div>
+    <div id="meta">
+    {{+ info }}
+      {{> _info.html}}
+    {{/ info }}
+    </div>
   </body>
 </html>
 

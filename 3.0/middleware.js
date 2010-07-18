@@ -135,7 +135,7 @@ exports.session = function(req, res, params, next) {
 exports.authorization = function(req, res, params, next) {
   if (params.authorized && !params.session.uid) {
     params.flash.push('You need to be logged in', function() {
-      res.redirect('/login');
+      res.redirect('/login?redirect=' + req.url);
     });
   } else next();
 };

@@ -9,7 +9,14 @@ exports.dashboard = function(req, res, params) {
 };
 
 exports.loginForm = function(req, res, params) {
-  res.template(200, {}, 'login-form.html', {});
+  var action = '/login';
+
+  if (params.query.redirect)
+    action += '?redirect=' + params.query.redirect;
+
+  res.template(200, {}, 'login-form.html', {
+    action: action
+  });
 };
 
 exports.login = function(req, res, params) {
@@ -19,7 +26,7 @@ exports.login = function(req, res, params) {
   User.validPassword(username, password, function(check, uid) {
     if (check) {
       params.flash.push('Aloha, ' + username, function() {
-        res.redirect('/');
+        res.redirect(params.query.redirect || '/');
       });
 
       params.session.store(uid, username);
