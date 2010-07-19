@@ -23,6 +23,14 @@ exports.responseTime = function(req, res, params, next) {
   next();
 };
 
+exports.xhr = function(req, res, params, next) {
+  var hdr = req.headers['x-requested-with'];
+
+  params.xhr = (hdr === 'XMLHttpRequest') ? true : false;
+
+  next();
+};
+
 exports.flash = function(req, res, params, next) {
   var key = 'session:' + params.session.id + ':flash'
     , push = function(text, cb) {
@@ -125,6 +133,8 @@ exports.session = function(req, res, params, next) {
 
       redis.get(key + ':username', function(err, username) {
         params.session.username = username;
+
+        res.session = params.session;
 
         next();
       });

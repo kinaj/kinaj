@@ -6,6 +6,7 @@ exports.template = function(status, hdrs, tmpl, ctx) {
     , atmpl = config.viewDir + '/' + tmpl;
 
   ctx['domain'] = config.domain;
+  ctx['session'] = self.session;
   ctx['msgs'] = self.msgs;
 
   nun.render(atmpl, ctx, {}, function(err, out) {

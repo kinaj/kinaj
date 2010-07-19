@@ -5,6 +5,9 @@ var sys = require('sys')
 exports.list = function(req, res, params) {
   Project.find({}).all(function(projects) {
     var projects = projects.map(function(p) { return p.__doc; })
+
+    ins(params);
+
     if (params.xhr) {
       res.template(200, {}, 'admin/partials/projects-list.html', { projects: projects });
     } else res.template(200, {}, 'admin/projects-manage.html', { projects: projects });

@@ -10,6 +10,7 @@ var sys = require('sys')
 
 Ordnung.prototype.middleware = [ middleware.logger
                                , middleware.responseTime
+                               , middleware.xhr
                                , middleware.form
                                , middleware.cookies
                                , middleware.session

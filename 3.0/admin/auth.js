@@ -3,9 +3,7 @@ var sys = require('sys')
   , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
 exports.dashboard = function(req, res, params) {
-  res.template(200, {}, 'admin/dashboard.html', {
-    username: params.session.username
-  });
+  res.template(200, {}, 'admin/dashboard.html', {});
 };
 
 exports.loginForm = function(req, res, params) {
