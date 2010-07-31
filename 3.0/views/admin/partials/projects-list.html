@@ -1,5 +1,9 @@
 <ul>
   {{#projects}}
-  <li>{{ title }} <a href="/projects/{{ slug }}/edit" title="edit">edit</a></li>
+  <li>
+    {{ title }}
+    <a href="/projects/{{ slug }}/edit" title="edit">edit</a>
+    <a href="/projects/{{ slug }}/delete" title="delete" class="delete">delete</a>
+  </li>
   {{/project}}
 </ul>

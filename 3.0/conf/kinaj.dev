@@ -18,7 +18,7 @@ server {
   }
 
   location /favicon.ico {
-    # proxy_pass http://static.kinaj.dev/img/favicon.ico;
+    # rewrite http://static.kinaj.dev/img/favicon.ico;
   }
 }
 
@@ -34,7 +34,7 @@ server {
   }
 
   location /favicon.ico {
-    # proxy_pass http://static.kinaj.dev/img/favicon.ico;
+    rewrite ^(.*)$ http://static.kinaj.dev/img/favicon.ico permanent;
   }
 }
 
