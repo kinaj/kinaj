@@ -2,10 +2,6 @@ var sys = require('sys')
   , User = require('../models').User
   , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
-exports.dashboard = function(req, res, params) {
-  res.template(200, {}, 'admin/dashboard.html', {});
-};
-
 exports.loginForm = function(req, res, params) {
   var action = '/login';
 

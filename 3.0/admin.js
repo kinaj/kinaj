@@ -3,10 +3,9 @@ var sys = require('sys')
   , middleware = require('./middleware')
   , mixins = require('./mixins')
   , config = require('./config')
+  , base = require('./admin/base')
   , auth = require('./admin/auth')
-  , projects = require('./admin/projects')
-  , paperboy = require('paperboy');
-
+  , projects = require('./admin/projects');
 
 Ordnung.prototype.middleware = [ middleware.logger
                                , middleware.responseTime
@@ -22,7 +21,7 @@ Ordnung.prototype.response.mixin({ template: mixins.template });
 
 var app = new Ordnung({ name: 'kinaj/admin', port: 3001 });
 
-app.mapRoutes([ [ [ 'get' ],      '/',        auth.dashboard, true ]
+app.mapRoutes([ [ [ 'get' ],      '/',        base.dashboard, true ]
               
               // auth
               , [ [ 'get' ],        '/login',   auth.loginForm ]
