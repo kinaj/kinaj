@@ -1,5 +1,5 @@
 var path = require('path')
-  , runtime = process.env['RUNTIME'];
+  , runtime = process.env['RUNTIME'] || 'development';
 
 exports.runtime = runtime;
 exports.baseDir = __dirname;
