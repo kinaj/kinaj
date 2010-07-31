@@ -1,7 +1,7 @@
 var sys = require('sys')
   , crypto = require('crypto')
   , helper = require('./helper')
-  , mongoose = require('mongoose/mongoose').Mongoose
+  , mongoose = require('mongoose').Mongoose
   , db = mongoose.connect('mongodb://127.0.0.1/kinaj')
   , algo = 'sha512'
   , hmacKey = 'com.kinaj.admin';

@@ -1,10 +1,30 @@
 var sys = require('sys')
   , redis = require('redis-client').createClient()
   , formidable = require('formidable/formidable')
-  , ordnung = require('ordnung/middleware')
   , helper = require('./helper');
 
-exports.logger = ordnung.logger;
+exports.logger = function(req, res, params, next) {
+  var writeHead = res.writeHead
+    , end = res.end;
+
+  res.writeHead = function(statusCode) {
+    res.statusCode = statusCode;
+    
+    return writeHead.apply(this, arguments);
+  };
+  res.end = function() {
+    setTimeout(function(req, res) {
+      var remoteAddr = req.socket.remoteAddress
+        , d = new Date();
+
+      require('sys').log(remoteAddr + ' - - [' + d.toUTCString() + '] ' + req.method + ' ' + req.url + ' HTTP/' + req.httpVersionMajor + '.' + req.httpVersionMinor + ' ' + res.statusCode);
+    }, 1, req, res);
+
+    return end.apply(this, arguments);
+  };
+
+  next();
+};
 
 exports.responseTime = function(req, res, params, next) {
   var start = new Date
