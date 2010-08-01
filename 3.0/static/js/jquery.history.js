@@ -6,14 +6,14 @@
     if (historyAvailable) {
       window.onpopstate = function(event) {
         var state = event.state
-          , href, node;
+          , href, text;
 
         if (state && 'history' in state) {
           href = state.history.href;
-          node = state.history.node;
+          text = state.history.text;
         }
 
-        if ($.isFunction(opts.callback)) opts.callback.apply(document, [ href ]);
+        if ($.isFunction(opts.callback)) opts.callback.apply(document, [ href, text ]);
       };
 
       $(this.selector).live('click', function(event) {
@@ -24,7 +24,7 @@
 
         window.history.pushState(state, state.history.text, state.history.href);
 
-        if ($.isFunction(opts.callback)) opts.callback.apply(document, [ state.history.href ]);
+        if ($.isFunction(opts.callback)) opts.callback.apply(document, [ state.history.href, state.history.text ]);
 
         event.preventDefault();
       });

@@ -1,7 +1,8 @@
 jQuery(function($) {
-  var $workspace = $('#workspace');
+  var $workspace = $('#workspace')
+    , historyCallback = function(href) { $workspace.load(href); };
 
-  $('a').history({ callback: function(href) { $workspace.load(href); } });
+  $('a.history').history({ callback: historyCallback });
 
   // delete over ajax
   $('body').delegate('a.delete', 'click', function(event) {
@@ -15,7 +16,13 @@ jQuery(function($) {
            , success: function(res) {
               $parent.fadeOut(200);
 
-              if (res.redirect) window.location = res.redirect;
+              if ($link.hasClass('history') && res.redirect) {
+                var state = { text: '', href: res.redirect };
+
+                window.history.pushState(state, state.text, state.href);
+
+                historyCallback(state.href);
+              } else if (res.redirect) window.location = res.redirect;
              }
            });
 
@@ -32,11 +39,16 @@ jQuery(function($) {
            , type: $form.attr('method')
            , data: $form.serialize()
            , success: function(res) {
-              if (res.redirect) window.location = res.redirect;
+              var state = { text: '', href: res.redirect };
+
+              if (res.redirect) {
+                window.history.pushState(state, state.text, state.href);
+
+                historyCallback(state.href);
+              }
              }
            });
 
     event.preventDefault();
   });
-
 });
