@@ -26,6 +26,8 @@ server {
   listen 80;
   server_name admin.kinaj.dev;
 
+  client_max_body_size 4096m;
+
   access_log /usr/local/var/log/nginx/admin.kinaj.dev.access.log;
   error_log /usr/local/var/log/nginx/admin.kinaj.dev.error.log;
 

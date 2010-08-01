@@ -1,6 +1,6 @@
-var sys = require('sys')
-  , Project = require('../models').Project
-  , ins = function(x) { return sys.debug(sys.inspect(x, true, 5)); };
+var config = require('../config')
+  , helper = require('../helper')
+  , Project = require('../models').Project;
 
 exports.create = function(req, res, params) {
   project = new Project();
@@ -42,6 +42,14 @@ exports.del = function(req, res, params) {
   });
 };
 
+exports.upload = function(req, res, params) {
+  var orig = params.files.attachment;
+
+  helper.moveFile(orig.path, config.uploadDir + '/' + orig.filename, function() {
+    res.simple(200, 'ok', {});
+  });
+};
+
 exports.list = function(req, res, params) {
   Project.find({}).all(function(projects) {
     var tmpl = 'admin/projects-manage.html'
@@ -79,7 +87,7 @@ exports.editForm = function(req, res, params) {
 
   Project.find({ 'slug': params.slug }).first(function(project) {
     if (!project) return res.redirect('/projects');
-    ins(project);
+
     ctx.project = project;
 
     res.template(200, {}, tmpl, ctx);

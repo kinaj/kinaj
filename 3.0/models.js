@@ -52,7 +52,7 @@ mongoose.model('User', {
 
 mongoose.model('Project', {
   properties: [ 'title', 'slug', 'description', 'created_at', 'updated_at' ]
-, indexes: [ [{ 'slug': 1}, {unique: true }] ]
+, indexes: [ [ { 'slug': 1 }, { unique: true } ] ]
 , cast: { 'created_at': Date
         , 'updated_at': Date
         }

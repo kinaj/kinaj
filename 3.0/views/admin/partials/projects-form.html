@@ -11,5 +11,10 @@
     <label for="description">description</label>
     <textarea name="description" id="description">{{ project.description }}</textarea>
   </p>
+  <p>
+    <input name="my_file" type="file" multiple="multiple" />
+  </p>
+  <ul class="attachments">
+  </ul>
   <p><input type="submit" value="{{ _form.submit }}" /></p>
 </form>

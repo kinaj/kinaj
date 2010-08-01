@@ -1,6 +1,49 @@
 jQuery(function($) {
   var $workspace = $('#workspace')
-    , historyCallback = function(href) { $workspace.load(href); };
+    , $navigation = $('#navigation')
+    , historyCallback;
+
+  historyCallback = function(href) {
+    $workspace.load(href, function() {
+      if ((/\/edit$/).test(href)) {
+        var id, $li;
+
+        $('input[type="file"]').html5_upload({
+          url: href.replace('edit', 'upload'),
+          sendBoundary: true,
+          fieldName: 'attachment',
+          onStart: function(event, total) {
+            return true;
+          },
+          onStartOne: function(event, name, number, total) {
+            id = 'attachment' + (+new Date());
+            $li = $('<li id="' + id + '">' + name + ' | 0%</li>');
+
+            $('ul.attachments').prepend($li);
+
+            return true;
+          },
+          onProgress: function(event, progress, name, number, total) {
+            $li.text(name + ' | ' + Math.round(progress * 100) + '%');
+          },
+          onFinishOne: function(event, res, name, number, total) {
+            console.log(res);
+          },
+          onFinish: function(event, total) {
+          },
+          onError: function(event, name, error) {
+          },
+        });
+      }
+    });
+    
+    $navigation
+      .find('a')
+      .removeClass('active')
+      .end()
+      .find('a[href="' + href + '"]')
+      .addClass('active');
+  };
 
   $('a.history').history({ callback: historyCallback });
 

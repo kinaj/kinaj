@@ -1,4 +1,5 @@
-var qs = require('querystring')
+var fs = require('fs')
+  , qs = require('querystring')
   , CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
 
@@ -70,4 +71,12 @@ exports.sessionFingerprint = function(sid, req) {
   if (ua) ret += ':' + ua;
 
   return ret;
+};
+
+exports.moveFile = function(original, target, cb) {
+  fs.rename(original, target, function(err) {
+    if (err) throw err;
+
+    cb();
+  });
 };

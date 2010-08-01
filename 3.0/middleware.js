@@ -1,6 +1,7 @@
 var sys = require('sys')
   , redis = require('redis-client').createClient()
   , formidable = require('formidable/formidable')
+  , config = require('./config')
   , helper = require('./helper');
 
 exports.logger = function(req, res, params, next) {
@@ -17,7 +18,7 @@ exports.logger = function(req, res, params, next) {
       var remoteAddr = req.socket.remoteAddress
         , d = new Date();
 
-      require('sys').log(remoteAddr + ' - - [' + d.toUTCString() + '] ' + req.method + ' ' + req.url + ' HTTP/' + req.httpVersionMajor + '.' + req.httpVersionMinor + ' ' + res.statusCode);
+      sys.log(remoteAddr + ' - - [' + d.toUTCString() + '] ' + req.method + ' ' + req.url + ' HTTP/' + req.httpVersionMajor + '.' + req.httpVersionMinor + ' ' + res.statusCode);
     }, 1, req, res);
 
     return end.apply(this, arguments);
@@ -93,6 +94,11 @@ exports.flash = function(req, res, params, next) {
 exports.form = function(req, res, params, next) {
   if (req.method.toLowerCase() === 'post') {
     var form = new formidable.IncomingForm();
+
+    // form configuration
+    form.encoding = 'utf-8';
+    form.uploadDir = config.tmpDir;
+    form.keepExtensions = true;
 
     form.parse(req, function(err, fields, files) {
       if (err) throw err;
