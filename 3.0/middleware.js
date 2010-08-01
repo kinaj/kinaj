@@ -117,12 +117,14 @@ exports.session = function(req, res, params, next) {
   var writeHead = res.writeHead
     , sid = params.cookies['com.kinaj.session'] || helper.fastUUID()
     , key = 'session:' + sid
-    , store = function(uid, username) {
+    , store = function(uid, username, cb) {
         redis.set(key, uid, function(err) {
           if (err) throw err;
 
           redis.set(key + ':username', username, function(err) {
             if (err) throw err;
+
+            if (cb) cb();
           });
         });
       }

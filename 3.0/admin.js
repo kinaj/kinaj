@@ -31,7 +31,7 @@ app.mapRoutes([ [ [ 'get' ],      '/',        base.dashboard, true ]
               // projects
               , [ [ 'get' ],        '/projects',              projects.list, true ]
               , [ [ 'post' ],       '/projects/create',       projects.create, true ]
-              , [ [ 'post', 'put' ],'/projects/:slug/update', projects.update, true ]
+              , [ [ 'put' ],        '/projects/:slug/update', projects.update, true ]
               , [ [ 'delete' ],     '/projects/:slug/delete', projects.del, true ]
 
               // projects forms

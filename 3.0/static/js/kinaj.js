@@ -18,7 +18,28 @@ jQuery(function($) {
            , cache: false
            , dataType: 'json'
            , type: 'delete'
-           , success: function(res) { $parent.fadeOut(200); }
+           , success: function(res) {
+              $parent.fadeOut(200);
+
+              if (res.redirect) window.location = res.redirect;
+             }
+           });
+
+    event.preventDefault();
+  });
+
+  // ajax form submission
+  $('body').delegate('form.async', 'submit', function(event) {
+    var $form = $(this);
+
+    $.ajax({ url: $form.attr('action')
+           , cache: false
+           , dataType: 'json'
+           , type: $form.attr('method')
+           , data: $form.serialize()
+           , success: function(res) {
+              if (res.redirect) window.location = res.redirect;
+             }
            });
 
     event.preventDefault();

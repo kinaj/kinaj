@@ -19,11 +19,9 @@ exports.login = function(req, res, params) {
 
   User.validPassword(username, password, function(check, uid) {
     if (check) {
-      params.flash.push('Aloha, ' + username, function() {
+      params.session.store(uid, username, function() {
         res.redirect(params.query.redirect || '/');
       });
-
-      params.session.store(uid, username);
     } else {
       params.flash.push('wrong credentials', function() {
         res.redirect('/login');
@@ -33,7 +31,11 @@ exports.login = function(req, res, params) {
 };
 
 exports.logout = function(req, res, params) {
+  var redirect = '/login';
+
   params.session.destroy(function() {
-    res.redirect('/login');
+    if (params.xhr) {
+      res.simple(200, { redirect: redirect }, {});
+    } else res.redirect(redirect);
   });
 };

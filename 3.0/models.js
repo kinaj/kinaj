@@ -15,7 +15,7 @@ function passwordHash(password, salt) {
 
 mongoose.model('User', {
   properties: [ 'username', 'email', 'password', 'created_at', 'updated_at' ]
-, indexes: [ [{ 'username': 1}, {unique: true }] ]
+, indexes: [ [{ 'username': 1 }, { unique: true }] ]
 , cast: { 'created_at': Date
         , 'updated_at': Date
         }

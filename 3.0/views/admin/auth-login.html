@@ -1,5 +1,8 @@
 {{<base.html}}
 
+{{+navigation}}
+{{/navigation}}
+
 {{+workspace}}
 <form action="{{ action }}" method="post" accept-charset="utf-8">
   <p><input type="text" name="username" id="username" /></p>
@@ -7,3 +10,6 @@
   <p><input type="submit" value="login"></p>
 </form>
 {{/workspace}}
+
+{{+meta}}
+{{/meta}}

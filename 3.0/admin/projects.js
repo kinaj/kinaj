@@ -8,7 +8,11 @@ exports.create = function(req, res, params) {
   for (var key in params.fields) project[key] = params.fields[key];
 
   project.save(function() {
-    res.redirect('/projects/' + project.slug + '/edit');
+    var redirect = '/projects/' + project.slug + '/edit';
+
+    if (params.xhr) {
+      res.simple(200, { redirect: redirect }, {});
+    } else res.redirect(redirect);
   });
 };
 
@@ -43,10 +47,7 @@ exports.list = function(req, res, params) {
     var tmpl = 'admin/projects-manage.html'
       , ctx = { projects: projects.map(function(p) { return p.__doc; }) };
 
-
-    if (params.xhr) {
-      tmpl = 'admin/partials/projects-list.html';
-    }
+    if (params.xhr) tmpl = 'admin/partials/projects-list.html';
     
     res.template(200, {}, tmpl, ctx);
   });
@@ -61,9 +62,7 @@ exports.newForm = function(req, res, params) {
                      }
             };
   
-  if (params.xhr) {
-    tmpl = 'admin/partials/projects-form.html';
-  }    
+  if (params.xhr) tmpl = 'admin/partials/projects-form.html';
 
   res.template(200, {}, tmpl, ctx);
 };
@@ -72,15 +71,15 @@ exports.editForm = function(req, res, params) {
   var tmpl = 'admin/projects-edit.html'
     , ctx = {  _form: { submit: 'update'
                      , action: '/projects/' + params.slug + '/update'
-                     , method: 'post'
+                     , method: 'put'
                      }
             };
 
-  if (params.xhr) {
-    tmpl = 'admin/partials/projects-form.html';
-  }
+  if (params.xhr) tmpl = 'admin/partials/projects-form.html';
 
   Project.find({ 'slug': params.slug }).first(function(project) {
+    if (!project) return res.redirect('/projects');
+    ins(project);
     ctx.project = project;
 
     res.template(200, {}, tmpl, ctx);
