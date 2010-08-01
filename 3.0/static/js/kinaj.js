@@ -1,13 +1,7 @@
 jQuery(function($) {
-  // simple ajaxified navigation
-  $('#spaces').delegate('a', 'click', function(event) {
-    var $link = $(this)
-      , $workspace = $('#workspace');
+  var $workspace = $('#workspace');
 
-    $workspace.load($link.attr('href'));
-
-    event.preventDefault();
-  });
+  $('a').history({ callback: function(href) { $workspace.load(href); } });
 
   // delete over ajax
   $('body').delegate('a.delete', 'click', function(event) {
@@ -44,4 +38,5 @@ jQuery(function($) {
 
     event.preventDefault();
   });
+
 });
