@@ -1,41 +1,10 @@
 jQuery(function($) {
   var $workspace = $('#workspace')
     , $navigation = $('#navigation')
-    , historyCallback;
+    , historyCallback, id, $li;
 
   historyCallback = function(href) {
-    $workspace.load(href, function() {
-      if ((/\/edit$/).test(href)) {
-        var id, $li;
-
-        $('input[type="file"]').html5_upload({
-          url: href.replace('edit', 'upload'),
-          sendBoundary: true,
-          fieldName: 'attachment',
-          onStart: function(event, total) {
-            return true;
-          },
-          onStartOne: function(event, name, number, total) {
-            id = 'attachment' + (+new Date());
-            $li = $('<li id="' + id + '">' + name + ' | 0%</li>');
-
-            $('ul.attachments').prepend($li);
-
-            return true;
-          },
-          onProgress: function(event, progress, name, number, total) {
-            $li.text(name + ' | ' + Math.round(progress * 100) + '%');
-          },
-          onFinishOne: function(event, res, name, number, total) {
-            console.log(res);
-          },
-          onFinish: function(event, total) {
-          },
-          onError: function(event, name, error) {
-          },
-        });
-      }
-    });
+    $workspace.load(href);
     
     $navigation
       .find('a')
@@ -93,5 +62,38 @@ jQuery(function($) {
            });
 
     event.preventDefault();
+  });
+
+  $('input[type=file]').live('click', function(event) {
+    var $input = $(this)
+      , alreadyBound = 'change' in ($input.data('events') || {});
+
+    if (!alreadyBound)
+      $input.html5_upload({
+        url: window.location.pathname.replace('edit', 'upload'),
+        sendBoundary: true,
+        fieldName: 'attachment',
+        onStart: function(event, total) {
+          return true;
+        },
+        onStartOne: function(event, name, number, total) {
+          id = 'attachment' + (+new Date());
+          $li = $('<li id="' + id + '">' + name + ' | 0%</li>');
+
+          $('ul.attachments').prepend($li);
+
+          return true;
+        },
+        onProgress: function(event, progress, name, number, total) {
+          $li.text(name + ' | ' + Math.round(progress * 100) + '%');
+        },
+        onFinishOne: function(event, res, name, number, total) {
+          console.log(res);
+        },
+        onFinish: function(event, total) {
+        },
+        onError: function(event, name, error) {
+        }
+      });
   });
 });
