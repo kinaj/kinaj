@@ -1,6 +1,4 @@
-var config = require('../config')
-  , helper = require('../helper')
-  , Project = require('../models').Project;
+var Project = require('../models').Project;
 
 exports.create = function(req, res, params) {
   project = new Project();
@@ -39,14 +37,6 @@ exports.del = function(req, res, params) {
         });
       }
     });
-  });
-};
-
-exports.upload = function(req, res, params) {
-  var orig = params.files.attachment;
-
-  helper.moveFile(orig.path, config.uploadDir + '/' + orig.filename, function() {
-    res.simple(200, 'ok', {});
   });
 };
 

@@ -1,49 +1,64 @@
 var fs = require('fs')
   , Buffer = require('buffer').Buffer
   , mongo = require('mongodb')
+  , config = require('../config')
+  , helper = require('../helper')
   , srv = new mongo.Server('localhost', mongo.Connection.DEFAULT_PORT, {})
   , db = new mongo.Db('kinaj', srv, {})
-  , chunkSize = (1024 * 1024 * 2)
-  , origPath = '/Users/alx/development/workspace/kinaj/3.0/static/uploads/The.Ruby.Programming.Language.Jan.2008.chm';
+  , chunkSize = (1024 * 1024 * 1);
 
-// mongo.Chunk.DEFAULT_CHUNK_SIZE = chunkSize;
+exports.create = function(req, res, params) {
+  var file = params.files.attachment
+    , originalPath = config.uploadDir + '/attachment/' + file.filename;
 
-db.open(function(err, db) {
-  if (err) throw err;
-
-  var g = new mongo.GridStore(db, 'The.Ruby.Programming.Language.Jan.2008.chm', 'w', {
-    'content_type': 'application/x-chm',
-    'metadata': { originalPath: origPath },
-    'chunk_size': chunkSize,
-    'root': 'attachments'
-  });
-
-  g.open(function(err, g) {
-    fs.open(origPath, 'r+', process.O_RDONLY, function(err, fd) {
+  helper.moveFile(file.path, originalPath, function() {
+    db.open(function(err, db) {
       if (err) throw err;
 
-      function read() {
-        var buf = new Buffer(chunkSize);
+      var gridStore = new mongo.GridStore(db, file.filename, 'w', {
+        'content_type': file.mime,
+        'metadata': { originalPath: originalPath },
+        'chunk_size': chunkSize,
+        'root': 'attachments'
+      });
 
-        fs.read(fd, buf, 0, chunkSize, null, function(err, bytesRead) {
+      gridStore.open(function(err, gridStore) {
+        if (err) throw err;
+
+        console.log('gridStore open');
+
+        fs.open(originalPath, 'r+', process.O_RDONLY, function(err, fd) {
           if (err) throw err;
 
-          if (bytesRead > 0) {
-            g.write(buf, function(err, g) {
-              read();
-            });
-          } else {
-            g.close(function(err, result) {
+          function read() {
+            var buf = new Buffer(chunkSize);
+
+            fs.read(fd, buf, 0, chunkSize, null, function(err, bytesRead) {
               if (err) throw err;
 
-              console.log(g.md5);
-              console.dir(result);
-            });
-          }
-        });
-      };
+              if (bytesRead > 0) {
+                gridStore.write(buf, function(err, gridStore) {
+                  read();
+                });
+              } else {
+                gridStore.close(function(err, result) {
+                  if (err) throw err;
 
-      read();
+                  console.dir(result);
+
+                  res.simple(200, 'ok', {});
+
+                  db.close();
+                });
+              }
+            });
+          };
+
+          read();
+        });
+      });
     });
   });
-});
+
+  console.dir(params.files);
+};
