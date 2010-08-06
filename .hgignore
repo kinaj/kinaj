@@ -20,3 +20,5 @@ build
 cruft*
 *pdf
 *tgz
+*tmp*
+*static/uploads*
