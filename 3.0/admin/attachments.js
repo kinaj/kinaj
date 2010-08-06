@@ -3,8 +3,8 @@ var fs = require('fs')
   , mongo = require('mongodb')
   , config = require('../config')
   , helper = require('../helper')
-  , srv = new mongo.Server('localhost', mongo.Connection.DEFAULT_PORT, {})
-  , db = new mongo.Db('kinaj', srv, {})
+  , srv = new mongo.Server(config.mongo.serverAddress, config.mongo.serverPort, {})
+  , db = new mongo.Db(config.mongo.database, srv, {})
   , chunkSize = (1024 * 1024 * 1);
 
 exports.create = function(req, res, params) {
