@@ -2,6 +2,16 @@ var sys = require('sys')
   , User = require('../models').User
   , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
+exports.prot = function(fn) {
+  return function(req, res, params) {
+    if(!params.session.uid) {
+      params.flash.push('You need to be logged in', function() {
+        res.redirect('/login?redirect=' + req.url);
+      });
+    } else fn.apply(this, arguments)
+  }
+}
+
 exports.loginForm = function(req, res, params) {
   var action = '/login';
 

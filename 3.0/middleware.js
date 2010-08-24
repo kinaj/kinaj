@@ -1,7 +1,7 @@
 var sys = require('sys')
-  , redis = require('redis-client').createClient()
-  , formidable = require('formidable/formidable')
   , config = require('./config')
+  , redis = require('redis-client').createClient(config.redis.port, config.redis.host)
+  , formidable = require('formidable/formidable')
   , helper = require('./helper');
 
 exports.logger = function(req, res, params, next) {
@@ -166,14 +166,6 @@ exports.session = function(req, res, params, next) {
 
         next();
       });
-    });
-  } else next();
-};
-
-exports.authorization = function(req, res, params, next) {
-  if (params.authorized && !params.session.uid) {
-    params.flash.push('You need to be logged in', function() {
-      res.redirect('/login?redirect=' + req.url);
     });
   } else next();
 };
