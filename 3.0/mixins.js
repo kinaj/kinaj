@@ -1,6 +1,10 @@
 var nun = require('nun')
   , config = require('./config');
 
+exports.redirect = function(location) {
+  this.writeHead(302, { 'Location': location })
+  this.end()
+}
 exports.template = function(status, hdrs, tmpl, ctx) {
   var self = this
     , atmpl = config.viewDir + '/' + tmpl;

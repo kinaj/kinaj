@@ -1,9 +1,8 @@
-var sys = require('sys')
-  , crypto = require('crypto')
+var crypto = require('crypto')
+  , mongoose = require('mongoose').Mongoose
   , config = require('./config')
   , helper = require('./helper')
-  , mongoose = require('mongoose').Mongoose
-  , db = mongoose.connect('mongodb://' + config.mongo.serverAddress + ':' + config.mongo.serverPort + '/' + config.mongo.database)
+  , db = mongoose.connect(config.mongo.uri)
   , algo = 'sha512'
   , hmacKey = 'com.kinaj.admin';
   
@@ -39,6 +38,7 @@ mongoose.model('User', {
       var self = this;
 
       this.find({ username: username }).first(function(doc) {
+        console.dir(doc)
         if (doc) {
           var salt = doc.password.split('$')[1]
             , reference = self.passwordHash(password, salt)

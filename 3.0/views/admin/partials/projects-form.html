@@ -1,20 +1,28 @@
-<form action="{{ _form.action }}" method="{{ _form.method }}" accept-charset="utf-8" class="async">
-  <p>
-    <label for="title">title</label>
-    <input type="text" name="title" id="title" value="{{ project.title }}" />
-  </p>
-  <p>
-    <label for="slug">slug</label>
-    <input type="text" name="slug" id="slug" value="{{ project.slug }}" />
-  </p>
-  <p>
-    <label for="description">description</label>
-    <textarea name="description" id="description">{{ project.description }}</textarea>
-  </p>
-  <p>
-    <input name="my_file" type="file" multiple="multiple" />
-  </p>
-  <ul class="attachments">
-  </ul>
-  <p><input type="submit" value="{{ _form.submit }}" /></p>
+<form action="{{ _form.action }}" method="{{ _form.method }}" accept-charset="utf-8" class="async full">
+  <section class="unitx7">
+    <h2>Create Project</h2>
+    <fieldset class="unitx7">
+      <label for="title" class="unitx3 first field-first">
+        title
+        <input type="text" name="title" id="title" value="{{ project.title }}" />
+      </label>
+      <label for="slug" class="unitx3 field-last">
+        slug
+        <input type="text" name="slug" id="slug" value="{{ project.slug }}" />
+      </label>
+      <label for="description" class="width3 first field-describe">
+        description
+        <textarea name="description" id="description">{{ project.description }}</textarea>
+      </label>
+      <label for="attachments" class="unitx7 first field-first">
+        Upload Attachments
+        <input name="attachments" type="file" multiple id="attachments" />
+      </label>
+      <ul class="attachments">
+      </ul>
+    </fieldset>
+    <fieldset class="unitx7">
+      <input type="submit" value="{{ _form.submit }}" />
+    </fieldset>
+  </section>
 </form>
