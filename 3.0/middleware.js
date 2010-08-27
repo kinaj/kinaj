@@ -103,7 +103,7 @@ exports.form = function(req, res, params, next) {
 
     // form configuration
     form.encoding = 'utf-8';
-    form.uploadDir = config.tmpDir;
+    form.uploadDir = config.uploadDir;
     form.keepExtensions = true;
 
     form.parse(req, function(err, fields, files) {

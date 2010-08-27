@@ -4,10 +4,21 @@
 {{/navigation}}
 
 {{+workspace}}
-<form action="{{ action }}" method="post" accept-charset="utf-8">
-  <p><input type="text" name="username" id="username" /></p>
-  <p><input type="password" name="password" id="password" /></p>
-  <p><input type="submit" value="login"></p>
+<form action="{{ action }}" method="post" accept-charset="utf-8" class="unitx4">
+  <h2>login</h2>
+  <fieldset class="unitx2">
+    <label>
+      username
+      <input type="text" name="username" id="username" class="unitx2">
+    </label>
+    <label>
+      password
+      <input type="password" name="password" id="password" class="unitx2">
+    </label>
+  </fieldset>
+  <fieldset class="unitx4">
+    <input type="submit" value="login">
+  </fieldset>
 </form>
 {{/workspace}}
 

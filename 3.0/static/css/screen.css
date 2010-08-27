@@ -1,1 +1,5 @@
-#page { margin: auto; }
+#page { margin: auto; position: relative; }
+
+.restricted { background: #666; color: #fff; border: 1px solid #333; display: block; margin: 10px 0px; padding: 3px 8px; }
+
+footer { position: relative; left: 0; bottom: 0; }
