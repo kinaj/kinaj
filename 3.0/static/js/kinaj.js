@@ -14,7 +14,7 @@ jQuery(function($) {
       .addClass('active');
   };
 
-  $('a.history').history({ callback: historyCallback });
+  $('a.history:not(.delete)').history({ callback: historyCallback });
 
   // delete over ajax
   $('body').delegate('a.delete', 'click', function(event) {
@@ -70,7 +70,7 @@ jQuery(function($) {
 
     if (!alreadyBound)
       $input.html5_upload({
-        url: window.location.pathname.replace('edit', 'upload'),
+        url: window.location.pathname.replace('edit', '/attachments/set'),
         sendBoundary: true,
         fieldName: 'attachment',
         onStart: function(event, total) {

@@ -12,39 +12,39 @@ exports.prot = function(fn) {
   }
 }
 
-exports.loginForm = function(req, res, params) {
+exports.loginForm = function(req, res, ctx) {
   var action = '/login';
 
-  if (params.query.redirect)
-    action += '?redirect=' + params.query.redirect;
+  if (ctx.query.redirect)
+    action += '?redirect=' + ctx.query.redirect;
 
   res.template(200, {}, 'admin/auth-login.html', {
     action: action
   });
 };
 
-exports.login = function(req, res, params) {
-  var username = params.fields.username
-    , password = params.fields.password;
+exports.login = function(req, res, ctx) {
+  var username = ctx.fields.username
+    , password = ctx.fields.password;
 
   User.validPassword(username, password, function(check, uid) {
     if (check) {
-      params.session.store(uid, username, function() {
-        res.redirect(params.query.redirect || '/');
+      ctx.session.store(uid, username, function() {
+        res.redirect(ctx.query.redirect || '/');
       });
     } else {
-      params.flash.push('wrong credentials', function() {
+      ctx.flash.push('wrong credentials', function() {
         res.redirect('/login');
       });
     }
   });
 };
 
-exports.logout = function(req, res, params) {
+exports.logout = function(req, res, ctx) {
   var redirect = '/login';
 
-  params.session.destroy(function() {
-    if (params.xhr) {
+  ctx.session.destroy(function() {
+    if (ctx.xhr) {
       res.simple(200, { redirect: redirect }, {});
     } else res.redirect(redirect);
   });
