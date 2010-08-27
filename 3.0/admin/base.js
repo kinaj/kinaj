@@ -1,5 +1,7 @@
 exports.dashboard = function(req, res, ctx) {
-  if (ctx.xhr) {
-    res.template(200, {}, 'admin/partials/dashboard.html', {});
-  } else res.template(200, {}, 'admin/dashboard.html', {});
+  var tmpl = 'admin/dashboard.html'
+
+  if (ctx.xhr) tmpl = 'admin/partials/dashboard.html'
+
+  res.template(200, {}, tmpl, ctx);
 };

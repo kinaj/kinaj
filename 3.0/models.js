@@ -40,7 +40,6 @@ mongoose.model('User', {
       var self = this;
 
       this.find({ username: username }).first(function(doc) {
-        console.dir(doc)
         if (doc) {
           var salt = doc.password.split('$')[1]
             , reference = self.passwordHash(password, salt)

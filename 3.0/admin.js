@@ -18,6 +18,7 @@ app.mixin({ mixins: { res: { redirect: mixins.redirect
                     }
           })
 app.middlewares = [ middleware.logger
+                  , middleware.context
                   , middleware.responseTime
                   , middleware.xhr
                   , middleware.form

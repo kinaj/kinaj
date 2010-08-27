@@ -33,10 +33,6 @@ exports.template = function(status, hdrs, tmpl, ctx) {
   var self = this
     , atmpl = config.viewDir + '/' + tmpl;
 
-  ctx['domain'] = config.domain;
-  ctx['session'] = self.session;
-  ctx['msgs'] = self.msgs;
-
   nun.render(atmpl, ctx, {}, function(err, out) {
     if (err) return self.simple(500, JSON.stringify(err, null, 2), {});
 
@@ -49,5 +45,5 @@ exports.template = function(status, hdrs, tmpl, ctx) {
   });
 };
 exports.notFound = function(req, res, ctx) {
-  res.template(404, {}, 'admin/404.html', {})
+  res.template(404, {}, 'admin/404.html', ctx)
 }

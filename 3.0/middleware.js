@@ -27,6 +27,12 @@ exports.logger = function(req, res, params, next) {
   next();
 };
 
+exports.context = function(req, res, ctx, next) {
+  ctx['domain'] = config.domain
+
+  next()
+}
+
 exports.responseTime = function(req, res, params, next) {
   var start = new Date
     , writeHead = res.writeHead;
@@ -35,7 +41,7 @@ exports.responseTime = function(req, res, params, next) {
     headers = headers || {};
 
     res.writeHead = writeHead;
-    
+
     headers['x-response-time'] = (new Date - start) + 'ms';
 
     res.writeHead(code, headers);
@@ -52,8 +58,8 @@ exports.xhr = function(req, res, params, next) {
   next();
 };
 
-exports.flash = function(req, res, params, next) {
-  var key = 'session:' + params.session.id + ':flash'
+exports.flash = function(req, res, ctx, next) {
+  var key = ctx.session.sid + ':flash'
     , push = function(text, cb) {
         redis.rpush(key, text, function(err, rep) {
           if (err) throw err;
@@ -64,13 +70,13 @@ exports.flash = function(req, res, params, next) {
     , del = function(cb) {
         redis.del(key, function(err, rep) {
           if (err) throw err;
-          
+
           cb(rep);
         });
       };
 
-  params.flash = { msgs: [], push: push, del: del };
-  
+  ctx.flash = { msgs: [], push: push, del: del };
+
   redis.llen(key, function(err, len) {
     if (err) throw err;
 
@@ -84,9 +90,9 @@ exports.flash = function(req, res, params, next) {
         msgs.push({ text: rep[i] });
       }
 
-      params.flash.msgs = res.msgs =  msgs;
+      ctx.flash.msgs =  msgs;
 
-      params.flash.del(next);
+      ctx.flash.del(next);
     });
   });
 };
@@ -119,53 +125,43 @@ exports.cookies = function(req, res, params, next) {
   next();
 };
 
-exports.session = function(req, res, params, next) {
+exports.session = function(req, res, ctx, next) {
   var writeHead = res.writeHead
-    , sid = params.cookies['com.kinaj.session'] || helper.fastUUID()
+    , sid = ctx.cookies['com.kinaj.session'] || helper.fastUUID()
     , key = 'session:' + sid
     , store = function(uid, username, cb) {
-        redis.set(key, uid, function(err) {
-          if (err) throw err;
+        redis.hmset(key, 'uid', uid, 'username', username, function(err, stored) {
+          if(err) throw err
 
-          redis.set(key + ':username', username, function(err) {
-            if (err) throw err;
-
-            if (cb) cb();
-          });
-        });
+          if(cb) cb()
+        })
       }
     , destroy = function(cb) {
         redis.del(key, function(err) {
-          if (err) throw err;
+          if (err) throw err
 
-          cb();
+          cb()
         })
-      };
+      }
 
-  params.session = { id: sid, key: key, store: store, destroy: destroy };
+  ctx.session = { id: sid, key: key, store: store, destroy: destroy }
 
   res.writeHead = function(code, headers) {
-    headers = headers || {};
-    res.writeHead = writeHead;
+    headers = headers || {}
+    res.writeHead = writeHead
 
-    headers['Set-Cookie'] = helper.serializeCookie('com.kinaj.session', params.session.id);
+    headers['Set-Cookie'] = helper.serializeCookie('com.kinaj.session', ctx.session.id)
 
-    res.writeHead(code, headers);
-  };
+    res.writeHead(code, headers)
+  }
 
-  if (params.cookies) {
-    redis.get(key, function(err, uid) {
-      if (err) throw err;
+  if (ctx.cookies) {
+    redis.hgetall(key, function(err, obj) {
+      if(err) throw err
 
-      params.session.uid = uid;
+      if(obj) ctx.session.mixin(obj), res.session = obj
 
-      redis.get(key + ':username', function(err, username) {
-        params.session.username = username;
-
-        res.session = params.session;
-
-        next();
-      });
-    });
-  } else next();
-};
+      next()
+    })
+  } else next()
+}

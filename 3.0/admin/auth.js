@@ -3,9 +3,9 @@ var sys = require('sys')
   , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
 exports.prot = function(fn) {
-  return function(req, res, params) {
-    if(!params.session.uid) {
-      params.flash.push('You need to be logged in', function() {
+  return function(req, res, ctx) {
+    if(!ctx.session.uid) {
+      ctx.flash.push('You need to be logged in', function() {
         res.redirect('/login?redirect=' + req.url);
       });
     } else fn.apply(this, arguments)
@@ -18,9 +18,9 @@ exports.loginForm = function(req, res, ctx) {
   if (ctx.query.redirect)
     action += '?redirect=' + ctx.query.redirect;
 
-  res.template(200, {}, 'admin/auth-login.html', {
-    action: action
-  });
+  ctx['action'] = action
+
+  res.template(200, {}, 'admin/auth-login.html', ctx);
 };
 
 exports.login = function(req, res, ctx) {
