@@ -4,19 +4,20 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="robots" content="noindex, nofollow" />
     <meta name="domain" content="http://admin.{{ domain }}" />
-    
+
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/baseline.reset.css">
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/baseline.base.css">
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/baseline.grid.css">
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/baseline.form.css">
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/baseline.table.css">
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/baseline.type.css">
+    <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/background-grid/grid.baseline.column.css">
     <link type="text/css" rel="stylesheet" media="screen" href="http://static.{{ domain }}/css/screen.css">
     <title>kinaj</title>
   </head>
   <body>
     <div id="page">
-      <nav class="unitx2 first column">
+      <nav class="width4">
         {{+navigation}}
           {{>partials/navigation.html}}
         {{/navigation}}
@@ -24,11 +25,11 @@
           {{>partials/flash.html}}
         {{/flash}}
       </nav>
-      <article id="workspace" class="unitx6 column">
+      <article id="workspace" class="width4 clear">
         {{+workspace}}
         {{/workspace}}
       </article>
-      <footer class="width4 clear">
+      <footer class="width4 clear{{#session.username}} loggedin{{/session.username}}">
         {{+meta}}
           {{>partials/meta.html}}
         {{/meta}}
