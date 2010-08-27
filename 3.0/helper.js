@@ -1,4 +1,5 @@
 var fs = require('fs')
+  , path = require('path')
   , qs = require('querystring')
   , CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
@@ -74,9 +75,23 @@ exports.sessionFingerprint = function(sid, req) {
 };
 
 exports.moveFile = function(original, target, cb) {
-  fs.rename(original, target, function(err) {
-    if (err) throw err;
+  var dirname = path.dirname(target)
+    , move = function() {
+        fs.rename(original, target, function(err) { if(err) throw err; cb() })
+    }
 
-    cb();
-  });
-};
+  path.exists(dirname, function(dirExists) {
+    if(dirExists) 
+      move()
+    else
+      fs.mkdir(dirname, 0755, function(err) {
+        if(err) throw err
+
+        move()
+      })
+  })
+}
+
+exports.generatePath = function() {
+  return path.join.apply(this, arguments)
+}

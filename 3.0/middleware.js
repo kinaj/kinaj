@@ -10,7 +10,7 @@ exports.logger = function(req, res, params, next) {
 
   res.writeHead = function(statusCode) {
     res.statusCode = statusCode;
-    
+
     return writeHead.apply(this, arguments);
   };
   res.end = function() {

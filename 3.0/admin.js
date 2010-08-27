@@ -9,8 +9,12 @@ var Ordnung     = require('ordnung').Ordnung
 
 var app = new Ordnung({ name: 'kinaj/admin', port: 3001 })
 
+app.defaultHandler = mixins.notFound
 app.mixin({ mixins: { res: { redirect: mixins.redirect
-                           , template: mixins.template }
+                           , simple: mixins.simple
+                           , template: mixins.template
+                           , notFound: mixins.notFound
+                           }
                     }
           })
 app.middlewares = [ middleware.logger
@@ -22,7 +26,6 @@ app.middlewares = [ middleware.logger
                   , middleware.flash
                   , middleware.authorization
                   ]
-app.restrictions = []
 app.mapRoutes([
               // base route
                 [ [ 'get' ],    '/',        auth.prot(base.dashboard) ]
@@ -40,8 +43,7 @@ app.mapRoutes([
               , [ [ 'post' ],   '/projects/:slug/upload', auth.prot(attachments.create) ]
               // projects attachments
               , [ [ 'get' ],    '/projects/:slug/attachments/:filename',  attachments.get ]
-              , [ [ 'post' ],   '/projects/:slug/attachments/create', attachments.create, true ]
-              , [ [ 'post' ],   '/projects/:slug/upload', attachments.create, true ]
+              , [ [ 'post' ],   '/projects/:slug/attachments/set',        auth.prot(attachments.set) ]
               // projects forms
               , [ [ 'get' ],    '/projects/new',          auth.prot(projects.newForm) ]
               , [ [ 'get' ],    '/projects/:slug/edit',   auth.prot(projects.editForm) ]

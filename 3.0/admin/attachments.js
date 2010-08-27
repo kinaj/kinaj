@@ -1,24 +1,24 @@
 var config = require('../config')
   , helper = require('../helper')
-  , gridfs = require('../gridfs');
+  , Project = require('../models').Project
 
-exports.get = function(req, res, params) {
-  gridfs.get(params.filename, function(file) {
-    res.simple(200, file, { 'content-type': 'image/jpeg' });
-  });
+exports.get = function(req, res, ctx) {
+  res.notFound()
 };
-exports.create = function(req, res, params) {
-  var file = params.files.attachment
-    , targetPath = config.uploadDir + '/attachment/' + file.filename;
+exports.set = function(req, res, ctx) {
+  var file = ctx.files.attachment
+    , targetPath = helper.generatePath(config.attachmentDir, ctx.params.slug, file.filename);
 
   helper.moveFile(file.path, targetPath, function() {
     file.path = targetPath;
-
-    gridfs.store(file, {
-      'originalPath': file.path,
-      'projectSlug': params.slug
-    }, 'attachments', function() {
-      res.simple(200, 'ok', {});
-    });
+    console.dir(file)
+    Project.find({ slug: ctx.params.slug }).first(function(project) {
+      project.attachments.shift(file)
+      project.save(function() {
+        if(ctx.xhr)
+          res.simple(200, { ok: true }, {})
+        else res.simple(200, 'OK', {})
+      })
+    })
   });
 };
