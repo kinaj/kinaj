@@ -22,3 +22,4 @@ cruft*
 *tgz
 *tmp*
 *static/uploads*
+*static/attachments*
