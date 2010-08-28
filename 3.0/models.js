@@ -14,7 +14,7 @@ function passwordHash(password, salt) {
 };
 
 mongoose.model('User', {
-  properties: [ 'username', 'email', 'password', 'created_at', 'updated_at', 'attachments' ]
+  properties: [ 'username', 'email', 'password', 'created_at', 'updated_at' ]
 , indexes: [ [{ 'username': 1 }, { unique: true }] ]
 , cast: { 'created_at': Date
         , 'updated_at': Date
@@ -53,13 +53,14 @@ mongoose.model('User', {
 });
 
 mongoose.model('Project', {
-  properties: [ 'title', 'slug', 'description', 'created_at', 'updated_at' ]
+  properties: [ 'title', 'slug', 'description', 'created_at', 'updated_at', { 'attachments': [ [ 'filename', 'mime', 'path' ] ] }]
 , indexes: [ [ { 'slug': 1 }, { unique: true } ] ]
 , cast: { 'created_at': Date
         , 'updated_at': Date
         }
 , methods: {
     save: function(fn) {
+      if(this.created_at === null) this.created_at = new Date()
       this.updated_at = new Date();
   
       this.__super__(fn);

@@ -24,8 +24,14 @@
           Upload Attachments
           <input name="attachments" type="file" multiple id="attachments"{{#_form.create}} disabled="disabled"{{/_form.create}}>
         </label>
-        <ul class="attachments">
-        </ul>
+        <section class="clear">
+          <h5>Attachments</h5>
+          <ul class="attachments">
+            {{#project.attachments}}
+            <li><a href="http://static.{{ .domain }}/attachments/{{ .project.slug }}/{{ filename }}">{{ filename }}</a></li>
+            {{/project.attachments}}
+          </ul>
+        </section>
       </fieldset>
       <fieldset class="unitx4">
         <input type="submit" value="{{ _form.submit }}">

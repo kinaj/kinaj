@@ -66,11 +66,13 @@ jQuery(function($) {
 
   $('input[type=file]').live('click', function(event) {
     var $input = $(this)
+      , $form = $input.parents('form:first')
+      , attachmentPath = $form.attr('action').replace('update', 'attachments/')
       , alreadyBound = 'change' in ($input.data('events') || {});
 
     if (!alreadyBound)
       $input.html5_upload({
-        url: window.location.pathname.replace('edit', '/attachments/set'),
+        url: attachmentPath + 'set',
         sendBoundary: true,
         fieldName: 'attachment',
         onStart: function(event, total) {
@@ -78,17 +80,25 @@ jQuery(function($) {
         },
         onStartOne: function(event, name, number, total) {
           id = 'attachment' + (+new Date());
-          $li = $('<li id="' + id + '">' + name + ' | 0%</li>');
+          $li = $('<li id="' + id + '"><a href="' + attachmentPath + '">' + name + '</a><span class="progress"> | 0%</span></li>');
 
           $('ul.attachments').prepend($li);
 
           return true;
         },
         onProgress: function(event, progress, name, number, total) {
-          $li.text(name + ' | ' + Math.round(progress * 100) + '%');
+          $li.find('span.progress').text(' | ' + Math.round(progress * 100) + '%');
         },
         onFinishOne: function(event, res, name, number, total) {
-          console.log(res);
+          var res = JSON.parse(res)
+            , $a = $li.find('a')
+
+          $li.find('span.progress').fadeOut(200)
+
+          console.log($a.attr('href'))
+          console.log(typeof res);
+          $a.attr('href', $a.attr('href') + res.filename);
+          console.log($a.attr('href'))
         },
         onFinish: function(event, total) {
         },
