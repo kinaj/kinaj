@@ -1,6 +1,7 @@
 var fs = require('fs')
   , path = require('path')
   , qs = require('querystring')
+  , exec = require('child_process').exec
   , CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
 
 
@@ -77,7 +78,7 @@ exports.sessionFingerprint = function(sid, req) {
 exports.moveFile = function(original, target, cb) {
   var dirname = path.dirname(target)
     , move = function() {
-        fs.rename(original, target, function(err) { if(err) throw err; cb() })
+        fs.rename(original, target, function(err) { if(err) throw err; if(cb) cb() })
     }
 
   path.exists(dirname, function(dirExists) {
@@ -89,6 +90,27 @@ exports.moveFile = function(original, target, cb) {
 
         move()
       })
+  })
+}
+
+exports.stat = function(path, cb) {
+  fs.stat(path, function(err, stats) {
+    if(err) throw err
+
+    if(cb) cb(stats)
+  })
+}
+
+exports.rmdir = function(path, cb) {
+  exec('rm -r ' + path, function(err, stdout, stderr) {
+    if(err) throw err
+  
+    console.dir(arguments)
+
+    if(cb) cb()
+  })
+  fs.rmdir(path, function(err) {
+
   })
 }
 

@@ -1,4 +1,6 @@
-var Project = require('../models').Project;
+var config = require('../config')
+  , helper = require('../helper')
+  , Project = require('../models').Project;
 
 exports.create = function(req, res, ctx) {
   project = new Project();
@@ -31,13 +33,15 @@ exports.del = function(req, res, ctx) {
     if(!project) res.simple(404, 'Not Found\n', {})
 
     project.remove(function() {
-      if (ctx.xhr) {
-        res.simple(200, { msg: msg }, {});
-      } else {
-        ctx.flash.push(msg, function() {
-          res.redirect('/projects');
-        });
-      }
+      helper.rmdir(config.attachmentDir + '/' + project.slug, function() {
+        if (ctx.xhr) {
+          res.simple(200, { msg: msg }, {});
+        } else {
+          ctx.flash.push(msg, function() {
+            res.redirect('/projects');
+          });
+        }
+      })
     });
   });
 };

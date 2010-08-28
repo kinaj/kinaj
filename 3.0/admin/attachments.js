@@ -1,5 +1,4 @@
-var fs = require('fs')
-  , config = require('../config')
+var config = require('../config')
   , helper = require('../helper')
   , Project = require('../models').Project
 
@@ -11,7 +10,7 @@ exports.get = function(req, res, ctx) {
 
     if(!file) return res.notFound(req, res, ctx)
 
-    fs.stat(file.path, function(err, stats) {
+    helper.stat(file.path, function(stats) {
       res.writeHead(200, {
         'content-type': file.mime,
         'content-lenght': stats.size
@@ -38,9 +37,9 @@ exports.set = function(req, res, ctx) {
 
   helper.moveFile(file.path, targetPath, function() {
     file.path = targetPath;
-    console.dir(file)
     Project.find({ slug: ctx.params.slug }).first(function(project) {
       project.attachments.unshift(file)
+
       project.save(function() {
         if(ctx.xhr)
           res.simple(200, file, {})
