@@ -98,7 +98,9 @@ exports.flash = function(req, res, ctx, next) {
 };
 
 exports.form = function(req, res, params, next) {
-  if (req.method.toLowerCase() === 'post') {
+  var method = req.method.toLowerCase()
+
+  if (method === 'post' || (method === 'put' && /x-www-form-urlencoded/.test(req.headers['content-type']))) {
     var form = new formidable.IncomingForm();
 
     // form configuration

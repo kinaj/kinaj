@@ -41,7 +41,6 @@ app.mapRoutes([
               , [ [ 'post' ],   '/projects/create',       auth.prot(projects.create) ]
               , [ [ 'put' ],    '/projects/:slug/update', auth.prot(projects.update) ]
               , [ [ 'delete' ], '/projects/:slug/delete', auth.prot(projects.del) ]
-              , [ [ 'post' ],   '/projects/:slug/upload', auth.prot(attachments.create) ]
               // projects attachments
               , [ [ 'get' ],    '/projects/:slug/attachments/:filename',  attachments.get ]
               , [ [ 'post' ],   '/projects/:slug/attachments/set',        auth.prot(attachments.set) ]

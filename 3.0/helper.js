@@ -105,8 +105,6 @@ exports.rmdir = function(path, cb) {
   exec('rm -r ' + path, function(err, stdout, stderr) {
     if(err) throw err
   
-    console.dir(arguments)
-
     if(cb) cb()
   })
   fs.rmdir(path, function(err) {
