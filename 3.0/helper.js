@@ -112,6 +112,19 @@ exports.rmdir = function(path, cb) {
   })
 }
 
+exports.deliverFile = function(path, res, cb) {
+  fs.createReadStream(path, {
+      flags: 'r',
+      mode: 0600,
+      bufferSize: 4 * 1024
+    })
+    .addListener('data', function(chunk) {
+      res.write(chunk)
+    })
+    .addListener('close', function() {
+      res.end()
+    })
+}
 exports.generatePath = function() {
   return path.join.apply(this, arguments)
 }

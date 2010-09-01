@@ -16,17 +16,7 @@ exports.get = function(req, res, ctx) {
         'content-lenght': stats.size
       })
 
-      fs.createReadStream(file.path,{
-          flags: 'r',
-          mode: 0600,
-          bufferSize: 4 * 1024
-        })
-        .addListener('data', function(chunk) {
-          res.write(chunk)
-        })
-        .addListener('close', function() {
-          res.end()
-        })
+      helper.deliverFile(file.path, res)
     })
   })
 }
