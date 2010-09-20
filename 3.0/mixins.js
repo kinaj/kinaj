@@ -1,5 +1,6 @@
 var nun = require('nun')
-  , config = require('./config');
+  , config = require('./config')
+  , file = new(require('node-static').Server)(config.staticDir)
 
 exports.redirect = function(location) {
   this.writeHead(302, { 'Location': location })
@@ -46,4 +47,8 @@ exports.template = function(status, hdrs, tmpl, ctx) {
 };
 exports.notFound = function(req, res, ctx) {
   res.template(404, {}, 'admin/404.html', ctx)
+}
+
+exports.static = function(req, res, ctx) {
+  file.serve(req, res)
 }

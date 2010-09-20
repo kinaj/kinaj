@@ -75,29 +75,19 @@ exports.sessionFingerprint = function(sid, req) {
   return ret;
 };
 
-exports.moveFile = function(original, target, cb) {
-  var dirname = path.dirname(target)
-    , move = function() {
-        fs.rename(original, target, function(err) { if(err) throw err; if(cb) cb() })
-    }
+exports.moveAttachment = function(file, slug, dir, cb) {
+  dir = path.join(dir, slug, 'attachments')
 
-  path.exists(dirname, function(dirExists) {
-    if(dirExists) 
-      move()
-    else
-      fs.mkdir(dirname, 0755, function(err) {
-        if(err) throw err
-
-        move()
-      })
-  })
-}
-
-exports.stat = function(path, cb) {
-  fs.stat(path, function(err, stats) {
+  exec('mkdir -p ' + dir, function(err, stdout, stderr) {
     if(err) throw err
 
-    if(cb) cb(stats)
+    var target = path.join(dir, file.filename)
+
+    fs.rename(file.path, target, function(err) {
+      if(err) throw err
+
+      if(cb) cb(target)
+    })
   })
 }
 
@@ -110,21 +100,4 @@ exports.rmdir = function(path, cb) {
   fs.rmdir(path, function(err) {
 
   })
-}
-
-exports.deliverFile = function(path, res, cb) {
-  fs.createReadStream(path, {
-      flags: 'r',
-      mode: 0600,
-      bufferSize: 4 * 1024
-    })
-    .addListener('data', function(chunk) {
-      res.write(chunk)
-    })
-    .addListener('close', function() {
-      res.end()
-    })
-}
-exports.generatePath = function() {
-  return path.join.apply(this, arguments)
 }

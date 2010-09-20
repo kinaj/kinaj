@@ -14,6 +14,7 @@ app.mixin({ mixins: { res: { redirect: mixins.redirect
                            , simple: mixins.simple
                            , template: mixins.template
                            , notFound: mixins.notFound
+                           , static: mixins.static
                            }
                     }
           })
@@ -42,7 +43,7 @@ app.mapRoutes([
               , [ [ 'put' ],    '/projects/:slug/update', auth.prot(projects.update) ]
               , [ [ 'delete' ], '/projects/:slug/delete', auth.prot(projects.del) ]
               // projects attachments
-              , [ [ 'get' ],    '/projects/:slug/attachments/:filename',  attachments.get ]
+              , [ [ 'get' ],    '/projects/:slug/attachments/:filename',  mixins.static  ]
               , [ [ 'post' ],   '/projects/:slug/attachments/set',        auth.prot(attachments.set) ]
               // projects forms
               , [ [ 'get' ],    '/projects/new',          auth.prot(projects.newForm) ]

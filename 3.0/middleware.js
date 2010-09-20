@@ -1,7 +1,7 @@
 var sys = require('sys')
   , config = require('./config')
   , redis = require('redis-client').createClient(config.redis.port, config.redis.host)
-  , formidable = require('formidable/formidable')
+  , formidable = require('formidable')
   , helper = require('./helper');
 
 exports.logger = function(req, res, params, next) {

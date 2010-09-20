@@ -1,33 +1,16 @@
 var config = require('../config')
   , helper = require('../helper')
   , Project = require('../models').Project
-
-exports.get = function(req, res, ctx) {
-  Project.find({ slug: ctx.params.slug }).first(function(project) {
-    var file = project.attachments.filter(function(attachment) {
-      return attachment.filename === ctx.params.filename
-    }).pop()
-
-    if(!file) return res.notFound(req, res, ctx)
-
-    helper.stat(file.path, function(stats) {
-      res.writeHead(200, {
-        'content-type': file.mime,
-        'content-lenght': stats.size
-      })
-
-      helper.deliverFile(file.path, res)
-    })
-  })
-}
+  , attachmentDir = config.attachmentDir
 
 exports.set = function(req, res, ctx) {
   var file = ctx.files.attachment
-    , targetPath = helper.generatePath(config.attachmentDir, ctx.params.slug, file.filename);
+    , slug = ctx.params.slug
 
-  helper.moveFile(file.path, targetPath, function() {
-    file.path = targetPath;
-    Project.find({ slug: ctx.params.slug }).first(function(project) {
+  helper.moveAttachment(file, slug, attachmentDir, function(location) {
+    file.path = location
+    
+    Project.find({ slug: slug }).first(function(project) {
       project.attachments.unshift(file)
 
       project.save(function() {
@@ -36,5 +19,5 @@ exports.set = function(req, res, ctx) {
         else res.simple(200, 'OK', {})
       })
     })
-  });
+  })
 };
