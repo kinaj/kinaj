@@ -3,6 +3,7 @@ upstream app {
 }
 
 upstream admin {
+  # server unix:/tmp/admin.kinaj.sock;
   server 127.0.0.1:3001;
 }
 
@@ -18,7 +19,7 @@ server {
   }
 
   location /favicon.ico {
-    # rewrite http://static.kinaj.dev/img/favicon.ico;
+    rewrite ^(.*)$ http://static.kinaj.dev/img/favicon.ico permanent;
   }
 }
 

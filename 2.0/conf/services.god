@@ -1,38 +1,37 @@
-# email setup
-God::Contacts::Email.message_settings = {
-  :from => 'god@kinaj.com'
-}
+# email defaults
+God::Contacts::Email.defaults  do |d|
+  d.from_email = 'god@amazingpixelz.com'
+  d.from_name = 'AmazingGod'
 
-God::Contacts::Email.server_settings = {
-  :address => 'localhost',
-  :port => 25,
-  :domain => 'kinaj.com'
-}
+  d.delivery_method = :smtp
+  d.server_host = 'localhost'
+  d.server_port = 25
+  d.server_auth = false
+  d.server_domain = 'kinaj.com'
+end
 
+# jabber defaults
+God::Contacts::Jabber.defaults do |d|
+  d.host = 'talk.google.com'
+  d.from_jid = 'god@amazingpixelz.com'
+  d.password = 'Dr0ss0m187'
+
+  subject = 'kinaj.com Notification'
+end
+
+# contacts
 God.contact(:email) do |c|
   c.name = 'alx.email'
-  c.email = 'alx@kinaj.com'
   c.group = 'adm'
+  c.to_name = 'alx'
+  c.to_email = 'alx@amazingpixelz.com'
 end
-
-
-God.contact(:email) do |c|
-  c.name = 'janik.email'
-  c.email = 'janik@kinaj.com'
-  c.group = 'adm'
-end
-
-# jabber setup
-God::Contacts::Jabber.settings = { :host => 'talk.google.com',
-                                   :jabber_id => 'god@kinaj.com',
-                                   :password  => 'Dr0ss0m187' }
 
 God.contact(:jabber) do |c|
   c.name = 'alx.jabber'
-  c.jabber_id = 'alx@kinaj.com'
   c.group = 'adm'
+  c.to_jid = 'alx@amazingpixelz.com'
 end
-
 
 # nginx watcher
 God.watch do |w|
@@ -90,15 +89,15 @@ God.watch do |w|
   end
 
   # lifecycle
-  w.lifecycle do |on|
-    on.condition(:flapping) do |c|
-      c.to_state = [:start, :restart]
-      c.times = 5
-      c.within = 5.minute
-      c.transition = :unmonitored
-      c.retry_in = 10.minutes
-      c.retry_times = 5
-      c.retry_within = 2.hours
-    end
-  end
+  # w.lifecycle do |on|
+  #   on.condition(:flapping) do |c|
+  #     c.to_state = [:start, :restart]
+  #     c.times = 5
+  #     c.within = 5.minute
+  #     c.transition = :unmonitored
+  #     c.retry_in = 10.minutes
+  #     c.retry_times = 5
+  #     c.retry_within = 2.hours
+  #   end
+  # end
 end
