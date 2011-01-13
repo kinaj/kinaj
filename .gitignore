@@ -23,3 +23,16 @@ cruft*
 */static/uploads/*
 */static/projects/*
 *background-grid*
+
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
