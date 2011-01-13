@@ -1,6 +1,6 @@
 var sys = require('sys')
   , config = require('./config')
-  , redis = require('redis-client').createClient(config.redis.port, config.redis.host)
+  , redis = require('redis').createClient(config.redis.port, config.redis.host)
   , formidable = require('formidable')
   , helper = require('./helper');
 
@@ -51,9 +51,7 @@ exports.responseTime = function(req, res, params, next) {
 };
 
 exports.xhr = function(req, res, params, next) {
-  var hdr = req.headers['x-requested-with'];
-
-  params.xhr = (hdr === 'XMLHttpRequest') ? true : false;
+  params.xhr = (req.headers['x-requested-with'] === 'XMLHttpRequest') ? true : false;
 
   next();
 };

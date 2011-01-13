@@ -97,7 +97,4 @@ exports.rmdir = function(path, cb) {
   
     if(cb) cb()
   })
-  fs.rmdir(path, function(err) {
-
-  })
 }

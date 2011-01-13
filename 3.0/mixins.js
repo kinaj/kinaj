@@ -50,5 +50,8 @@ exports.notFound = function(req, res, ctx) {
 }
 
 exports.static = function(req, res, ctx) {
-  file.serve(req, res)
+  file.serve(req, res, function(err, result) {
+    if(err && (err.status === 404))
+      res.notFound(req, res, ctx)
+  })
 }

@@ -4,7 +4,7 @@ var path = require('path')
 exports.runtime       = runtime;
 exports.baseDir       = __dirname;
 exports.viewDir       = path.join(__dirname, 'views');
-exports.staticDir     = path.join(__dirname, 'static');
+exports.staticDir     = 'static'; // path.join(__dirname, 'static');
 exports.uploadDir     = path.join(__dirname, 'static', 'uploads');
 exports.attachmentDir = path.join(__dirname, 'static', 'projects');
 exports.domain        = (runtime === 'development') ? 'kinaj.dev' : 'kinaj.com';

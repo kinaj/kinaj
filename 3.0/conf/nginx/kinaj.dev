@@ -8,8 +8,9 @@ upstream admin {
 }
 
 server {
-  listen 80;
   server_name kinaj.dev;
+
+  listen 80;
 
   access_log /usr/local/var/log/nginx/kinaj.dev.access.log;
   error_log /usr/local/var/log/nginx/kinaj.dev.error.log;
@@ -24,13 +25,14 @@ server {
 }
 
 server {
-  listen 80;
-  server_name admin.kinaj.dev;
+  server_name           admin.kinaj.dev;
 
-  client_max_body_size 4096m;
+  listen                80;
 
-  access_log /usr/local/var/log/nginx/admin.kinaj.dev.access.log;
-  error_log /usr/local/var/log/nginx/admin.kinaj.dev.error.log;
+  client_max_body_size  4096m;
+
+  access_log            /usr/local/var/log/nginx/admin.kinaj.dev.access.log;
+  error_log             /usr/local/var/log/nginx/admin.kinaj.dev.error.log;
 
   location / {
     proxy_pass http://admin/;
@@ -42,8 +44,9 @@ server {
 }
 
 server {
-  listen 80;
   server_name static.kinaj.dev;
+
+  listen 80;
 
   access_log /usr/local/var/log/nginx/kinaj.dev.access.log;
   error_log /usr/local/var/log/nginx/kinaj.dev.error.log;
