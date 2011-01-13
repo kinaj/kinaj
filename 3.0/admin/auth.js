@@ -1,6 +1,5 @@
 var sys = require('sys')
   , User = require('../models').User
-  , ins = function(x) { return sys.debug(sys.inspect(x)); };
 
 exports.prot = function(fn) {
   return function(req, res, ctx) {

@@ -1,7 +1,6 @@
-var config = require('../config')
-  , helper = require('../helper')
+var helper = require('../helper')
   , Project = require('../models').Project
-  , attachmentDir = config.attachmentDir
+  , attachmentDir = require('../config').attachmentDir
 
 exports.set = function(req, res, ctx) {
   var file = ctx.files.attachment

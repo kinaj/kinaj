@@ -101,7 +101,6 @@ exports.form = function(req, res, params, next) {
   if (method === 'post' || (method === 'put' && /x-www-form-urlencoded/.test(req.headers['content-type']))) {
     var form = new formidable.IncomingForm();
 
-    // form configuration
     form.encoding = 'utf-8';
     form.uploadDir = config.uploadDir;
     form.keepExtensions = true;
@@ -118,9 +117,7 @@ exports.form = function(req, res, params, next) {
 };
 
 exports.cookies = function(req, res, params, next) {
-  var cookie = req.headers.cookie || '';
-
-  params.cookies = helper.parseCookie(cookie);
+  params.cookies = helper.parseCookie(req.headers.cookie || '');
 
   next();
 };

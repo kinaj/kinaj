@@ -43,7 +43,7 @@ app.mapRoutes([
               , [ [ 'put' ],    '/projects/:slug/update', auth.prot(projects.update) ]
               , [ [ 'delete' ], '/projects/:slug/delete', auth.prot(projects.del) ]
               // projects attachments
-              , [ [ 'get' ],    '/projects/:slug/attachments/:filename',  mixins.static  ]
+              , [ [ 'get' ],    '/projects/:slug/attachments/:filename',  auth.prot(mixins.static)  ]
               , [ [ 'post' ],   '/projects/:slug/attachments/set',        auth.prot(attachments.set) ]
               // projects forms
               , [ [ 'get' ],    '/projects/new',          auth.prot(projects.newForm) ]

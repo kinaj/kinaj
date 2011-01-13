@@ -76,10 +76,10 @@ exports.newForm = function(req, res, ctx) {
 exports.editForm = function(req, res, ctx) {
   var tmpl = 'admin/projects-edit.html'
 
-    ctx['_form'] = { submit: 'update'
-                   , action: '/projects/' + ctx.params.slug + '/update'
-                   , method: 'put'
-                   }
+  ctx['_form'] = { submit: 'update'
+                 , action: '/projects/' + ctx.params.slug + '/update'
+                 , method: 'put'
+                 }
 
   if (ctx.xhr) tmpl = 'admin/partials/projects-form.html';
 
