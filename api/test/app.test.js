@@ -5,10 +5,15 @@ var assert = require('assert')
   , app = require('../app')
   , helpers = require('./helpers')
 
-helpers.dropDatabase(app.set('mongodb'))
+exports['cleanup'] = function() {
+  helpers.dropDatabase(app.set('mongodb'))
+}
+exports['fixtures'] = function() {
+  helpers.projectFixtures(app)
+}
 
 // deliver html
-exports['GET /'] = function(beforeExit){
+exports['GET /'] = function(){
   assert.response(app,
     { url: '/' },
     { status: 200,

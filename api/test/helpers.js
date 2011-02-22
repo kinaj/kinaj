@@ -13,3 +13,17 @@ exports.dropDatabase = function(dbpath) {
     })
   })
 }
+
+exports.projectFixtures = function(app) {
+  var projects = [ 
+    { title: 'first', slug: 'first', description: 'first description' },
+    { title: 'second', slug: 'second', description: 'second description' },
+    { title: 'third', slug: 'third', description: 'third description' }
+  ]
+
+  projects.forEach(function(p, i) {
+    new app.Project(p).save(function(err) {
+      if(err) throw err
+    })
+  })
+}
