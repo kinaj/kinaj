@@ -6,14 +6,14 @@ var express = require('express')
 
 // configuration
 app.configure('development', function(){
-  app.set('mongodb', 'mongodb://localhost/kinaj-development')
+  app.set('mongodb', 'mongodb://localhost:27017/kinaj-development')
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
 })
 app.configure('test', function() {
-  app.set('mongodb', 'mongodb://localhost/kinaj-test')
+  app.set('mongodb', 'mongodb://localhost:27017/kinaj-test')
 })
 app.configure('production', function(){
-  app.set('mongodb', 'mongodb://localhost/kinaj-production')
+  app.set('mongodb', 'mongodb://localhost:27017/kinaj-production')
   app.use(express.errorHandler())
 })
 app.configure(function() {
@@ -31,7 +31,7 @@ app.configure(function() {
 mongoose.model('Project', models.Project)
 
 // database connection
-db = mongoose.connect(app.set('mongodb'))
+app.db = db = mongoose.connect(app.set('mongodb'))
 
 // expose models to app
 app.Project = Project = db.model('Project')
