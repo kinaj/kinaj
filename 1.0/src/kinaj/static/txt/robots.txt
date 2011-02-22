@@ -1,9 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /projects/create/
-Disallow: /projects/update/
-Disallow: /projects/delete/
-Disallow: /projects/list/
-Disallow: /static/projects/
-Disallow: /users/
-Disallow: /u/
