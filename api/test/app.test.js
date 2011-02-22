@@ -1,8 +1,11 @@
 // correct env variable for tests
 process.env.NODE_ENV = 'test'
 
-var app = require('../app')
-  , assert = require('assert')
+var assert = require('assert')
+  , app = require('../app')
+  , helpers = require('./helpers')
+
+helpers.dropDatabase(app.set('mongodb'))
 
 // deliver html
 exports['GET /'] = function(beforeExit){
@@ -32,7 +35,7 @@ exports['POST /projects'] = function() {
     method: 'post',
     url: '/projects',
     headers: { 'accept': 'application/json' },
-    data: JSON.stringify({ title: 'foo', slug: 'foo', description: 'foo bar baz' })
+    data: JSON.stringify({ title: 'foo', slug: 'foo', description: 'foo bar baz', tags: [ 'one', 'two', 'three' ] })
   }, {
     status: 200,
     headers: { 'content-type': 'application/json' }
