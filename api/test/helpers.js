@@ -13,8 +13,7 @@ exports.dropDatabase = function(dbpath) {
     })
   })
 }
-
-exports.projectFixtures = function(app) {
+exports.applyFixtures = function(app) {
   var projects = [ 
     { title: 'first', slug: 'first', description: 'first description' },
     { title: 'second', slug: 'second', description: 'second description' },

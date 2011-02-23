@@ -45,6 +45,12 @@ app.get('/', function(req, res){
   })
 })
 
+app.get('/projects', function(req, res) {
+  Project.find({}, function(err, projects) {
+    res.send(projects.map(function(p) { return p.toObject() }))
+  })
+})
+
 // Only listen on $ node app.js
 if(!module.parent) {
   app.listen(3000, function() {

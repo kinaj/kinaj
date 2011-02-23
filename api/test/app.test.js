@@ -9,7 +9,7 @@ exports['cleanup'] = function() {
   helpers.dropDatabase(app.set('mongodb'))
 }
 exports['fixtures'] = function() {
-  helpers.projectFixtures(app)
+  helpers.applyFixtures(app)
 }
 
 // deliver html
@@ -32,6 +32,8 @@ exports['GET /projects'] = function() {
   }, {
     status: 200,
     headers: { 'content-type': 'application/json' }
+  }, function(res) {
+    assert.length(JSON.parse(res.body), 3, 'Should return list of projects')
   })
 }
 
