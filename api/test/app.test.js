@@ -38,30 +38,38 @@ exports['GET /projects'] = function() {
 }
 
 exports['POST /projects'] = function() {
+  var body = JSON.stringify({ title: 'foo', slug: 'foo', description: 'foo bar baz', tags: [ 'one', 'two', 'three' ] })
+
   assert.response(app, {
     method: 'post',
     url: '/projects',
-    headers: { 'accept': 'application/json' },
-    data: JSON.stringify({ title: 'foo', slug: 'foo', description: 'foo bar baz', tags: [ 'one', 'two', 'three' ] })
+    headers: { 'accept': 'application/json', 'content-type': 'application/json', 'content-length': body.length },
+    data: body
   }, {
     status: 200,
     headers: { 'content-type': 'application/json' }
+  }, function(res) {
+    assert.includes(res.body, '"title":"foo"', 'Should return created project')
   })
 }
 
 exports['PUT /projects/foo'] = function() {
+  var body = JSON.stringify({ description: 'foo bar barz' })
+
   assert.response(app, {
     method: 'put',
     url: '/projects/foo',
-    headers: { 'accept': 'application/json' },
-    data: JSON.stringify({ description: 'foo bar barz' })
+    headers: { 'accept': 'application/json', 'content-type': 'application/json', 'content-length': body.length },
+    data: body
   }, {
     status: 200,
     headers: { 'content-type': 'application/json' }
+  }, function(res) {
+    assert.includes(res.body, '"description":"foo bar barz"', 'Should return the updated project')
   })
 }
 
-exports['DELETE /projects/foo'] = function() {
+exports['DELETE /projects/foo'] = function(beforeExit) {
   assert.response(app, {
     method: 'delete',
     url: '/projects/foo',
@@ -69,5 +77,7 @@ exports['DELETE /projects/foo'] = function() {
   }, {
     status: 200,
     headers: { 'content-type': 'application/json' }
+  }, function(res) {
+    assert.eql(JSON.parse(res.body), { ok: true }, 'Should acknowledge the deletion')
   })
 }
