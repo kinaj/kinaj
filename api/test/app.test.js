@@ -91,7 +91,7 @@ step(function() {
       'should respond with correct content-type': function(err, res) {
         assert.strictEqual(res.headers['content-type'], 'application/json')
       },
-      'should respond with updated document': function(err, res) {
+      'should respond with correct JSON': function(err, res) {
         assert.deepEqual(JSON.parse(res.body), { ok: true })
       }
     }
