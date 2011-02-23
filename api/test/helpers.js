@@ -46,7 +46,7 @@ exports.api = {
   request: function(options, callback) {
     var api = this
       , server = this.server
-      , req
+      , data, req
 
     if (!server.fd) {
       if (!('__deferred' in server)) {
@@ -71,6 +71,11 @@ exports.api = {
       return
     }
 
+    if(options.data) {
+      data = options.data
+
+      delete options.data
+    }
     options.host = this.host
     options.port = this.port
     req = http.request(options)
@@ -89,6 +94,12 @@ exports.api = {
       })
     }).on('error', function(err) {
       callback(err)
-    }).end()
+    })
+
+    if(data) {
+      req.write(data)
+    }
+
+    req.end()
   }
 }
