@@ -5,8 +5,8 @@ var url = require('url')
   , mongodb = require('mongodb')
   , app = require('../app')
 
-exports.dropDatabase = function(dbpath, callback) {
-  var config = url.parse(dbpath)
+exports.dropDatabase = function(callback) {
+  var config = url.parse(app.set('mongodb'))
     , db = new mongodb.Db(config.pathname.replace('/', ''), new mongodb.Server(config.hostname, config.port, {}), { native_parser: true })
 
   db.open(function(err, db) {
