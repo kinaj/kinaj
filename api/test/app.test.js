@@ -6,40 +6,24 @@ var http = require('http')
   , vows = require('vows')
   , app = require('../app')
   , helpers = require('./helpers')
+  , api = helpers.api
 
 // preparations
+api.server = app
 
-step(function dropDatabase() {
+step(function() {
   helpers.dropDatabase(app.set('mongodb'), this)
-}, function applyFixtures() {
+}, function() {
   helpers.applyFixtures(this)
-}, function runTests() {
+}, function() {
   // tests
   vows.describe('projects').addBatch({
     'GET /projects': {
       topic: function() {
-        var that = this
-          , options = { host: 'localhost'
-                      , port: 5555
-                      , path: '/projects'
-                      , method: 'GET'
-                      }
-
-        app.listen(5555, 'localhost', function() {
-          http.request(options, function(res) {
-            var body = ''
-
-            res.setEncoding('utf8')
-            res.on('data', function(chunk) {
-              body += chunk
-            })
-            res.on('end', function() {
-              res.body = body
-
-              that.callback(null, res)
-            })
-          }).end()
-        })
+        api.request({
+          method: 'get',
+          path: '/projects'
+        }, this.callback)
       },
       'should respond with 200': function(err, res) {
         assert.equal(res.statusCode, 200)
