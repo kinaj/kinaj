@@ -1,4 +1,5 @@
-var express = require('express')
+var fs = require('fs')
+  , express = require('express')
   , mongoose = require('mongoose')
   , models = require('./models')
   , app = module.exports = express.createServer()
@@ -17,13 +18,16 @@ app.configure('production', function(){
   app.use(express.errorHandler())
 })
 app.configure(function() {
+  var logFile = fs.createWriteStream('logs/' + app.settings.env + '.log')
+    , format = ':remote-addr - - [:date] ":method :url HTTP/:http-version" :status :res[Content-Length] ":referrer" ":user-agent"'
+
   app.set('views', __dirname + '/views')
   app.set('view engine', 'jade')
+  app.use(express.logger({ stream: logFile, format: format }))
   app.use(express.bodyDecoder())
   app.use(express.cookieDecoder())
   app.use(express.session({ secret: 'your secret here' }))
   app.use(express.compiler({ src: __dirname + '/public', enable: [ 'less' ] }))
-  app.use(app.router)
   app.use(express.staticProvider(__dirname + '/public'))
 })
 
