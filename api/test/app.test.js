@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test' // correct env variable for tests
 
 var http = require('http')
   , assert = require('assert')
@@ -7,36 +8,50 @@ var http = require('http')
   , helpers = require('./helpers')
 
 // preparations
-process.env.NODE_ENV = 'test' // correct env variable for tests
 
 step(function dropDatabase() {
   helpers.dropDatabase(app.set('mongodb'), this)
 }, function applyFixtures() {
-  helpers.applyFixtures(app, this)
+  helpers.applyFixtures(this)
 }, function runTests() {
   // tests
-  vows.describe('kinaj').addBatch({
-    'GET /': {
+  vows.describe('projects').addBatch({
+    'GET /projects': {
       topic: function() {
         var that = this
           , options = { host: 'localhost'
-                      , port: 3000
-                      , path: '/'
-                      , method: 'get'
+                      , port: 5555
+                      , path: '/projects'
+                      , method: 'GET'
                       }
 
-        http.request(options, function(res) {
-          that.callback(null, res)
-        }).end()
+        app.listen(5555, 'localhost', function() {
+          http.request(options, function(res) {
+            var body = ''
+
+            res.setEncoding('utf8')
+            res.on('data', function(chunk) {
+              body += chunk
+            })
+            res.on('end', function() {
+              res.body = body
+
+              that.callback(null, res)
+            })
+          }).end()
+        })
       },
-      'should respond with statusCode 200': function(err, res) {
+      'should respond with 200': function(err, res) {
         assert.equal(res.statusCode, 200)
       },
-      'should respond with header content-type': function(err, res) {
-        assert.strictEqual(res.headers['content-type'], 'text/html; charset=utf-8')
+      'should respond with correct content-type': function(err, res) {
+        assert.strictEqual(res.headers['content-type'], 'application/json')
+      },
+      'should respond with list of projects': function(err, res) {
+        assert.length(JSON.parse(res.body), 3)
       }
     }
-  }).run()
+  }).run({ reporter: require('vows/lib/vows/reporters/spec') })
 })
 
 

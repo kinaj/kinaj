@@ -1,6 +1,8 @@
+process.env.NODE_ENV = 'test' // correct env variable for tests
+
 var url = require('url')
-  , assert = require('assert')
   , mongodb = require('mongodb')
+  , app = require('../app')
 
 exports.dropDatabase = function(dbpath, callback) {
   var config = url.parse(dbpath)
@@ -18,7 +20,7 @@ exports.dropDatabase = function(dbpath, callback) {
     })
   })
 }
-exports.applyFixtures = function(app, callback) {
+exports.applyFixtures = function(callback) {
   var projects = [ 
     { title: 'first', slug: 'first', description: 'first description' },
     { title: 'second', slug: 'second', description: 'second description' },
