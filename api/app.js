@@ -47,7 +47,42 @@ app.get('/', function(req, res){
 
 app.get('/projects', function(req, res) {
   Project.find({}, function(err, projects) {
+    if(err) throw err
+
     res.send(projects.map(function(p) { return p.toObject() }))
+  })
+})
+app.post('/projects', function(req, res) {
+  var project = new Project(req.body)
+  
+  project.save(function(err) {
+    if(err) throw err
+
+    res.send(project.toObject())
+  })
+})
+app.put('/projects/:slug', function(req, res) {
+  Project.findOne({ slug: req.param('slug') }, function(err, project) {
+    Object.keys(req.body).forEach(function(key, i) {
+      project[key] = req.body[key]
+    })
+
+    project.save(function(err) {
+      if(err) throw err
+
+      res.send(project.toObject())
+    })
+  })
+})
+app.del('/projects/:slug', function(req, res) {
+  Project.findOne({ slug: req.param('slug') }, function(err, project) {
+    if(err) throw err
+
+    project.remove(function(err) {
+      if(err) throw err
+
+      res.send({ ok: true })
+    })
   })
 })
 
