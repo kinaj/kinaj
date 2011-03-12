@@ -2,7 +2,7 @@ var path      = require( 'path' );
 var paperboy  = require( 'paperboy' );
 var srv       = new( require( 'http' ).Server );
 var PORT      = 8080;
-var HOST      = 'localhost';
+var HOST      = '0.0.0.0';
 
 srv.on( 'request', function ( req, res ) {
   var ip = req.connection.remoteAddress;
