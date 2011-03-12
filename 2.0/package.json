@@ -1,0 +1,10 @@
+{
+  "name": "kinaj-static",
+  "version": "0.0.1",
+  "dependencies": {
+    "paperboy": ">=0.0.2",
+  },
+  "engines": {
+    "node": ">=0.4.2"
+  }
+}
