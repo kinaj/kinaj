@@ -33,8 +33,8 @@ jQuery(function ($) {
         next = current.prev(),
         id = next.attr('id');
 
-    if (!id || id === 'about') {
-      id = kinaj.divlist.filter(':eq(' + (kinaj.divlist.length -2) + ')').attr('id');
+    if (!id) {
+      id = kinaj.divlist.filter(':eq(' + (kinaj.divlist.length -1) + ')').attr('id');
     }
         
     window.location.hash = id;
@@ -49,7 +49,7 @@ jQuery(function ($) {
         next = current.next(),
         id = next.attr('id');
             
-    if (!id || id === 'about') {
+    if (!id) {
       id = kinaj.divlist.filter(':first').attr('id');
     }
         
@@ -60,37 +60,16 @@ jQuery(function ($) {
     }
   });
     
-  $('#page h1 a').bind('click', function (event) {
-    var el = $(this),
-        hash = el.attr('href'),
-        id = hash.substr(1, hash.length),
-        newHash = kinaj.hash;
-        
-    window.location.hash = id;
-        
-    if (newHash === '#about') {
-      newHash = '#' + kinaj.divlist.filter(':first').attr('id');
-    }
-        
-    if (id === 'about') {
-      el.attr('href', newHash);
-    } else {
-      el.attr('href', '#about');
-    }
-        
-    event.preventDefault();
-  });
-    
   kinaj.divlist.find('img').bind('click', function (event) {
     var current = $(this).parent(),
         next = current.next(),
         id = next.attr('id');
-        
-    if (id !== 'about') {
-      window.location.hash = id;
-    } else {
-      window.location.hash = kinaj.divlist.filter(':first').attr('id');
+
+    if (!id) {
+      id = kinaj.divlist.filter(':first').attr('id');
     }
+        
+    window.location.hash = id;
   });
   
   kinaj.divlist.find('a.download').bind('click', function (event) {
@@ -99,6 +78,13 @@ jQuery(function ($) {
     track('projects', 'download', label);
   });
   
+  if (window.location.hash.replace('#', '') === 'thankyou') {
+    console.log('foo')
+    $('h1 img').attr('src', '/img/thankyou.png');
+
+    window.location.hash = '';
+  }
+
   kinaj.timer = setTimeout(listener, 10);
     
   setTimeout(function () {
@@ -155,18 +141,10 @@ var kinaj = {
     kinaj.navigation.find('a').removeClass('active');
     kinaj.navigation.find('a[href="' + hash + '"]').addClass('active');
         
-    if (hash !== '#about') {
-      prefix = kinaj.navigation.find('a[href="' + hash + '"]').attr('title');
-            
-      if (!kinaj.navigation.is(':visible')) {
-        kinaj.navigation.fadeIn(750);
-      }
-    } else {
-      prefix = 'About';
-            
-      if (kinaj.navigation.is(':visible')) {
-        kinaj.navigation.hide();
-      }
+    prefix = kinaj.navigation.find('a[href="' + hash + '"]').attr('title');
+          
+    if (!kinaj.navigation.is(':visible')) {
+      kinaj.navigation.fadeIn(750);
     }
         
     kinaj.title.text(prefix + ' | Janik Baumgartner');
