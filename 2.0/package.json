@@ -2,6 +2,7 @@
   "name": "kinaj-static",
   "version": "0.0.1",
   "dependencies": {
+    "cluster": ">=0.4.1",
     "paperboy": ">=0.0.2"
   },
   "engines": {
