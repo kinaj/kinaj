@@ -23,6 +23,7 @@ cruft*
 */static/uploads/*
 */static/projects/*
 *background-grid*
+*node_modules*
 
 lib-cov
 *.seed
