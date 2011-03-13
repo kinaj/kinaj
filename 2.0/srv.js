@@ -5,9 +5,7 @@ var PORT      = 8080;
 var HOST      = '127.0.0.1';
 
 srv.on( 'request', function ( req, res ) {
-  var ip = req.connection.remoteAddress;
-
-  console.dir( req.headers );
+  var ip = req.headers['x-real-ip'];
 
   paperboy
     .deliver( path.join( __dirname, 'static' ), req, res)
