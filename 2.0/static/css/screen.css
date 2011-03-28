@@ -20,7 +20,7 @@
   #showroom div a {padding: 1px 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px;}
   #showroom div a:hover {background: rgb(152, 163, 173);}
 
-  #navigation {display: block; width: 175px; height: 15px; margin: 0 auto 50px auto; font-size: 15px; cursor: default;}
+  #navigation {display: block; width: 180px; height: 15px; margin: 0 auto 50px auto; font-size: 15px; cursor: default;}
   #navigation li {float: left;}
   #navigation li a {display: block; width: 5px; height: 15px; padding: 0px 2px; text-align: center; color: rgb(164, 178, 190);}
   #navigation li a:hover {color: rgb(191, 207, 221);}
