@@ -17,7 +17,7 @@ var conf      = require( 'conf/' + deploy.env );
 var fileConf  = config( 'file', conf.file );
 var httpConf  = config( 'http', conf.http );
 
-var fileServer  = new( static.Server )( path.join( process.cwd(), 'static', 'api' ), { cache: -1 } );
+var fileServer  = new( static.Server )( path.join( 'static', 'api' ), { cache: -1 } );
 var httpServer  = connect.createServer();
 var logPath     = path.join( process.cwd(), 'log', deploy.env + '.log' );
 
@@ -32,9 +32,15 @@ httpServer
   });
 
 function router ( routes ) {
-  routes.get( 'client', '/_client', function ( request, response ) {
+  routes.get( 'client', /_client\/(.+)?/, function ( request, response ) {
+    request.url = request.url.replace( /\/_client\//, '');
+
     request.on( 'end', function () {
-      fileServer.serve( request, response );
+      fileServer
+        .serve( request, response )
+        .on( 'error', function ( error ) {
+          console.error( error.stack ? error.stack : error );
+        });
     })
   });
 }
