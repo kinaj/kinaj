@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+// extend require path
+require.paths.unshift( __dirname + '/..' );
+
+// imports
+var fs        = require( 'fs' );
+var path      = require( 'path' );
+var config    = require( 'config' );
+var connect   = require( 'connect' );
+var static    = require( 'node-static' );
+
+// configuration
+var deploy    = config( 'deploy', { env: 'development' } );
+var conf      = require( 'conf/' + deploy.env );
+var fileConf  = config( 'file', conf.file );
+var httpConf  = config( 'http', conf.http );
+
+var fileServer  = new( static.Server )( path.join( process.cwd(), 'static', 'api' ), { cache: -1 });
+var httpServer  = connect.createServer();
+var logPath     = path.join( process.cwd(), 'log', deploy.env + '.log' );
+
+// bindings
+httpServer
+  .use(connect.logger({
+    stream: fs.createWriteStream( logPath, { flags: 'a' } )
+  }))
+  .use(function ( request, response, next ) {
+    request.on( 'end', function () {
+      fileServer.serve( request, response );
+    });
+  })
+  .listen( httpConf.port, httpConf.host, function () {
+    console.log( 'HTTP Server running on http://%s:%d', httpConf.host, httpConf.port );
+  })
