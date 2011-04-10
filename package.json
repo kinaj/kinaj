@@ -1,0 +1,21 @@
+{
+  "name": "kinaj",
+  "description": "Portfolio of Janik Baumgartner.",
+  "version": "0.0.0",
+  "homepage": "http://janikbaumgartner.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/amazingpixelz/kinajgit"
+  },
+  "author": "Alexander Simmerl <alx@amazingpixelz.com> (amazingpixelz.com)",
+  "main": "./lib/api",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "vows --spec"
+  },
+  "engines": {
+    "node": ">= 0.4.0 < 0.5.0"
+  }
+}
