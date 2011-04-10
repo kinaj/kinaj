@@ -8,6 +8,7 @@ var fs        = require( 'fs' );
 var path      = require( 'path' );
 var config    = require( 'config' );
 var connect   = require( 'connect' );
+var escort    = require( 'escort' );
 var static    = require( 'node-static' );
 
 // configuration
@@ -16,7 +17,7 @@ var conf      = require( 'conf/' + deploy.env );
 var fileConf  = config( 'file', conf.file );
 var httpConf  = config( 'http', conf.http );
 
-var fileServer  = new( static.Server )( path.join( process.cwd(), 'static', 'api' ), { cache: -1 });
+var fileServer  = new( static.Server )( path.join( process.cwd(), 'static', 'api' ), { cache: -1 } );
 var httpServer  = connect.createServer();
 var logPath     = path.join( process.cwd(), 'log', deploy.env + '.log' );
 
@@ -25,11 +26,15 @@ httpServer
   .use(connect.logger({
     stream: fs.createWriteStream( logPath, { flags: 'a' } )
   }))
-  .use(function ( request, response, next ) {
-    request.on( 'end', function () {
-      fileServer.serve( request, response );
-    });
-  })
+  .use( escort( router ) )
   .listen( httpConf.port, httpConf.host, function () {
     console.log( 'HTTP Server running on http://%s:%d', httpConf.host, httpConf.port );
-  })
+  });
+
+function router ( routes ) {
+  routes.get( 'client', '/_client', function ( request, response ) {
+    request.on( 'end', function () {
+      fileServer.serve( request, response );
+    })
+  });
+}
